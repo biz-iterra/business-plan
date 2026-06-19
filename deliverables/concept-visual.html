@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>事業コンセプト設計図 — 伴走</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7F8F5;
+  --grid:#DEE5E4;
+  --ink:#1D2A2E;
+  --ink-soft:#54656B;
+  --blue:#27559B;
+  --blue-soft:#E6EDF7;
+  --seal:#C2452D;
+  --line:#B9C5C4;
+  --max:1080px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  background:var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:32px 32px;
+  color:var(--ink);
+  line-height:1.85;
+  font-size:15.5px;
+}
+.frame{max-width:var(--max);margin:0 auto;padding:0 20px}
+
+/* ===== sheet : each section framed like a drawing sheet ===== */
+.sheet{
+  background:rgba(255,255,255,.78);
+  border:1.5px solid var(--ink);
+  margin:48px 0;
+  position:relative;
+}
+.sheet-head{
+  display:flex;justify-content:space-between;align-items:stretch;
+  border-bottom:1.5px solid var(--ink);
+}
+.sheet-no{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.72rem;letter-spacing:.12em;
+  padding:10px 16px;border-right:1.5px solid var(--ink);
+  display:flex;align-items:center;color:var(--blue);white-space:nowrap;
+}
+.sheet-title{
+  padding:10px 16px;font-weight:700;font-size:.95rem;letter-spacing:.08em;
+  display:flex;align-items:center;flex:1;
+}
+.sheet-rev{
+  font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--ink-soft);
+  padding:10px 16px;border-left:1.5px solid var(--ink);
+  display:flex;align-items:center;white-space:nowrap;
+}
+.sheet-body{padding:34px 36px 40px}
+@media(max-width:640px){
+  .sheet-body{padding:24px 18px 30px}
+  .sheet-rev{display:none}
+}
+
+/* ===== hero ===== */
+header{padding:72px 0 8px}
+.title-block{
+  border:1.5px solid var(--ink);
+  background:rgba(255,255,255,.85);
+}
+.tb-top{
+  display:flex;justify-content:space-between;
+  border-bottom:1.5px solid var(--ink);
+  font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.14em;
+  color:var(--ink-soft);
+}
+.tb-top span{padding:9px 16px}
+.tb-top span+span{border-left:1.5px solid var(--ink)}
+.tb-main{padding:56px 36px 50px;text-align:left;position:relative}
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;font-size:.75rem;letter-spacing:.3em;
+  color:var(--blue);margin-bottom:22px;
+}
+h1{
+  font-family:'Shippori Mincho',serif;font-weight:800;
+  font-size:clamp(1.65rem,4.6vw,3rem);
+  line-height:1.5;letter-spacing:.04em;
+}
+h1 .accent{color:var(--blue)}
+.hero-sub{
+  margin-top:26px;color:var(--ink-soft);max-width:620px;font-size:.95rem;
+}
+.seal{
+  position:absolute;right:36px;bottom:40px;
+  width:74px;height:74px;border:2.5px solid var(--seal);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Shippori Mincho',serif;font-weight:600;color:var(--seal);
+  font-size:1.05rem;letter-spacing:.1em;line-height:1.3;text-align:center;
+  transform:rotate(-7deg);opacity:.85;
+}
+@media(max-width:640px){.seal{position:static;transform:rotate(-5deg);margin-top:28px}}
+
+/* ===== typography in sheets ===== */
+h2.big{
+  font-family:'Shippori Mincho',serif;font-weight:600;
+  font-size:clamp(1.25rem,3vw,1.7rem);line-height:1.6;margin-bottom:8px;
+}
+.note{
+  font-size:.85rem;color:var(--ink-soft);margin-top:6px;
+}
+.fig-cap{
+  font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.12em;
+  color:var(--blue);margin-bottom:14px;
+}
+
+/* ===== pillars ===== */
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));gap:0;border:1.5px solid var(--ink);margin-top:26px}
+.pillar{padding:24px 22px;border:.75px solid var(--line);background:#fff}
+.pillar h3{
+  font-size:.92rem;font-weight:700;letter-spacing:.06em;margin-bottom:10px;
+  display:flex;align-items:baseline;gap:10px;
+}
+.pillar h3 .k{
+  font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--blue);font-weight:500;
+}
+.pillar p{font-size:.86rem;color:var(--ink-soft)}
+.pillar ul{list-style:none;font-size:.85rem;color:var(--ink-soft)}
+.pillar ul li{padding:5px 0 5px 16px;position:relative}
+.pillar ul li::before{content:"—";position:absolute;left:0;color:var(--blue)}
+
+/* ===== loop diagram ===== */
+.loop-wrap{display:grid;grid-template-columns:minmax(260px,380px) 1fr;gap:40px;align-items:center;margin-top:28px}
+@media(max-width:760px){.loop-wrap{grid-template-columns:1fr}}
+.loop-svg{width:100%;height:auto;display:block}
+.shift{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:26px 0 6px}
+.shift .old{
+  text-decoration:line-through;color:var(--ink-soft);
+  font-family:'Shippori Mincho',serif;font-size:1.15rem;
+}
+.shift .arrow{color:var(--blue);font-size:1.1rem}
+.shift .new{
+  font-family:'Shippori Mincho',serif;font-weight:600;font-size:1.35rem;color:var(--blue);
+}
+.loop-points{list-style:none;margin-top:12px}
+.loop-points li{padding:10px 0 10px 26px;position:relative;font-size:.92rem;border-bottom:.75px dashed var(--line)}
+.loop-points li:last-child{border-bottom:none}
+.loop-points li::before{
+  content:"";position:absolute;left:2px;top:19px;width:9px;height:9px;
+  border:2px solid var(--blue);border-radius:50%;
+}
+.loop-points b{font-weight:700}
+
+/* ===== two layers ===== */
+.layers{margin-top:26px;border:1.5px solid var(--ink)}
+.layer{display:grid;grid-template-columns:170px 1fr;background:#fff}
+.layer+.layer{border-top:1.5px solid var(--ink)}
+.layer-tag{
+  border-right:1.5px solid var(--ink);padding:22px 18px;
+  display:flex;flex-direction:column;justify-content:center;gap:6px;
+}
+.layer-tag .jp{font-family:'Shippori Mincho',serif;font-weight:600;font-size:1.05rem}
+.layer-tag .en{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.14em;color:var(--blue)}
+.layer-desc{padding:22px 24px;font-size:.9rem;color:var(--ink-soft)}
+.layer-desc b{color:var(--ink)}
+.layer.is-base{background:var(--blue-soft)}
+@media(max-width:640px){
+  .layer{grid-template-columns:1fr}
+  .layer-tag{border-right:none;border-bottom:1px solid var(--line);flex-direction:row;align-items:baseline;gap:12px}
+}
+.diag-note{
+  margin-top:16px;padding:14px 18px;border-left:3px solid var(--seal);
+  background:#fff;font-size:.85rem;color:var(--ink-soft);
+}
+.diag-note b{color:var(--seal)}
+
+/* ===== product ===== */
+.flow{display:flex;align-items:stretch;gap:0;margin-top:26px;flex-wrap:wrap}
+.flow-box{
+  flex:1;min-width:200px;border:1.5px solid var(--ink);background:#fff;
+  padding:20px 20px 22px;position:relative;
+}
+.flow-box+.flow-box{margin-left:-1.5px}
+.flow-box .tag{
+  font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.14em;
+  color:var(--blue);display:block;margin-bottom:8px;
+}
+.flow-box h4{font-family:'Shippori Mincho',serif;font-size:1.02rem;font-weight:600;margin-bottom:8px}
+.flow-box p{font-size:.84rem;color:var(--ink-soft)}
+.abc{margin-top:30px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.abc-card{border:1px solid var(--line);background:#fff;padding:18px 20px}
+.abc-card .label{
+  font-family:'IBM Plex Mono',monospace;font-size:.95rem;color:var(--blue);font-weight:500;
+}
+.abc-card h5{font-size:.92rem;font-weight:700;margin:6px 0 6px}
+.abc-card p{font-size:.82rem;color:var(--ink-soft)}
+.abc-card.is-core{border:1.5px solid var(--blue);box-shadow:4px 4px 0 var(--blue-soft)}
+.abc-card .role{
+  display:inline-block;margin-top:10px;font-size:.7rem;letter-spacing:.08em;
+  padding:2px 10px;border:1px solid var(--blue);color:var(--blue);border-radius:99px;
+}
+
+/* ===== stairs ===== */
+.stairs-wrap{margin-top:30px}
+.stairs-svg{width:100%;height:auto;display:block}
+.stair-legend{list-style:none;margin-top:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.stair-legend li{background:#fff;border:1px solid var(--line);padding:14px 16px;font-size:.83rem;color:var(--ink-soft)}
+.stair-legend li b{display:block;color:var(--ink);font-size:.88rem;margin-bottom:4px}
+.stair-legend li b .n{font-family:'IBM Plex Mono',monospace;color:var(--blue);margin-right:8px;font-weight:500}
+
+/* ===== pricing ladder ===== */
+.ladder{margin-top:26px;border:1.5px solid var(--ink)}
+.rung{display:grid;grid-template-columns:64px 1fr;background:#fff;border-bottom:1px solid var(--line)}
+.rung:last-child{border-bottom:none}
+.rung-no{
+  font-family:'IBM Plex Mono',monospace;font-size:.9rem;color:var(--blue);
+  display:flex;align-items:center;justify-content:center;
+  border-right:1px solid var(--line);background:var(--paper);
+}
+.rung-main{padding:16px 20px}
+.rung-main h4{font-size:.98rem;font-weight:700;margin-bottom:5px;display:flex;flex-wrap:wrap;align-items:baseline;gap:10px}
+.rung-main .price{font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:var(--ink-soft);font-weight:500}
+.rung-main .star{font-size:.72rem;color:var(--seal);border:1px solid var(--seal);border-radius:99px;padding:1px 9px;letter-spacing:.06em}
+.rung-main p{font-size:.84rem;color:var(--ink-soft)}
+.rung.is-entry{background:var(--blue-soft)}
+.rung.is-core{background:#fff;box-shadow:inset 4px 0 0 var(--blue)}
+.launch{margin-top:20px;display:grid;grid-template-columns:auto 1fr;border:1.5px solid var(--seal)}
+.launch-tag{
+  background:var(--seal);color:#fff;padding:14px 16px;
+  font-family:'Shippori Mincho',serif;font-weight:600;font-size:.95rem;
+  display:flex;align-items:center;writing-mode:horizontal-tb;white-space:nowrap;
+}
+.launch-body{padding:14px 18px;font-size:.85rem;color:var(--ink-soft);background:#fff}
+.launch-body b{color:var(--ink)}
+@media(max-width:640px){
+  .rung{grid-template-columns:44px 1fr}
+  .launch{grid-template-columns:1fr}
+}
+
+/* ===== roadmap ===== */
+.road{margin-top:26px;border-left:2px solid var(--ink);padding-left:0}
+.road-item{position:relative;padding:6px 0 26px 30px}
+.road-item::before{
+  content:"";position:absolute;left:-7px;top:14px;width:12px;height:12px;
+  background:var(--paper);border:2px solid var(--ink);border-radius:50%;
+}
+.road-item.is-now::before{background:var(--blue);border-color:var(--blue)}
+.road-item .when{
+  font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.14em;color:var(--blue);
+}
+.road-item h4{font-size:.98rem;font-weight:700;margin:4px 0 4px}
+.road-item p{font-size:.86rem;color:var(--ink-soft);max-width:640px}
+
+/* ===== don'ts ===== */
+.donts{margin-top:24px;display:grid;gap:0;border:1.5px solid var(--ink)}
+.dont{display:grid;grid-template-columns:46px 1fr;background:#fff;border-bottom:.75px solid var(--line)}
+.dont:last-child{border-bottom:none}
+.dont .x{
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Shippori Mincho',serif;color:var(--seal);font-size:1.15rem;
+  border-right:.75px solid var(--line);
+}
+.dont .t{padding:13px 18px;font-size:.9rem}
+.dont .t small{display:block;color:var(--ink-soft);font-size:.78rem;margin-top:2px}
+
+/* ===== footer ===== */
+footer{padding:30px 0 70px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.18em;color:var(--ink-soft)}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+.reveal.on{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+}
+</style>
+</head>
+<body>
+
+<div class="frame">
+
+<!-- ============ HERO ============ -->
+<header>
+  <div class="title-block reveal">
+    <div class="tb-top">
+      <span>CONCEPT DRAWING</span>
+      <span>SHEET A-00 / 表紙</span>
+      <span>2026.06</span>
+    </div>
+    <div class="tb-main">
+      <div class="eyebrow">事業コンセプト設計図 — DRAFT v1</div>
+      <h1>横に立って伴走し、<br>一緒に成果を出し、<span class="accent">一緒に強くなる。</span></h1>
+      <p class="hero-sub">代わりに全部やってあげる会社ではない。現場でがんばってる人の隣に立って一緒に手を動かし、その人の中にあるポテンシャルを引き出して、気づいたら相手も自分も前より強くなってる——そういう会社の設計図。</p>
+      <div class="seal">伴走</div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ SHEET 01 : 5 PILLARS ============ -->
+<section class="sheet reveal">
+  <div class="sheet-head">
+    <div class="sheet-no">A-01</div>
+    <div class="sheet-title">理念の五本柱 — 土台</div>
+    <div class="sheet-rev">基礎構造 / 確定</div>
+  </div>
+  <div class="sheet-body">
+    <h2 class="big">すべての判断は、この五本の柱の上に建つ。</h2>
+    <p class="note">原体験(学んだ技術が現実で機能し、相手が輝き、その相手から認められた経験)から掘り出したもの。借り物ではない。</p>
+    <div class="pillars">
+      <div class="pillar">
+        <h3><span class="k">P-1</span>何のための会社か</h3>
+        <p>現場でがんばってる人の隣に立ち、一緒に手を動かす。その人が自分でできるようになるまで伴走する。相手も自分も、前より強くなる。</p>
+      </div>
+      <div class="pillar">
+        <h3><span class="k">P-2</span>誰のための会社か</h3>
+        <p>顔の見える相手。目の前で困ってる担当者と、その人を抱える組織。「あの人なら任せられる」という信頼が一人ずつつながっていく関係。</p>
+      </div>
+      <div class="pillar">
+        <h3><span class="k">P-3</span>自分の強み</h3>
+        <p>噛み合っていない構造を根っこまで掘り、筋の通った形に作り直せること。学んだことを知識で終わらせず、現実でちゃんと動かせること。システムも、業務も、人の配置も、同じ目で見る。</p>
+      </div>
+      <div class="pillar">
+        <h3><span class="k">P-4</span>エンジン(動機の核)</h3>
+        <p>自分の力が現実で機能し、担当者が主役として輝き、その担当者から評価される——二段構えの「強い承認」。だから相手を主役にするのは、道徳ではなく欲望と一致した戦略。</p>
+      </div>
+      <div class="pillar">
+        <h3><span class="k">P-5</span>迷ったときに自分に聞くこと</h3>
+        <ul>
+          <li>全体として筋が通ってるか?</li>
+          <li>現実でちゃんと機能するか? 根っこに効いてるか?</li>
+          <li>相手が主役か? 対等に向き合えてるか?</li>
+          <li>これをやって、自分も伸びるか?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SHEET 02 : DON'TS ============ -->
+<section class="sheet reveal">
+  <div class="sheet-head">
+    <div class="sheet-no">A-02</div>
+    <div class="sheet-title">絶対にしないこと — 構造の輪郭</div>
+    <div class="sheet-rev">禁止構造 / 確定</div>
+  </div>
+  <div class="sheet-body">
+    <h2 class="big">やらないことが、この会社の形を決める。</h2>
+    <div class="donts">
+      <div class="dont"><div class="x">禁</div><div class="t">相手を「自分なしじゃ回らない」状態にしない<small>楽だけど、それは相手のためにならない</small></div></div>
+      <div class="dont"><div class="x">禁</div><div class="t">見た目だけ整えて、実際は動かないものを納品しない<small>成果は現実で機能したかで測る</small></div></div>
+      <div class="dont"><div class="x">禁</div><div class="t">相手の手柄を横取りしない<small>主役はあくまで相手。喝采は相手に渡す</small></div></div>
+      <div class="dont"><div class="x">禁</div><div class="t">お金や情など、単一の側面だけで仕事を決めない<small>全部ひっくるめて筋が通っていればいい。100%純粋な案件は存在しない</small></div></div>
+      <div class="dont"><div class="x">禁</div><div class="t">スキルが高い=偉い、にしない<small>社内でも社外でも同じ。媚びず、見下さず、対等。偉さは現実の成果と筋で決まる</small></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SHEET 03 : CONCEPT SHIFT + LOOP ============ -->
+<section class="sheet reveal">
+  <div class="sheet-head">
+    <div class="sheet-no">A-03</div>
+    <div class="sheet-title">コンセプトの転換 — 動力機構</div>
+    <div class="sheet-rev">回転構造 / v2</div>
+  </div>
+  <div class="sheet-body">
+    <div class="shift">
+      <span class="old">育成 → 卒業</span>
+      <span class="arrow">▶▶</span>
+      <span class="new">引き出す → 回す → 自走</span>
+    </div>
+    <p class="note">「育成」は縦の関係、「卒業」は関係の終わり。どちらも対等の原則・信頼の連鎖と矛盾していた。代わりに、相手の中にすでにあるものを引き出し、学ぶ→試す・実践する→振り返る・可視化するの螺旋を回す。円ではなく螺旋——一周ごとに少し高いところへ戻る。その積み上がりが成長で、螺旋が相手の力で回り出した状態が自走。関係は終わらない。</p>
+
+    <div class="loop-wrap">
+      <svg class="loop-svg" viewBox="0 0 400 360" role="img" aria-label="学ぶ→試す・実践する→振り返る・可視化する の循環。回しながら成長し、自走に至る">
+        <defs>
+          <marker id="ar-blue" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0,0 L12,6 L0,12 L3.5,6 z" fill="#27559B"/>
+          </marker>
+          <marker id="ar-red" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0,0 L12,6 L0,12 L3.5,6 z" fill="#C2452D"/>
+          </marker>
+        </defs>
+        <path d="M 255.9 142.1 A 100 100 0 0 1 299.8 218.0" fill="none" stroke="#27559B" stroke-width="2.4" marker-end="url(#ar-blue)"/>
+        <path d="M 243.8 314.9 A 100 100 0 0 1 156.2 314.9" fill="none" stroke="#27559B" stroke-width="2.4" marker-end="url(#ar-blue)"/>
+        <path d="M 100.2 218.0 A 100 100 0 0 1 144.1 142.1" fill="none" stroke="#27559B" stroke-width="2.4" marker-end="url(#ar-blue)"/>
+        <text x="200" y="221" text-anchor="middle" font-family="'Zen Kaku Gothic New',sans-serif" font-size="12.5" fill="#54656B">ポテンシャルを</text>
+        <text x="200" y="245" text-anchor="middle" font-family="'Shippori Mincho',serif" font-size="20" font-weight="600" fill="#27559B">引き出す</text>
+        <circle cx="200.0" cy="125.0" r="42" fill="#fff" stroke="#1D2A2E" stroke-width="1.6"/>
+        <text x="200.0" y="130.0" text-anchor="middle" font-family="'Shippori Mincho',serif" font-weight="600" font-size="18" fill="#1D2A2E">学ぶ</text>
+        <circle cx="286.6" cy="275.0" r="42" fill="#fff" stroke="#1D2A2E" stroke-width="1.6"/>
+        <text x="286.6" y="267.0" text-anchor="middle" font-family="'Shippori Mincho',serif" font-weight="600" font-size="14" fill="#1D2A2E">試す・</text>
+        <text x="286.6" y="286.0" text-anchor="middle" font-family="'Shippori Mincho',serif" font-weight="600" font-size="14" fill="#1D2A2E">実践する</text>
+        <circle cx="113.4" cy="275.0" r="42" fill="#fff" stroke="#1D2A2E" stroke-width="1.6"/>
+        <text x="113.4" y="267.0" text-anchor="middle" font-family="'Shippori Mincho',serif" font-weight="600" font-size="13" fill="#1D2A2E">振り返る</text>
+        <text x="113.4" y="286.0" text-anchor="middle" font-family="'Shippori Mincho',serif" font-weight="600" font-size="13" fill="#1D2A2E">可視化する</text>
+        <path d="M 200 79.0 L 200 54.0" fill="none" stroke="#C2452D" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ar-red)"/>
+        <text x="218" y="70.5" text-anchor="start" font-family="'Zen Kaku Gothic New',sans-serif" font-size="11" fill="#C2452D">成長</text>
+        <rect x="158" y="17" width="84" height="34" rx="17" fill="#fff" stroke="#C2452D" stroke-width="1.6"/>
+        <text x="200" y="41" text-anchor="middle" font-family="'Shippori Mincho',serif" font-size="18" font-weight="600" fill="#C2452D">自 走</text>
+      </svg>
+      <div>
+        <div class="fig-cap">図 A-03.1 / 成長螺旋機構</div>
+        <ul class="loop-points">
+          <li><b>学ぶ</b> — 現状の構造を一緒に解剖する。「なぜこうなってるか」を担当者自身が理解する。</li>
+          <li><b>試す・実践する</b> — 一緒に手を動かして試す。失敗していい。最初はこちら7:相手3、徐々に逆転させていく。</li>
+          <li><b>振り返る・可視化する</b> — 振り返る対象は現実の行動。ポテンシャル(得意・苦手)をレンズに解像度高く振り返り、「動いた仕組み」と「できるようになったこと」を見える形で残す。</li>
+          <li><b>成長と自走</b> — 一周ごとに同じ場所ではなく、少し高いところに戻る。その積み上がりが成長。螺旋が相手の力で回り出したら、もう依存ではない。関与は減るが、関係は続く。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SHEET 04 : TWO LAYERS ============ -->
+<section class="sheet reveal">
+  <div class="sheet-head">
+    <div class="sheet-no">A-04</div>
+    <div class="sheet-title">二層構造 — 個人のループ × 組織の配置</div>
+    <div class="sheet-rev">断面図 / v1</div>
+  </div>
+  <div class="sheet-body">
+    <h2 class="big">組織に売って、個人に効かせる。</h2>
+    <p class="note">toB か toC かは偽の二択。買い手は経営者・組織、受益者は担当者個人。お金は組織から流れ、意味は個人に届く。心の置き場所(個人)と財布の向き(組織)は分けていい。</p>
+    <div class="layers">
+      <div class="layer">
+        <div class="layer-tag"><span class="jp">個人の層</span><span class="en">ENGINE</span></div>
+        <div class="layer-desc"><b>学ぶ→試す・実践する→振り返る・可視化するの螺旋を一緒に回す。</b>これが価値の本体。担当者が力をつけ、組織の内外から頼られる存在になる。振り返りの精度を、ポテンシャルというレンズが支える。</div>
+      </div>
+      <div class="layer is-base">
+        <div class="layer-tag"><span class="jp">組織の層</span><span class="en">FOUNDATION</span></div>
+        <div class="layer-desc"><b>ポテンシャル診断による共通言語と配置。</b>人と人の対話を円滑にし、チームの体制・配置をきれいにする。個人のループが回りやすい地面を整える役割。効いたかどうかは「対話が円滑になったか・配置が機能したか」という現実で検証する。</div>
+      </div>
+    </div>
+    <div class="diag-note"><b>設計上の注意:</b> 診断は前菜であって主菜にしない。対話と振り返りのきっかけに限定し、配置の最終判断は現実の行動・成果データで行う。「形だけのものを出さない」原則を診断自身にも適用する。</div>
+  </div>
+</section>
+
+<!-- ============ SHEET 05 : PRODUCT ============ -->
+<section class="sheet reveal">
+  <div class="sheet-head">
+    <div class="sheet-no">A-05</div>
+    <div class="sheet-title">商品の骨格 — プログラム型伴走</div>
+    <div class="sheet-rev">平面図 / 設計中</div>
+  </div>
+  <div class="sheet-body">
+    <h2 class="big">売るのは時間ではなく、「状態の変化」。</h2>
+    <p class="note">「月額×稼働日数」ではなく「◯ヶ月で、動く仕組みと自走できる担当者を残すプログラム:一式◯◯円」。中身は伴走でも、売り物は到達点。時間管理は内部の原価管理に格下げする。</p>
+
+    <div class="flow">
+      <div class="flow-box">
+        <span class="tag">PHASE 1 / 学ぶ</span>
+        <h4>構造の解剖</h4>
+        <p>業務フロー・IT・人の噛み合わせを一緒に解剖し、筋の通った改善マップを描く。</p>
+      </div>
+      <div class="flow-box">
+        <span class="tag">PHASE 2 / 試す・実践する</span>
+        <h4>一緒に作る</h4>
+        <p>GAS・AppSheet・生成AIなどで実装。失敗込みで試しながら、担当者の手を動かす比率を段階的に上げる。</p>
+      </div>
+      <div class="flow-box">
+        <span class="tag">PHASE 3 / 振り返る・可視化する</span>
+        <h4>月次レビュー</h4>
+        <p>①現実に動いた仕組み ②担当者ができるようになったこと——成果を二重に可視化。</p>
+      </div>
+      <div class="flow-box">
+        <span class="tag">PHASE 4 / 自走</span>
+        <h4>関与を減らす</h4>
+        <p>週2日→週1→月数回スポットへ。"依存させない"を契約構造そのもので証明する。</p>
+      </div>
+    </div>
+
+    <div class="fig-cap" style="margin-top:34px">図 A-05.2 / 領域の役割分担</div>
+    <div class="abc">
+      <div class="abc-card is-core">
+        <span class="label">A</span>
+        <h5>情シス伴走</h5>
+        <p>情シス不在・一人情シスの中小企業で、社内の担当者と並走。ネットワーク、SaaS連携、自動化まで。実績が最も厚い。</p>
+        <span class="role">本丸 / 継続収益</span>
+      </div>
+      <div class="abc-card">
+        <span class="label">B</span>
+        <h5>開発プロジェクト伴走</h5>
+        <p>ベンダーと対等に話せない会社の担当者の横に立ち、要件定義・折衝・受け入れテストを一緒にやる。</p>
+        <span class="role">入口 / スポット高単価</span>
+      </div>
+      <div class="abc-card">
+        <span class="label">C</span>
+        <h5>バックオフィス × IT</h5>
+        <p>経理・株主管理など業務理解が必要な領域のデータ化・自動化。代行に寄りやすいため選別する。</p>
+        <span class="role">筋が通る場合のみ</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SHEET 06 : REVENUE STAIRS ============ -->
+<section class="sheet reveal">
+  <div class="sheet-head">
+    <div class="sheet-no">A-06</div>
+    <div class="sheet-title">収益の階段 — 時間売りからの離脱経路</div>
+    <div class="sheet-rev">階段断面図 / v1</div>
+  </div>
+  <div class="sheet-body">
+    <h2 class="big">「法人格を持ったフリーランス」で終わらないための断面図。</h2>
+    <p class="note">初日から時間売りを完全に消すことはできない。設計すべきは時間売りの否定ではなく、時間から離脱していく階段。売上の主語が「自分の時間」から「プログラム・資産・関係」へ段階的に移る。</p>
+
+    <div class="stairs-wrap">
+      <svg class="stairs-svg" viewBox="0 0 940 360" role="img" aria-label="収益4層の階段断面図">
+        <!-- section hatch ground -->
+        <line x1="30" y1="330" x2="910" y2="330" stroke="#1D2A2E" stroke-width="2"/>
+        <g stroke="#B9C5C4" stroke-width="1">
+          <line x1="40" y1="330" x2="30" y2="342"/><line x1="70" y1="330" x2="60" y2="342"/><line x1="100" y1="330" x2="90" y2="342"/><line x1="130" y1="330" x2="120" y2="342"/><line x1="160" y1="330" x2="150" y2="342"/><line x1="190" y1="330" x2="180" y2="342"/><line x1="220" y1="330" x2="210" y2="342"/><line x1="250" y1="330" x2="240" y2="342"/><line x1="280" y1="330" x2="270" y2="342"/><line x1="310" y1="330" x2="300" y2="342"/><line x1="340" y1="330" x2="330" y2="342"/><line x1="370" y1="330" x2="360" y2="342"/><line x1="400" y1="330" x2="390" y2="342"/><line x1="430" y1="330" x2="420" y2="342"/><line x1="460" y1="330" x2="450" y2="342"/><line x1="490" y1="330" x2="480" y2="342"/><line x1="520" y1="330" x2="510" y2="342"/><line x1="550" y1="330" x2="540" y2="342"/><line x1="580" y1="330" x2="570" y2="342"/><line x1="610" y1="330" x2="600" y2="342"/><line x1="640" y1="330" x2="630" y2="342"/><line x1="670" y1="330" x2="660" y2="342"/><line x1="700" y1="330" x2="690" y2="342"/><line x1="730" y1="330" x2="720" y2="342"/><line x1="760" y1="330" x2="750" y2="342"/><line x1="790" y1="330" x2="780" y2="342"/><line x1="820" y1="330" x2="810" y2="342"/><line x1="850" y1="330" x2="840" y2="342"/><line x1="880" y1="330" x2="870" y2="342"/>
+        </g>
+        <!-- stairs -->
+        <path d="M 60 330 L 60 270 L 270 270 L 270 200 L 480 200 L 480 130 L 690 130 L 690 60 L 900 60"
+              fill="none" stroke="#1D2A2E" stroke-width="2"/>
+        <path d="M 60 330 L 60 270 L 270 270 L 270 200 L 480 200 L 480 130 L 690 130 L 690 60 L 900 60 L 900 330 Z"
+              fill="#27559B" opacity="0.06"/>
+        <!-- runner arrow climbing -->
+        <path d="M 90 250 L 300 180 L 510 110 L 720 42" fill="none" stroke="#C2452D" stroke-width="1.6" stroke-dasharray="6 5"/>
+        <path d="M 720 42 l -14 1 l 8 -12 z" fill="#C2452D"/>
+        <!-- labels -->
+        <g font-family="'IBM Plex Mono',monospace" font-size="12" fill="#27559B">
+          <text x="78" y="296">L-1</text>
+          <text x="288" y="226">L-2</text>
+          <text x="498" y="156">L-3</text>
+          <text x="708" y="88">L-4</text>
+        </g>
+        <g font-family="'Zen Kaku Gothic New',sans-serif" font-size="15" font-weight="700" fill="#1D2A2E">
+          <text x="78" y="318">プログラム型</text>
+          <text x="288" y="248">自走後のライト契約</text>
+          <text x="498" y="178">資産の再利用</text>
+          <text x="708" y="110">1対N</text>
+        </g>
+        <g font-family="'Zen Kaku Gothic New',sans-serif" font-size="11.5" fill="#54656B">
+          <text x="78" y="260">いま</text>
+          <text x="288" y="190">数ヶ月後から積み上がる</text>
+          <text x="498" y="120">最初から仕込む</text>
+          <text x="708" y="50">将来</text>
+        </g>
+        <text x="745" y="30" font-family="'Zen Kaku Gothic New',sans-serif" font-size="12" fill="#C2452D">時間からの離脱</text>
+      </svg>
+    </div>
+
+    <ul class="stair-legend">
+      <li><b><span class="n">L-1</span>プログラム型</b>「6ヶ月で仕組み+自走する担当者を残す:一式◯◯円」。到達点に値段をつけ、人月の心理から抜ける。現金の主柱。</li>
+      <li><b><span class="n">L-2</span>自走後のライト契約</b>関与が減る設計が、低稼働×継続課金の層を自動的に生む。10社自走すれば、ほぼ稼働ゼロの固定収益が10本。</li>
+      <li><b><span class="n">L-3</span>資産の再利用</b>診断手順・テンプレ・スキル群を社内資産化しながら納品する。同じ価格で稼働が半分になる——一人会社の実質的な利益エンジン。</li>
+      <li><b><span class="n">L-4</span>1対N</b>講座・ワークショップ・診断ツールなど、1時間がN社に届く形。映像・イベント人材のネットワークが活きるのはここ。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ SHEET 08 : PRICING LADDER ============ -->
+<section class="sheet reveal">
+  <div class="sheet-head">
+    <div class="sheet-no">A-08</div>
+    <div class="sheet-title">商品と価格の階段 — 入口から継続まで</div>
+    <div class="sheet-rev">価格構造 / DRAFT</div>
+  </div>
+  <div class="sheet-body">
+    <h2 class="big">入口は割る。本体は割らない。</h2>
+    <p class="note">無料相談は「診断」ではなく対話と相互選別の場。有料診断は"深さ"で2段(規模ではない)。伴走期は時間でなく状態に課金する月額固定。割引は立ち上げ期の入口だけに限定し、本体月額は最初から通常価格で出す。</p>
+
+    <div class="ladder">
+      <div class="rung">
+        <div class="rung-no">00</div>
+        <div class="rung-main">
+          <h4>無料相談 <span class="price">¥0</span></h4>
+          <p>診断ではない。何に困っているか、螺旋を回す相手がいるかを対話で見極める。ここはあなたが「断る」ための選別の場でもある。</p>
+        </div>
+      </div>
+      <div class="rung is-entry">
+        <div class="rung-no">01</div>
+        <div class="rung-main">
+          <h4>構造診断・竹(標準) <span class="price">¥300,000</span> <span class="star">★本命</span></h4>
+          <p>主要1業務領域の構造診断(2〜3週間)。納品は3点セット=現状構造図(As-Is)／改善マップ(To-Be＋優先順位)／伴走計画書(期間・体制・金額・自走の基準)。単体で買う価値が成立する成果物。</p>
+        </div>
+      </div>
+      <div class="rung">
+        <div class="rung-no">02</div>
+        <div class="rung-main">
+          <h4>構造診断・松(全社) <span class="price">¥500,000〜</span></h4>
+          <p>全社横断・部門間の連携まで診る。規模が大きい会社は自然にこちらが必要になる。「規模で売る」のではなく「診る深さ」で分ける。</p>
+        </div>
+      </div>
+      <div class="rung is-core">
+        <div class="rung-no">03</div>
+        <div class="rung-main">
+          <h4>濃い伴走期 <span class="price">月額固定 / 診断後に確定</span></h4>
+          <p>シナリオA準拠(週2日相当・月70〜80万を軸)。期間は固定せず、長さは診断で会社ごとに見積もる。終わりを決めるのはカレンダーでなく<b>自走の基準</b>。<b>前払いの月額固定(準委任)</b>——時間でなく状態の変化に課金する。工数は内部の原価管理に格下げ。</p>
+        </div>
+      </div>
+      <div class="rung">
+        <div class="rung-no">04</div>
+        <div class="rung-main">
+          <h4>逓減期 <span class="price">月額(縮小)</span></h4>
+          <p>関与が減っていくことを契約構造そのものに書く。「依存させない」を口約束でなく数字で証明するフェーズ。</p>
+        </div>
+      </div>
+      <div class="rung">
+        <div class="rung-no">05</div>
+        <div class="rung-main">
+          <h4>ライト契約 <span class="price">月額 ¥50,000〜100,000</span></h4>
+          <p>自走後の継続。実務は持たず相談・保守ベース(月◯回レビュー＋チャット相談)。実装が要る時は別途スポット見積もり。"安売りの何でも屋"にしない枠を最初から引く。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="launch">
+      <div class="launch-tag">立ち上げ枠</div>
+      <div class="launch-body">
+        <b>先着5社・◯月まで:構造診断 ¥100,000</b>(通常30万)。条件=事例公開の許可／率直なフィードバック／良ければ紹介1社。無料にせず1円でも取り、相手を当事者にする。<b>伴走期の月額は割らない</b>(本体の相場が記憶として固定されるため)。これは売上でなく、実績と信頼連鎖への投資。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SHEET 07 : ROADMAP ============ -->
+<section class="sheet reveal">
+  <div class="sheet-head">
+    <div class="sheet-no">A-09</div>
+    <div class="sheet-title">工程表 — いま作るもの / 構想に置くもの</div>
+    <div class="sheet-rev">工程 / v1</div>
+  </div>
+  <div class="sheet-body">
+    <h2 class="big">OSは汎用。ただし、最初から汎用に売らない。</h2>
+    <p class="note">商品の本体は「伴走→引き出す→自走」というサービスOS。証明の場として、まず実績が一番厚いITで「動く仕組み+伸びた担当者」のワンセットを作る。リード獲得は紹介に頼らず、自前の入口で。</p>
+    <div class="road">
+      <div class="road-item is-now">
+        <span class="when">NOW / 設計中</span>
+        <h4>ITコア商品の確定と、最初の一社</h4>
+        <p>プログラムの中身・期間・価格を確定。自前のリード獲得経路を設計し、最初の事例(動く仕組み+自走した担当者)を作る。商品は自分一人で成立する形で設計する。</p>
+      </div>
+      <div class="road-item">
+        <span class="when">NEXT / コアが回ったら</span>
+        <h4>資産化とライト層の積み上げ</h4>
+        <p>納品しながら社内資産(型・テンプレ・診断運用)を蓄積。自走した会社との継続関係を収益の土台にする。</p>
+      </div>
+      <div class="road-item">
+        <span class="when">FUTURE / 構想フォルダ</span>
+        <h4>横展開 — IT × 別領域、非IT領域へ</h4>
+        <p>映像・キャラクター・イベント・地域・一次産業——周囲のネットワークは紹介経路と拡張カードとして温存。協力者の稼働を前提に商品を作らない。</p>
+      </div>
+      <div class="road-item">
+        <span class="when">FUTURE / 制度設計とセット</span>
+        <h4>人材ごと渡す — リクルート機能</h4>
+        <p>自社で関わった人材をクライアントの担当者として送り出す最終形。有料職業紹介の許可など、制度面の設計が必要になった段階で着手。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  CONCEPT DRAWING — DRAFT v1 / 2026.06 / 言葉はまだ仮。現実で検証しながら引き直す。
+</footer>
+
+</div>
+
+<script>
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}})},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

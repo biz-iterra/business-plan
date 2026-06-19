@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(path:~/.agents/skills/)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
+    "deny": []
+  }
+}
