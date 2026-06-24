@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iterra 事業設計 — 介護IT伴走 調査ダッシュボード</title>
+<style>
+:root{
+  --ink:#1f2a44; --ink2:#3a4664; --paper:#f4f1ea; --card:#ffffff;
+  --line:#d9d3c7; --teal:#1f6f6f; --amber:#caa23a; --red:#b0413e; --muted:#7c7466; --good:#2f7a4f;
+}
+*{box-sizing:border-box} html,body{margin:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",system-ui,sans-serif;color:var(--ink);background:var(--paper);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px 80px}
+header.hero{background:linear-gradient(135deg,#1f2a44,#243759 60%,#1f6f6f);color:#fff;padding:46px 0 40px;margin-bottom:10px;border-bottom:3px solid var(--amber)}
+.hero .wrap{padding-bottom:0}
+.kicker{font-size:12px;letter-spacing:.28em;color:#cde6e6;margin:0 0 12px;font-weight:700}
+.hero h1{font-size:30px;margin:0 0 8px}
+.hero p.lead{font-size:15px;color:#dfe6f0;margin:6px 0 22px;max-width:760px}
+.tagrow{display:flex;flex-wrap:wrap;gap:8px}
+.tag{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);padding:5px 12px;border-radius:20px;font-size:12.5px}
+.tag.hot{background:var(--amber);color:#2a2410;border-color:var(--amber);font-weight:700}
+section{margin:42px 0 0}
+.sec-h{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:20px}
+.sec-n{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;color:var(--teal);font-weight:700;letter-spacing:.1em}
+.sec-h h2{font-size:20px;margin:0}
+.sec-h .sub{font-size:12.5px;color:var(--muted);margin-left:auto}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.card h3{margin:0 0 6px;font-size:15.5px}
+.card .role{font-size:11.5px;color:var(--teal);font-weight:700;letter-spacing:.08em;margin:0 0 10px}
+.quote{background:#f7f4ec;border-left:3px solid var(--amber);padding:10px 14px;border-radius:0 6px 6px 0;font-size:13.5px;margin:10px 0 0}
+.muted{color:var(--muted)}
+small.note{display:block;color:var(--muted);font-size:12px;margin-top:8px}
+table{width:100%;border-collapse:collapse;font-size:13px;background:var(--card)}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#eee9df;font-weight:700}
+.ev{font-weight:800} .ev.good{color:var(--good)} .ev.bad{color:var(--red)} .ev.mid{color:var(--amber)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.kpi .v{font-size:23px;font-weight:800;font-family:ui-monospace,Menlo,Consolas,monospace}
+.kpi .v.red{color:var(--red)} .kpi .v.good{color:var(--good)} .kpi .v.teal{color:var(--teal)}
+.kpi .l{font-size:12px;color:var(--muted);margin-top:3px}
+svg text.ax{fill:var(--muted);font-size:11px;font-family:ui-monospace,Menlo,Consolas,monospace}
+svg text.xtick{text-anchor:middle}
+svg text.xtick.big{fill:var(--ink);font-size:12.5px;font-weight:700}
+svg text.ytick{text-anchor:end}
+svg text.vval{text-anchor:middle;font-size:9.5px;fill:var(--ink2)}
+svg .grid{stroke:#ece7dc;stroke-width:1}
+svg polyline.cash{fill:none;stroke:var(--teal);stroke-width:2.5}
+svg circle.dot{fill:#fff;stroke:var(--teal);stroke-width:2}
+svg rect.bar{fill:#9ec7c7}
+.lg{font-size:12px;color:var(--ink2);margin-right:16px;display:inline-flex;align-items:center;gap:6px}
+.lg i{width:12px;height:12px;border-radius:2px;display:inline-block}
+.wedge{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.wedge .side{padding:18px} .wedge .pain{background:#fbf2ee} .wedge .wallet{background:#eef4f4}
+.wedge .mid{background:var(--ink);color:#fff;padding:18px 20px;display:flex;flex-direction:column;justify-content:center;min-width:210px}
+.wedge h4{margin:0 0 6px;font-size:13.5px} .wedge .mid h4{color:var(--amber)}
+.wedge ul{margin:6px 0 0;padding-left:18px;font-size:12.5px}
+.chain{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px}
+.chip{background:#eef4f4;border:1px solid #cfe0e0;color:var(--teal);padding:6px 11px;border-radius:7px;font-size:12.5px;font-weight:600}
+.arr{color:var(--muted);font-weight:700}
+.bsbar{display:flex;height:46px;border-radius:7px;overflow:hidden;border:1px solid var(--line);font-size:11.5px;color:#fff;font-weight:700}
+.bsbar div{display:flex;align-items:center;justify-content:center;text-align:center}
+.balrow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+ul.clean{margin:6px 0 0;padding-left:18px;font-size:13px} ul.clean li{margin:3px 0}
+.next{display:grid;grid-template-columns:repeat(2,1fr);gap:12px} .next .card{border-left:3px solid var(--teal)}
+footer{margin-top:50px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+@media(max-width:780px){.grid2,.kpis,.next,.balrow{grid-template-columns:1fr} .wedge{grid-template-columns:1fr} .kpis{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <p class="kicker">ITERRA BUSINESS DESIGN ／ 2026-06-21 調査ダッシュボード</p>
+  <h1>介護IT伴走事業 — 調査と数字の可視化</h1>
+  <p class="lead">「横に立って伴走し、一緒に成果を出し、一緒に強くなる」を、介護業界の一次ターゲットに当てて検証した記録。事業の中身（ターゲット・ペルソナ・痛み・4C・補助金）と、経営シミュレーション（月次キャッシュ・PL/BS・感度）を1枚に。</p>
+  <div class="tagrow">
+    <span class="tag hot">一次ターゲット：介護・非医療法人の中小（30〜60名）</span>
+    <span class="tag">トリガー：システム刷新／担当者退職／DX焦り</span>
+    <span class="tag">勝ち筋：現場の痛み → 経営数字へ翻訳</span>
+  </div>
+</div></header>
+<div class="wrap">
+
+  <section>
+    <div class="sec-h"><span class="sec-n">01</span><h2>一次ターゲットの絞り込み</h2><span class="sub">target-definition.md</span></div>
+    <div class="grid2">
+      <div class="card">
+        <h3>4つの軸で1セグメントに絞る</h3>
+        <div class="chain">
+          <span class="chip">規模 30〜60名</span><span class="arr">×</span>
+          <span class="chip">非医療法人</span><span class="arr">×</span>
+          <span class="chip">刷新/退職/DX焦り</span><span class="arr">×</span>
+          <span class="chip">主役の担当者1人</span>
+        </div>
+        <small class="note">「情シス不在」は規模だけでなく<b>法人種別</b>で決まる、という現場情報で補正。観光は次点・小売は二次＋協力者カードとして温存。</small>
+      </div>
+      <div class="card">
+        <h3>介護の法人種別 × 情シス実態</h3>
+        <table>
+          <tr><th>種別</th><th>IT実態</th><th>評価</th></tr>
+          <tr><td>医療法人</td><td>専任が複数・内製寄り</td><td class="ev mid">△</td></tr>
+          <tr><td>大規模社福/多拠点</td><td>本部にIT部署</td><td class="ev bad">×</td></tr>
+          <tr><td><b>非医療・中小（独立系/同族）</b></td><td>専任なし／"適当なIT担当"</td><td class="ev good">◎ 一次</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-h"><span class="sec-n">02</span><h2>二層ペルソナと痛みの根っこ</h2><span class="sub">persona.md</span></div>
+    <div class="grid2">
+      <div class="card">
+        <p class="role">主役 ／ 現場の担当者</p>
+        <h3>佐藤さん・45歳・事務長 兼 IT担当（望まぬ兼任）</h3>
+        <p class="muted" style="font-size:13px;margin:4px 0 0">元・介護現場。請求・シフト・LIFE加算・ベンダー対応を一人で背負う何でも屋。シフト作成の負担は実在（母ルートで確認）。</p>
+        <p class="quote">「自分が我慢して回しているだけで、構造は何も良くなっていない。しかも誰も分かってくれない。」</p>
+      </div>
+      <div class="card">
+        <p class="role">財布 ／ 決裁する経営者</p>
+        <h3>田中理事長・58歳・<span style="color:var(--red)">現場出身ではない</span></h3>
+        <p class="muted" style="font-size:13px;margin:4px 0 0">現場の痛みを体感していない。すべて「金の話」。費用対効果が見えないと「うちはまだいい」で先送り。</p>
+        <p class="quote">「で、それ入れて<b>いくら儲かる・いくら浮くの？</b> それが見えないから動けない。」</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-h"><span class="sec-n">03</span><h2>勝ち筋＝「痛みと財布のズレ」を翻訳で埋める</h2><span class="sub">persona.md §3.5</span></div>
+    <div class="wedge">
+      <div class="side pain">
+        <h4 style="color:var(--red)">痛みを感じる人</h4>
+        <p style="font-size:12.5px;margin:4px 0 0">現場・担当者。<b>決裁権がない。</b></p>
+        <ul><li>二重入力・属人化</li><li>LIFE/加算が綱渡り</li><li>ベンダーと話が噛み合わない</li></ul>
+      </div>
+      <div class="mid">
+        <h4>翻訳するのが本人の強み</h4>
+        <p style="font-size:12.5px;margin:0">現場の痛み → <b>経営の数字</b><br>（加算＝売上／離職コスト／監査リスク／補助金で自己負担減）<br><span style="color:#cde6e6">この橋が業界にいない</span></p>
+      </div>
+      <div class="side wallet">
+        <h4 style="color:var(--teal)">金を出す人</h4>
+        <p style="font-size:12.5px;margin:4px 0 0">経営者。<b>痛みを体感しない。</b></p>
+        <ul><li>コストでしか動かない</li><li>失敗したくない</li><li>判断の軸がない</li></ul>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <h3>4つの代替の"欠け"を1人で埋める位置</h3>
+      <table>
+        <tr><th>代替手段</th><th>欠けているもの＝こちらの価値</th></tr>
+        <tr><td>ITベンダー</td><td>業務・人を設計しない／経営数字に翻訳しない</td></tr>
+        <tr><td>IT/業務代行屋</td><td>依存させる・担当者を主役にしない</td></tr>
+        <tr><td>経営/ITコンサル</td><td>現場を知らず絵に描いた餅</td></tr>
+        <tr><td>社内でIT担当を採用</td><td>採れない・続かない・一人に属人化</td></tr>
+      </table>
+      <small class="note">→ Phase0構造診断の納品に「<b>経営メリットの定量シート</b>」を1枚必ず足す（HANDOFF 4章に反映）。</small>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-h"><span class="sec-n">04</span><h2>補助金が勝ち筋を制度的に補強</h2><span class="sub">subsidy-research.md</span></div>
+    <div class="card">
+      <h3>介護テクノロジー導入支援事業：<span style="color:var(--teal)">「第三者による業務改善支援」は補助の必須要件</span></h3>
+      <div class="chain" style="margin:10px 0 4px">
+        <span class="chip">事前評価（課題抽出）</span><span class="arr">→</span>
+        <span class="chip">業務改善の助言・指導</span><span class="arr">→</span>
+        <span class="chip">事後評価（定着支援）</span>
+      </div>
+      <table style="margin-top:12px">
+        <tr><th>補助制度の必須パーツ</th><th>こちらの商品</th></tr>
+        <tr><td>事前評価＝課題抽出</td><td><b>Phase0 構造診断</b></td></tr>
+        <tr><td>業務改善の助言・指導</td><td><b>濃い伴走期</b></td></tr>
+        <tr><td>事後評価＝定着支援</td><td><b>逓減期・ライト契約</b></td></tr>
+      </table>
+      <small class="note">この支援費が<b>補助対象</b>・特定資格は不要（「知識・経験を有する第三者」）。条件＝テクノロジー導入と一体／補助率・上限は都道府県で変動／自治体により生産性向上総合相談センター登録。<br>＝「補助金を取るには第三者支援が必須」→ <b>こちらが申請の必要パーツになり、経営者のコスト障壁を制度的に下げる強い営業フック</b>。</small>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-h"><span class="sec-n">05</span><h2>4C分析（顧客視点）</h2><span class="sub">4c-analysis.md</span></div>
+    <div class="grid2">
+      <div class="card"><p class="role">Customer Value 顧客価値</p>道具でなく「現場が回る螺旋」を、経営数字に翻訳しながら、依存させずに作る伴走。</div>
+      <div class="card"><p class="role">Cost コスト</p>月額固定でコストが読める＋<b>補助金で自己負担を下げる</b>＋回収を定量シートで先に見せる。安さでは戦わない。</div>
+      <div class="card"><p class="role">Convenience 利便性</p>基本オンライン＋都内近郊訪問。<b>公的機関の場</b>で経営者に出会う。Phase0は単体で価値が成立＝買いやすい入口。</div>
+      <div class="card"><p class="role">Communication コミュニケーション</p>経営者には<b>経営数字</b>、担当者には<b>主役にする</b>言葉。"今すぐ困ってる人に刺さる具体"だけ。</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-h"><span class="sec-n">06</span><h2>会社は死なない — Year1 月次キャッシュ</h2><span class="sub">revenue-target.md（モデル検算済み）</span></div>
+    <div class="kpis" style="margin-bottom:16px">
+      <div class="kpi"><div class="v teal">18.35<span style="font-size:13px">万</span></div><div class="l">会社の損益分岐／月</div></div>
+      <div class="kpi"><div class="v good">+21.65<span style="font-size:13px">万</span></div><div class="l">既存受託40万だけでの単月黒字</div></div>
+      <div class="kpi"><div class="v">231.6<span style="font-size:13px">万</span></div><div class="l">現金の底（初月・滑走路を守る）</div></div>
+      <div class="kpi"><div class="v">1,510<span style="font-size:13px">万</span></div><div class="l">年末キャッシュ（強気シナリオ）</div></div>
+    </div>
+    <div class="card">
+      <div style="font-size:12.5px;color:var(--muted);margin-bottom:4px">キャッシュ残高（百万円）— 滑走路200万からほぼ減らず増える</div>
+      <svg viewBox="0 0 760 300" width="100%" role="img" aria-label="月次キャッシュ残高">
+        <line x1="64" y1="248.0" x2="740" y2="248.0" class="grid"/><text x="56" y="252.0" class="ax ytick">0</text><line x1="64" y1="192.0" x2="740" y2="192.0" class="grid"/><text x="56" y="196.0" class="ax ytick">4</text><line x1="64" y1="136.0" x2="740" y2="136.0" class="grid"/><text x="56" y="140.0" class="ax ytick">8</text><line x1="64" y1="80.0" x2="740" y2="80.0" class="grid"/><text x="56" y="84.0" class="ax ytick">12</text><line x1="64" y1="24.0" x2="740" y2="24.0" class="grid"/><text x="56" y="28.0" class="ax ytick">16</text>
+        <polyline class="cash" points="64.0,215.6 125.5,211.1 186.9,206.7 248.4,202.3 309.8,188.7 371.3,175.2 432.7,161.7 494.2,144.0 555.6,119.9 617.1,90.7 678.5,65.7 740.0,36.5"/>
+        <circle cx="64.0" cy="215.6" r="3.5" class="dot"/><circle cx="125.5" cy="211.1" r="3.5" class="dot"/><circle cx="186.9" cy="206.7" r="3.5" class="dot"/><circle cx="248.4" cy="202.3" r="3.5" class="dot"/><circle cx="309.8" cy="188.7" r="3.5" class="dot"/><circle cx="371.3" cy="175.2" r="3.5" class="dot"/><circle cx="432.7" cy="161.7" r="3.5" class="dot"/><circle cx="494.2" cy="144.0" r="3.5" class="dot"/><circle cx="555.6" cy="119.9" r="3.5" class="dot"/><circle cx="617.1" cy="90.7" r="3.5" class="dot"/><circle cx="678.5" cy="65.7" r="3.5" class="dot"/><circle cx="740.0" cy="36.5" r="3.5" class="dot"/>
+        <circle cx="64.0" cy="215.6" r="6" fill="none" stroke="#b0413e" stroke-width="2"/>
+        <text x="64.0" y="203.6" class="ax" style="fill:#b0413e;text-anchor:middle">底 231.6万</text>
+        <text x="64.0" y="266" class="ax xtick">1月</text><text x="125.5" y="266" class="ax xtick">2月</text><text x="186.9" y="266" class="ax xtick">3月</text><text x="248.4" y="266" class="ax xtick">4月</text><text x="309.8" y="266" class="ax xtick">5月</text><text x="371.3" y="266" class="ax xtick">6月</text><text x="432.7" y="266" class="ax xtick">7月</text><text x="494.2" y="266" class="ax xtick">8月</text><text x="555.6" y="266" class="ax xtick">9月</text><text x="617.1" y="266" class="ax xtick">10月</text><text x="678.5" y="266" class="ax xtick">11月</text><text x="740.0" y="266" class="ax xtick">12月</text>
+      </svg>
+      <div style="font-size:12.5px;color:var(--muted);margin:14px 0 4px">新事業 売上（百万円）— 5月に伴走1社で跳ね、9月に2社</div>
+      <svg viewBox="0 0 760 120" width="100%" role="img" aria-label="新事業売上"><rect x="75.3" y="80.6" width="33.8" height="3.4" class="bar"/><text x="92.2" y="100" class="ax xtick">1月</text><rect x="131.6" y="80.6" width="33.8" height="3.4" class="bar"/><text x="148.5" y="100" class="ax xtick">2月</text><rect x="187.9" y="80.6" width="33.8" height="3.4" class="bar"/><text x="204.8" y="100" class="ax xtick">3月</text><rect x="244.3" y="80.6" width="33.8" height="3.4" class="bar"/><text x="261.2" y="100" class="ax xtick">4月</text><rect x="300.6" y="58.5" width="33.8" height="25.5" class="bar"/><text x="317.5" y="100" class="ax xtick">5月</text><rect x="356.9" y="58.5" width="33.8" height="25.5" class="bar"/><text x="373.8" y="100" class="ax xtick">6月</text><rect x="413.3" y="58.5" width="33.8" height="25.5" class="bar"/><text x="430.2" y="100" class="ax xtick">7月</text><rect x="469.6" y="48.3" width="33.8" height="35.7" class="bar"/><text x="486.5" y="100" class="ax xtick">8月</text><rect x="525.9" y="33.0" width="33.8" height="51.0" class="bar"/><text x="542.8" y="100" class="ax xtick">9月</text><rect x="582.3" y="20.4" width="33.8" height="63.6" class="bar"/><text x="599.2" y="100" class="ax xtick">10月</text><rect x="638.6" y="30.6" width="33.8" height="53.4" class="bar"/><text x="655.5" y="100" class="ax xtick">11月</text><rect x="694.9" y="20.4" width="33.8" height="63.6" class="bar"/><text x="711.8" y="100" class="ax xtick">12月</text></svg>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-h"><span class="sec-n">07</span><h2>でも社長個人が干上がる — 300万ギャップ</h2><span class="sub">revenue-target.md §3</span></div>
+    <div class="grid2">
+      <div class="card" style="border-left:3px solid var(--red)">
+        <h3>真の制約は会社でなく個人</h3>
+        <ul class="clean">
+          <li>個人の月不足＝生活費50万 − 役員報酬7万＝<b>月43万</b></li>
+          <li>貯蓄200万 ÷ 43万＝<b>約4.7ヶ月</b>で5月に尽きる</li>
+          <li>定期同額で<b>Y2まで報酬を上げられない</b></li>
+          <li class="ev bad">→ 6〜12月に約300万の穴。会社は黒字なのに個人が干上がる</li>
+        </ul>
+        <small class="note">本人決定（2026-06-21）：<b>7万・貯蓄ブリッジ維持</b>、別途 海外資金等で凌ぐ。埋め方の選択肢（生活費圧縮／報酬を期首に置き直し／既存受託厚く）はrevenue-target.md。</small>
+      </div>
+      <div class="card">
+        <h3>黒字でも避ける税（別口座）</h3>
+        <div class="kpis" style="grid-template-columns:1fr 1fr">
+          <div class="kpi"><div class="v">76.6<span style="font-size:13px">万</span></div><div class="l">消費税（簡易課税）</div></div>
+          <div class="kpi"><div class="v red">327.7<span style="font-size:13px">万</span></div><div class="l">法人税等</div></div>
+        </div>
+        <p style="font-size:13px;margin:12px 0 0"><b>引当 約404万／年</b>を別口座へ。法人税が大きいのは<b>役員報酬7万固定で会社に利益が溜まる</b>ため → Y2の役員報酬最適化で圧縮余地大。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-h"><span class="sec-n">08</span><h2>PL／BS 試算と感度</h2><span class="sub">keiei_model.xlsx：PL_3年・BS_Y1末・感度_伴走</span></div>
+    <div class="card">
+      <h3>3年 損益（百万円）<span class="muted" style="font-size:12px;font-weight:400">／役員報酬7万据置のため Y2/Y3 は税が過大＝最適化余地</span></h3>
+      <div style="margin:6px 0 2px"><span class="lg"><i style="background:#1f6f6f"></i>売上</span><span class="lg"><i style="background:#caa23a"></i>営業利益</span><span class="lg"><i style="background:#9aa0a6"></i>税引後</span></div>
+      <svg viewBox="0 0 760 260" width="100%" role="img" aria-label="3年損益"><rect x="90.4" y="116.0" width="50.5" height="88.0" fill="#1f6f6f"/><text x="115.7" y="111.0" class="ax vval">1,531</text><rect x="143.9" y="128.6" width="50.5" height="75.4" fill="#caa23a"/><text x="169.2" y="123.6" class="ax vval">1,311</text><rect x="197.4" y="147.5" width="50.5" height="56.5" fill="#9aa0a6"/><text x="222.7" y="142.5" class="ax vval">983</text><text x="170.7" y="226" class="ax xtick big">Year1</text><rect x="319.7" y="42.2" width="50.5" height="161.8" fill="#1f6f6f"/><text x="345.0" y="37.2" class="ax vval">2,814</text><rect x="373.2" y="54.8" width="50.5" height="149.2" fill="#caa23a"/><text x="398.5" y="49.8" class="ax vval">2,594</text><rect x="426.8" y="92.2" width="50.5" height="111.8" fill="#9aa0a6"/><text x="452.0" y="87.2" class="ax vval">1,945</text><text x="400.0" y="226" class="ax xtick big">Year2</text><rect x="549.1" y="29.8" width="50.5" height="174.2" fill="#1f6f6f"/><text x="574.3" y="24.8" class="ax vval">3,030</text><rect x="602.6" y="42.4" width="50.5" height="161.6" fill="#caa23a"/><text x="627.8" y="37.4" class="ax vval">2,810</text><rect x="656.1" y="82.8" width="50.5" height="121.2" fill="#9aa0a6"/><text x="681.3" y="77.8" class="ax vval">2,107</text><text x="629.3" y="226" class="ax xtick big">Year3</text><line x1="56" y1="204.0" x2="744" y2="204.0" class="grid"/><text x="48" y="208.0" class="ax ytick">0</text><line x1="56" y1="158.0" x2="744" y2="158.0" class="grid"/><text x="48" y="162.0" class="ax ytick">800</text><line x1="56" y1="112.0" x2="744" y2="112.0" class="grid"/><text x="48" y="116.0" class="ax ytick">1600</text><line x1="56" y1="66.0" x2="744" y2="66.0" class="grid"/><text x="48" y="70.0" class="ax ytick">2400</text><line x1="56" y1="20.0" x2="744" y2="20.0" class="grid"/><text x="48" y="24.0" class="ax ytick">3200</text></svg>
+    </div>
+    <div class="grid2" style="margin-top:16px">
+      <div class="card">
+        <h3>BS Year1末 — 貸借ぴたり一致（差額0）</h3>
+        <div class="balrow">
+          <div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:5px">資産 1,510.8万</div>
+            <div class="bsbar"><div style="flex:1510.8;background:var(--teal)">現金 1,510.8</div></div>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:5px">負債＋純資産 1,510.8万</div>
+            <div class="bsbar">
+              <div style="flex:100;background:#9aa0a6">借入</div>
+              <div style="flex:327.7;background:var(--red)">未払法人税</div>
+              <div style="flex:100;background:var(--ink2)">資本</div>
+              <div style="flex:983.1;background:var(--good)">繰越利益剰余金</div>
+            </div>
+          </div>
+        </div>
+        <small class="note">簡易B/S：売上を税抜現金で計上する既存モデルに合わせ、消費税76.6万はメモ管理（避ける現金）。Y2/Y3末ロールBS・税込キャッシュ化は次の拡張。資本金100万・滑走路の内訳は仮（黄色セル）。</small>
+      </div>
+      <div class="card">
+        <h3>感度：濃い伴走 75万 vs 50万（Year1）</h3>
+        <table>
+          <tr><th>項目</th><th>標準 75万</th><th>低 50万</th></tr>
+          <tr><td>年間総売上</td><td>1,531万</td><td>1,231万</td></tr>
+          <tr><td>営業利益</td><td>1,311万</td><td>1,011万</td></tr>
+          <tr><td>税引後利益</td><td>983万</td><td>758万</td></tr>
+          <tr><td>年末現金</td><td class="ev good">1,510.8万</td><td>1,210.8万</td></tr>
+        </table>
+        <small class="note">50万に下げると年末現金が約300万薄くなる。介護の薄利には50万が現実的だが、<b>補助金で自己負担が下がるなら75万維持も可</b>。</small>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-h"><span class="sec-n">09</span><h2>次の山</h2><span class="sub">HANDOFF 9章</span></div>
+    <div class="next">
+      <div class="card"><b>事業計画書（文章版）への統合</b><br><span class="muted" style="font-size:12.5px">定性4本＋数字が揃ったので着手可能。ここまでを1本にまとめる自然な次手。</span></div>
+      <div class="card"><b>Y2 役員報酬の最適額</b><br><span class="muted" style="font-size:12.5px">法人税＋所得税＋社保の合計最小化。今は法人税が過大。</span></div>
+      <div class="card"><b>Y2/Y3末ロールBS＋消費税の税込化</b><br><span class="muted" style="font-size:12.5px">多年度の貸借と現金フローを厳密に。</span></div>
+      <div class="card"><b>母ルートで痛みの裏取り</b><br><span class="muted" style="font-size:12.5px">請求／LIFE加算／シフト／二重入力のどれが最深か → ペルソナを実話に。</span></div>
+    </div>
+  </section>
+
+  <footer>出典：work/ 配下の各ドキュメント（target-definition／persona／value-proposition／4c-analysis／subsidy-research／revenue-target）と keiei_model.xlsx の検算結果。数字は DRAFT（仮置き・現実で検証して引き直す前提）。補助金の補助率・上限・対象は各都道府県の最新要綱で要確認。生成：2026-06-21。</footer>
+</div>
+</body>
+</html>

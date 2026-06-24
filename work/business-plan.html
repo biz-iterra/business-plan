@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iterra 事業計画書（統合マスター v2・ビジュアル）</title>
+<style>
+:root{
+  --ink:#1f2a44; --ink2:#3a4664; --paper:#f4f1ea; --card:#ffffff;
+  --line:#d9d3c7; --teal:#1f6f6f; --teal2:#2a9090; --amber:#caa23a; --red:#b0413e; --muted:#7c7466; --good:#2f7a4f;
+  --nav:#1c2740; --careb:#e7f1f1; --retb:#f6efdd;
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth} html,body{margin:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",system-ui,sans-serif;color:var(--ink);background:var(--paper);line-height:1.7;-webkit-font-smoothing:antialiased}
+
+.shell{display:grid;grid-template-columns:236px 1fr;max-width:1240px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;background:var(--nav);color:#dfe6f0;padding:22px 14px 40px}
+nav.toc .brand{font-size:11px;letter-spacing:.22em;color:#8fb6b6;font-weight:700;margin:0 0 4px}
+nav.toc .ttl{font-size:14.5px;font-weight:800;color:#fff;margin:0 0 16px;line-height:1.4}
+nav.toc a{display:block;color:#c4cee0;text-decoration:none;font-size:12.5px;padding:6px 10px;border-radius:6px;margin:1px 0;border-left:2px solid transparent}
+nav.toc a:hover{background:rgba(255,255,255,.07);color:#fff}
+nav.toc a.active{background:rgba(202,162,58,.16);color:#fff;border-left-color:var(--amber);font-weight:700}
+nav.toc a .n{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;color:#8fb6b6;margin-right:7px}
+main{min-width:0;padding:0 0 80px}
+.wrap{max-width:900px;margin:0 auto;padding:0 28px}
+
+header.hero{background:linear-gradient(135deg,#1f2a44,#243759 58%,#1f6f6f);color:#fff;padding:48px 0 40px;border-bottom:3px solid var(--amber)}
+.kicker{font-size:11.5px;letter-spacing:.28em;color:#cde6e6;margin:0 0 12px;font-weight:700}
+.hero h1{font-size:29px;margin:0 0 14px;line-height:1.3}
+.hero .one{font-size:15.5px;color:#eaf0f6;background:rgba(255,255,255,.08);border-left:3px solid var(--amber);padding:14px 18px;border-radius:0 8px 8px 0;max-width:760px}
+.hero .one b{color:#ffe7a6}
+.tagrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.tag{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);padding:5px 12px;border-radius:20px;font-size:12px}
+.tag.hot{background:var(--amber);color:#2a2410;border-color:var(--amber);font-weight:700}
+
+section{margin:50px 0 0;scroll-margin-top:14px}
+.sec-h{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:16px}
+.sec-n{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;color:var(--teal);font-weight:700}
+.sec-h h2{font-size:20px;margin:0}
+.sec-h .sub{font-size:11.5px;color:var(--muted);margin-left:auto;text-align:right}
+h3.sub-h{font-size:14.5px;margin:22px 0 8px}
+p{margin:8px 0;font-size:13.5px}
+.cap{font-size:12px;color:var(--muted);margin:6px 0 0;text-align:center}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:12px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card h4{margin:0 0 6px;font-size:14.5px}
+.card .role{font-size:11px;color:var(--teal);font-weight:700;margin:0 0 7px}
+.quote{background:#f7f4ec;border-left:3px solid var(--amber);padding:12px 16px;border-radius:0 6px 6px 0;font-size:14px;margin:12px 0}
+.callout{background:#fbf1ee;border:1px solid #e6c5bd;border-left:4px solid var(--red);border-radius:0 8px 8px 0;padding:12px 16px;margin:12px 0;font-size:13px}
+.callout .lab{font-weight:800;color:var(--red);font-size:11.5px;display:block;margin-bottom:4px}
+.note{background:#eef4f4;border:1px solid #cfe0e0;border-radius:8px;padding:11px 15px;margin:12px 0;font-size:12.5px;color:var(--ink2)}
+.muted{color:var(--muted)}
+ul.clean{margin:6px 0;padding-left:18px;font-size:13px} ul.clean li{margin:4px 0}
+table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--card);margin:12px 0}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#eee9df;font-weight:700}
+.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;margin-right:3px}
+.pill.care{background:var(--careb);color:var(--teal);border:1px solid #cfe0e0}
+.pill.retail{background:var(--retb);color:#a07d18;border:1px solid #e0d2a8}
+.vert-band{display:inline-block;font-size:11px;font-weight:800;padding:3px 12px;border-radius:6px;margin:16px 0 2px}
+.vert-band.care{background:var(--teal);color:#fff}
+.vert-band.retail{background:var(--amber);color:#2a2410}
+
+/* ===== diagrams ===== */
+.diagbox{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:14px 0}
+
+/* spiral */
+.spiralwrap{display:grid;grid-template-columns:300px 1fr;gap:18px;align-items:center}
+.spiralwrap .legend .row{display:flex;align-items:center;gap:10px;margin:9px 0;font-size:13px}
+.spiralwrap .legend .dot{width:14px;height:14px;border-radius:50%;flex:none}
+
+/* layers (二層) */
+.layers .lay{border-radius:10px;padding:14px 16px;margin:8px 0;color:#fff;position:relative}
+.layers .lay small{display:block;font-size:11px;opacity:.85;font-weight:400;margin-top:2px}
+.layers .top{background:linear-gradient(135deg,#2a9090,#1f6f6f)}
+.layers .bot{background:linear-gradient(135deg,#3a4664,#1f2a44)}
+.layers .lay b{font-size:14.5px}
+
+/* sell-arrow */
+.sellflow{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;text-align:center}
+.sellflow .end{background:#eef4f4;border:1px solid #cfe0e0;border-radius:10px;padding:14px}
+.sellflow .end.org{background:#f4efe2;border-color:#e0d2a8}
+.sellflow .mid{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 8px;min-width:130px}
+.sellflow .mid .core{background:var(--ink);color:#fff;border-radius:8px;padding:8px 10px;font-size:12px;font-weight:700}
+.sellflow .ar{font-size:11px;color:var(--muted);margin:4px 0}
+.sellflow .end .big{font-size:14px;font-weight:800;margin-bottom:3px}
+.sellflow .end small{font-size:11.5px;color:var(--muted)}
+
+/* wedge (すれ違い→翻訳) */
+.wedge{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.wedge .side{padding:16px}
+.wedge .pain{background:#fbf2ee} .wedge .wallet{background:#eef4f4}
+.wedge .mid{background:var(--ink);color:#fff;padding:16px 18px;display:flex;flex-direction:column;justify-content:center;min-width:180px}
+.wedge h4{margin:0 0 6px;font-size:13px} .wedge .mid h4{color:var(--amber)}
+.wedge ul{margin:6px 0 0;padding-left:16px;font-size:12px}
+
+/* 翻訳チップ */
+.translate{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
+.chipcol{display:flex;flex-direction:column;gap:6px}
+.chip{padding:6px 11px;border-radius:7px;font-size:12px;font-weight:600;text-align:center}
+.chip.pain{background:#fbf2ee;border:1px solid #e6c5bd;color:#8a4b46}
+.chip.money{background:#eaf3ee;border:1px solid #bcd9c6;color:var(--good)}
+.tarrow{font-size:22px;color:var(--amber);font-weight:800}
+.tbox{background:var(--ink);color:#ffe7a6;border-radius:9px;padding:12px 14px;font-size:12.5px;font-weight:700;text-align:center;line-height:1.5}
+
+/* stairs SVG container */
+.stairs-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;justify-content:center}
+.stairs-legend span{font-size:11.5px;color:var(--ink2)}
+
+/* bar compare */
+.barcmp .row{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:center;margin:9px 0}
+.barcmp .lbl{font-size:12px;text-align:right;color:var(--ink2)}
+.barcmp .track{position:relative;height:30px;background:#f0ece2;border-radius:6px;overflow:hidden}
+.barcmp .fill{position:absolute;left:0;top:0;height:100%;display:flex;align-items:center;padding-left:10px;color:#fff;font-size:12px;font-weight:800;border-radius:6px;white-space:nowrap}
+.barcmp .fill.ok{background:linear-gradient(90deg,#2a9090,#1f6f6f)}
+.barcmp .fill.bad{background:linear-gradient(90deg,#c8615e,#b0413e)}
+.barcmp .fill.tiny{background:#caa23a;color:#2a2410}
+
+/* pyramid */
+.pyramid{display:flex;flex-direction:column;align-items:center;gap:6px;margin:10px 0}
+.pyramid .ly{color:#fff;border-radius:7px;padding:10px 14px;text-align:center;font-size:12.5px;font-weight:700;line-height:1.4}
+.pyramid .ly small{display:block;font-weight:400;font-size:11px;opacity:.9}
+.pyramid .l4{width:46%;background:#caa23a;color:#2a2410}
+.pyramid .l3{width:62%;background:#3a8f8f}
+.pyramid .l2{width:80%;background:#2f7a4f}
+.pyramid .l1{width:100%;background:#1f2a44}
+
+/* pillars (二本柱) */
+.pillars{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pillar{border-radius:10px 10px 0 0;padding:14px;color:#fff}
+.pillar.care{background:linear-gradient(160deg,#2a9090,#1f6f6f)}
+.pillar.retail{background:linear-gradient(160deg,#d4b04a,#b88f20)}
+.pillar h4{margin:0 0 6px;font-size:15px}
+.pillar ul{margin:6px 0 0;padding-left:16px;font-size:12px}
+.pbase{grid-column:1/3;background:var(--ink);color:#ffe7a6;border-radius:0 0 10px 10px;text-align:center;padding:12px;font-size:12.5px;font-weight:700}
+
+/* timeline */
+.timeline{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.timeline:before{content:"";position:absolute;top:9px;left:6%;right:6%;height:3px;background:linear-gradient(90deg,var(--teal),var(--amber))}
+.tl{position:relative;padding-top:30px}
+.tl:before{content:"";position:absolute;top:2px;left:calc(50% - 8px);width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--teal)}
+.tl:nth-child(2):before{border-color:var(--teal2)} .tl:nth-child(3):before{border-color:var(--amber)}
+.tl .ph{font-size:11px;font-weight:800;color:var(--teal);text-align:center;margin-bottom:6px}
+.tl .body{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:12px;font-size:12px}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+.kpi .v{font-size:20px;font-weight:800;font-family:ui-monospace,Menlo,Consolas,monospace;line-height:1.2}
+.kpi .v.red{color:var(--red)} .kpi .v.good{color:var(--good)} .kpi .v.teal{color:var(--teal)}
+.kpi .l{font-size:11.5px;color:var(--muted);margin-top:4px}
+
+footer{margin:54px auto 0;max-width:900px;padding:18px 28px 0;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted)}
+@media(max-width:920px){
+  .shell{grid-template-columns:1fr}
+  nav.toc{position:static;height:auto}
+  nav.toc .links{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+  .grid2,.grid3,.kpis,.pillars,.timeline,.spiralwrap{grid-template-columns:1fr}
+  .timeline:before{display:none}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<nav class="toc">
+  <p class="brand">ITERRA / BUSINESS PLAN</p>
+  <p class="ttl">事業計画書<br>統合マスター v2</p>
+  <div class="links">
+    <a href="#s0"><span class="n">00</span>概要</a>
+    <a href="#s1"><span class="n">01</span>理念</a>
+    <a href="#s2"><span class="n">02</span>事業の核（型）</a>
+    <a href="#s3"><span class="n">03</span>二本柱ターゲット</a>
+    <a href="#s4"><span class="n">04</span>顧客と勝ち筋</a>
+    <a href="#s5"><span class="n">05</span>競合・4C</a>
+    <a href="#s6"><span class="n">06</span>商品の階段</a>
+    <a href="#s7"><span class="n">07</span>費用対効果</a>
+    <a href="#s8"><span class="n">08</span>セールス</a>
+    <a href="#s9"><span class="n">09</span>集客・発信</a>
+    <a href="#s10"><span class="n">10</span>収益構造</a>
+    <a href="#s11"><span class="n">11</span>お金の計画</a>
+    <a href="#s12"><span class="n">12</span>体制・リスク</a>
+    <a href="#s14"><span class="n">14</span>ロードマップ</a>
+    <a href="#s15"><span class="n">15</span>未決事項</a>
+  </div>
+</nav>
+
+<main>
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">統合マスター v2 ・ ビジュアル版 ・ 2026-06-24 ・ DRAFT</p>
+    <h1>横に立って、一緒に仕組みを立て直す。</h1>
+    <div class="one">「ITに困っているのに社内に分かる人がいない」中小企業の担当者に横で並走し、<b>現場の困りごとを"経営の数字"に翻訳</b>しながら、一緒に仕組みを立て直す事業。最初の二本柱は <b>介護</b> と <b>独立系の中堅小売</b>。</div>
+    <div class="tagrow">
+      <span class="tag hot">二本柱：介護 ＋ 小売</span>
+      <span class="tag">代行屋でなく対等な並走</span>
+      <span class="tag">依存させない／形だけ出さない</span>
+      <span class="tag">一人会社・3社上限</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- 0 -->
+<section id="s0">
+  <div class="sec-h"><span class="sec-n">00</span><h2>この事業を1枚で</h2><span class="sub">詳細は work/*.md</span></div>
+  <div class="diagbox">
+    <div class="translate" style="gap:14px">
+      <div class="chipcol">
+        <div class="chip pain">情シスがいない中小</div>
+        <div class="chip pain">手足が足りない</div>
+        <div class="chip pain">経営者が動かない</div>
+      </div>
+      <div class="tarrow">→</div>
+      <div class="tbox">ITERRA<br><small style="font-weight:400;color:#cde6e6">痛みを経営数字に翻訳<br>横で並走して構造を直す</small></div>
+      <div class="tarrow">→</div>
+      <div class="chipcol">
+        <div class="chip money">現場が自分で回る</div>
+        <div class="chip money">担当者が主役に</div>
+        <div class="chip money">経営が投資判断できる</div>
+      </div>
+    </div>
+  </div>
+  <p class="cap">すべて「たたき台（DRAFT）」。数字は仮置きで実額が取れたら差し替え。決定の「なぜ」は <code>docs/HANDOFF.md</code> が正。</p>
+</section>
+
+<!-- 1 -->
+<section id="s1">
+  <div class="sec-h"><span class="sec-n">01</span><h2>理念</h2><span class="sub">※言葉は本人の口調へ書き換える前提</span></div>
+  <div class="grid2">
+    <div class="card"><div class="role">何のための会社か</div>横に立って伴走し、一緒に成果を出し、一緒に強くなる。代行屋でなく<b>対等な並走者</b>。</div>
+    <div class="card"><div class="role">誰のための会社か</div>顔の見える相手。<b>信頼が人から人へつながる</b>関係。</div>
+    <div class="card"><div class="role">自分の強み</div>システム・業務・人の配置を<b>同じ目で「構造」として見て</b>、筋の通った形に作り直す。</div>
+    <div class="card"><div class="role">エンジン</div>担当者が主役として輝き、<b>その人から評価される</b>承認。だから「相手を主役に」は欲望と一致した戦略。</div>
+  </div>
+  <h3 class="sub-h">絶対にしないこと（会社の輪郭）</h3>
+  <div class="grid3">
+    <div class="card" style="border-left:3px solid var(--red)">① 依存させない</div>
+    <div class="card" style="border-left:3px solid var(--red)">② 形だけ出さない</div>
+    <div class="card" style="border-left:3px solid var(--red)">③ 主役は相手（手柄を取らない）</div>
+    <div class="card" style="border-left:3px solid var(--red)">④ 一面だけで決めない（金/情）</div>
+    <div class="card" style="border-left:3px solid var(--red)">⑤ 対等（媚びず・見下さず）</div>
+    <div class="card" style="border-left:3px solid var(--amber)"><b>判断基準 P-5</b><br><span style="font-size:12px">筋／機能・根っこ／主役・対等／自分も伸びる</span></div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section id="s2">
+  <div class="sec-h"><span class="sec-n">02</span><h2>事業の核となる「型」</h2></div>
+  <div class="diagbox">
+    <div class="spiralwrap">
+      <svg id="spiral" viewBox="0 0 300 280" width="100%" height="280" aria-label="成長の螺旋"></svg>
+      <div class="legend">
+        <div class="quote" style="margin:0 0 10px"><b>引き出す → 回す → 自走する</b></div>
+        <div class="row"><span class="dot" style="background:#2a9090"></span>学ぶ</div>
+        <div class="row"><span class="dot" style="background:#caa23a"></span>試す・実践する</div>
+        <div class="row"><span class="dot" style="background:#b0413e"></span>振り返る・可視化する</div>
+        <p style="font-size:12px;color:var(--muted);margin-top:8px">円でなく<b>螺旋</b>。一周ごとに少し高い位置へ戻り、その積み上がりが「成長」。相手の力で回り出した状態が<b>「自走」</b>。卒業させず関係は続く（→ライト契約）。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="diagbox">
+      <div class="role" style="color:var(--teal);font-weight:700;margin-bottom:8px">二層構造</div>
+      <div class="layers">
+        <div class="lay top"><b>個人の層（エンジン）</b><small>螺旋を一緒に回す＝価値の本体</small></div>
+        <div class="lay bot"><b>組織の層（土台）</b><small>共通言語・人の配置＝螺旋が回る地面</small></div>
+      </div>
+    </div>
+    <div class="diagbox">
+      <div class="role" style="color:var(--teal);font-weight:700;margin-bottom:8px">売り方の結論</div>
+      <div class="sellflow">
+        <div class="end org"><div class="big">組織</div><small>財布を握る</small><div class="ar">— お金 →</div></div>
+        <div class="mid"><div class="core">ITERRA</div></div>
+        <div class="end"><div class="big">個人</div><small>主役・意味</small><div class="ar">← 意味 —</div></div>
+      </div>
+      <p class="cap" style="margin-top:10px"><b>組織に売って、個人に効かせる。</b>金は組織から、意味は個人へ。</p>
+    </div>
+  </div>
+  <div class="note">※「育成→卒業」は棄却済み。「育成」は縦の関係で「対等」と矛盾、「卒業」は「信頼が連鎖し続ける」エンジンと逆向き。</div>
+</section>
+
+<!-- 3 -->
+<section id="s3">
+  <div class="sec-h"><span class="sec-n">03</span><h2>誰に売るか ＝ 二本柱</h2><span class="sub">2026-06-24 二本柱化</span></div>
+  <div class="diagbox">
+    <div class="pillars">
+      <div class="pillar care">
+        <h4>柱① 介護</h4>
+        <ul>
+          <li>従業員30〜60名・非医療法人の中小</li>
+          <li>情シス不在 or 名ばかりIT担当</li>
+          <li>旗：システム刷新／担当退職／DX焦り</li>
+          <li>現場に「自分でなんとかしたい」人</li>
+        </ul>
+      </div>
+      <div class="pillar retail">
+        <h4>柱② 小売（独立系中堅）</h4>
+        <ul>
+          <li>店舗10〜49・独立系（大手傘下でない）</li>
+          <li>情シス薄・"IT得意な人"に属人化</li>
+          <li>旗：基幹刷新／EC立ち上げ／第二の創業</li>
+          <li>受発注・経理が紙・FAX・Excel</li>
+        </ul>
+      </div>
+      <div class="pbase">共通の土台 ＝ 1つの商品（診断→伴走→ライト）／非依存・対等／主役＋財布の二層構造<br><span style="font-weight:400;color:#cde6e6;font-size:11.5px">違うのは業種固有の痛みと数字だけ → 一人会社でも二本柱が成立</span></div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card" style="border-left:4px solid var(--red)"><div class="role" style="color:var(--red)">あえて狙わない（断る関門）</div>
+      IT企業・スタートアップ／大企業300人超／丸投げしたいだけの経営者／「とにかく安く」だけの会社。</div>
+    <div class="card" style="border-left:4px solid var(--amber)"><div class="role" style="color:var(--amber)">焦点の警戒（媚びない）</div>
+      二本柱＝登壇/発信/事例が2系統に増える。→ オウンドメディアは共通装置に、<b>最初の1事例は1業種に絞って取る</b>。観光は次点で温存。</div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section id="s4">
+  <div class="sec-h"><span class="sec-n">04</span><h2>お客さまは「2人」＋勝ち筋</h2></div>
+  <div class="diagbox">
+    <div class="wedge">
+      <div class="side pain">
+        <h4>痛みを感じる人（主役）</h4>
+        <small class="muted">介護＝事務の佐藤さん／小売＝なんでも屋の中村さん</small>
+        <ul><li>属人化を一人で抱える</li><li>でも<b>決裁権がない</b></li></ul>
+      </div>
+      <div class="mid">
+        <h4>すれ違い</h4>
+        <span style="font-size:12px">痛む人に権限なし／<br>払う人は痛みを感じない</span>
+      </div>
+      <div class="side wallet">
+        <h4>お金を出す人（財布）</h4>
+        <small class="muted">介護＝田中理事長／小売＝西田社長</small>
+        <ul><li>数字でしか動かない</li><li>でも<b>痛みを知らない</b></li></ul>
+      </div>
+    </div>
+    <p class="cap">→ 「現場は欲しがるが経営者が動かない案件」が業界に大量に滞留している。</p>
+  </div>
+
+  <h3 class="sub-h">勝ち筋 ＝ 痛みを「経営の数字」に翻訳する</h3>
+  <div class="diagbox">
+    <div class="translate">
+      <div class="chipcol">
+        <div class="chip pain">業務時間（人件費）</div>
+        <div class="chip pain">離職・属人化</div>
+        <div class="chip pain">在庫/加算の取りこぼし</div>
+      </div>
+      <div class="tarrow">→</div>
+      <div class="tbox">翻訳エンジン<br><small style="font-weight:400;color:#cde6e6">＝Phase0診断の核「経営メリット定量シート」</small></div>
+      <div class="tarrow">→</div>
+      <div class="chipcol">
+        <div class="chip money">◯◯万の損失</div>
+        <div class="chip money">投資 ◯ヶ月で回収</div>
+        <div class="chip money">経営が決断できる</div>
+      </div>
+    </div>
+  </div>
+  <div class="note">小売Bの最大の不安＝<b>ベンダーロックイン</b>（外注で中身が触れなくなる）。ここに「中身は手元に残す」非依存哲学がドンピシャで効く＝全ペルソナ共通の最終クロージング材料。</div>
+</section>
+
+<!-- 5 -->
+<section id="s5">
+  <div class="sec-h"><span class="sec-n">05</span><h2>競合と立ち位置（4C）</h2></div>
+  <table>
+    <tr><th>お客さまの選択肢</th><th>足りないもの ＝ わたしたちの価値</th></tr>
+    <tr><td>ITベンダー</td><td>道具は入れるが業務・人を設計せず、経営数字に翻訳しない</td></tr>
+    <tr><td>代行業者に丸投げ</td><td>楽だが<b>依存</b>。担当者が主役になれない</td></tr>
+    <tr><td>経営/ITコンサル</td><td>戦略は語るが現場を知らず絵に描いた餅</td></tr>
+    <tr><td>社内でIT担当採用</td><td>中小は採れない・続かない・属人化（退職リスクの再生産）</td></tr>
+  </table>
+  <div class="grid2">
+    <div class="card"><div class="role">顧客価値 / コスト</div>道具でなく「現場が自力で回る状態」を依存させず作る。月額固定で費用が読め、回収を数字で先に示す。安さでは戦わない。</div>
+    <div class="card"><div class="role">利便性 / 伝え方</div>基本オンライン・近郊は訪問可。診断は単体で価値が完結（買いやすい入口）。経営者には数字、担当者には「主役にする」言葉で分ける。</div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section id="s6">
+  <div class="sec-h"><span class="sec-n">06</span><h2>商品の「階段」</h2><span class="sub">詳細 service-definition.md</span></div>
+  <div class="diagbox">
+    <svg id="stairs" viewBox="0 0 760 300" width="100%" height="300" aria-label="商品の階段"></svg>
+    <p class="cap">小さな段から登っていただく。<b>無料相談 → 診断 → 濃い伴走 → 逓減 → ライト</b>。診断は「断る関門」も兼ねる。</p>
+  </div>
+  <div class="grid3">
+    <div class="card"><div class="role">Phase0 納品4点</div>①現状構造図 ②改善マップ ③伴走計画書 ④<b>経営メリット定量シート（核）</b>。現場観察＝訪問1回以上必須。</div>
+    <div class="card"><div class="role">時間で売らない</div>稼働日数でなく<b>接点＋到達状態</b>で約束。月の主成分は「代わりにやる」でなく一緒に直して資産化。</div>
+    <div class="card"><div class="role">価格ルール</div>立ち上げ5社は診断10万（無料にしない）／<b>伴走の月額は割らない</b>／濃い伴走は3社上限。</div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section id="s7">
+  <div class="sec-h"><span class="sec-n">07</span><h2>費用対効果（モデルケース）</h2><span class="sub">詳細 model-case.md・数字は保守的</span></div>
+
+  <span class="vert-band care">介護版「特養C」（定員100名・従業員60名）</span>
+  <div class="diagbox barcmp">
+    <div class="row"><div class="lbl">刷新 成功</div><div class="track"><div class="fill ok" style="width:50%">300万 / 半年</div></div></div>
+    <div class="row"><div class="lbl">出戻り（診断なし）</div><div class="track"><div class="fill bad" style="width:100%">600万 / 1年 ＝ 2倍</div></div></div>
+    <div class="row"><div class="lbl">診断 Phase0</div><div class="track"><div class="fill tiny" style="width:5%">30万</div></div></div>
+    <p class="cap"><b>診断30万で +300万の出戻りを防ぐ ＝ 約10倍。</b> 放置損失の改善は年140万（加算取りこぼし180万が最大の梃子）。</p>
+  </div>
+
+  <span class="vert-band retail">小売版「HCチェーンH」（独立系HC25店・従業員約300名）</span>
+  <div class="diagbox barcmp">
+    <div class="row"><div class="lbl">基幹刷新 成功</div><div class="track"><div class="fill ok" style="width:50%">1,500万 / 9ヶ月</div></div></div>
+    <div class="row"><div class="lbl">出戻り（診断なし）</div><div class="track"><div class="fill bad" style="width:100%">3,000万 / 18ヶ月 ＝ 2倍</div></div></div>
+    <div class="row"><div class="lbl">診断 Phase0</div><div class="track"><div class="fill tiny" style="width:2%"> </div></div></div>
+    <p class="cap"><b>診断30万で +1,500万の出戻りを防ぐ。</b> 規模が大きい分、診断の費用対効果が際立つ。放置損失の改善は年260万（在庫の機会損失250万が最大の梃子）。</p>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="v teal">510万</div><div class="l">投資（両版共通＝診断30＋伴走竹75×6）</div></div>
+    <div class="kpi"><div class="v good">介護 約1.5年</div><div class="l">回収（以降 年140万が残る）</div></div>
+    <div class="kpi"><div class="v good">小売 即〜2年</div><div class="l">出戻り回避で即／運用のみで約2年（以降 年260万）</div></div>
+  </div>
+
+  <div class="callout"><span class="lab">★ 媚びない注記</span>
+    介護は伴走510万が運用改善だけでは1.5年回収＝速くない。<b>伴走は「刷新の出戻りを防ぐ」とセットで売る</b>（"楽になる"でなく"失敗を防ぎ構造ごと直す"）。診断30万単体は10倍で強い＝<b>入口は診断</b>。<br>
+    小売は逆に伴走が「刷新1,500万の保険」として相対的に安い。ただし<b>「診断30万で1,500万を完全に守れる」とは言わない</b>（大型は松診断50万＋伴走で実行担保）。
+  </div>
+</section>
+
+<!-- 8 -->
+<section id="s8">
+  <div class="sec-h"><span class="sec-n">08</span><h2>どう売るか（無料相談 → 診断）</h2><span class="sub">詳細 sales-process.md</span></div>
+  <div class="quote">無料相談で見せるのは課題の<b>「在り処」</b>まで。「解き方」は診断から。持ち帰るのは答えでなく<b>「うちの問題は道具じゃなく業務の構造だ」という気づき1つ</b>。</div>
+  <div class="diagbox">
+    <div style="text-align:center;font-size:12.5px;line-height:2">
+      <b>CTA「無料相談30分」＋事前フォーム</b><br>
+      <span style="color:var(--muted)">↓ 困りごとを聞く → 「なぜ？」で目的に開く ↓</span>
+    </div>
+    <div class="grid2" style="margin-top:6px">
+      <div class="chip pain" style="text-align:left;padding:8px 12px">A AI活用 → 焦り型=エスカレーション／放置型=情報共有</div>
+      <div class="chip pain" style="text-align:left;padding:8px 12px">B 担当退職 → 属人化を分解／代行は自ら断る → ライトへ</div>
+      <div class="chip pain" style="text-align:left;padding:8px 12px">C システム最適化 → 連携欠如／ガバナンス</div>
+      <div class="chip pain" style="text-align:left;padding:8px 12px">D 効率化・自動化 → 俯瞰役不在（▶本人記入中）</div>
+    </div>
+    <p class="cap" style="margin:10px 0">どの入口でも <b>「業務構造が整理されてない」に合流</b>（道具屋に落ちない核）</p>
+    <div class="sellflow" style="margin-top:6px">
+      <div class="end"><div class="big" style="color:var(--good)">筋が通る</div><small>まず Phase0診断 一本<br>（伴走は並列で出さない）</small></div>
+      <div class="mid"><div class="core">クロージング<br><span style="font-weight:400;font-size:10.5px">第7章の数字で</span></div></div>
+      <div class="end org"><div class="big" style="color:var(--red)">筋が通らぬ</div><small>診断すら勧めず終える<br>（断る関門）</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section id="s9">
+  <div class="sec-h"><span class="sec-n">09</span><h2>どう集めるか</h2><span class="sub">2026-06-23 方針転換後</span></div>
+  <div class="grid3">
+    <div class="card" style="border-left:3px solid var(--red)"><div class="role" style="color:var(--red)">✕ 補助金フック</div>採択型はトラブル源。<b>助成金のみ可</b>。勝ち筋は補助金抜きで成立。</div>
+    <div class="card" style="border-left:3px solid var(--red)"><div class="role" style="color:var(--red)">✕ 紹介に頼る</div>保険に格下げ。母はサービス参考のみ。<b>1社目から自力</b>。</div>
+    <div class="card" style="border-left:3px solid var(--good)"><div class="role" style="color:var(--good)">◯ 公的機関の"場"</div>よろず／商工会議所。コネ不要・実績ゼロで乗れる＝<b>初速の本命</b>。</div>
+  </div>
+  <h3 class="sub-h">優先順位（立ち上がり速度順）</h3>
+  <div class="diagbox">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px">
+      <span class="chip money" style="background:#1f6f6f;color:#fff;border:none">① 公的機関の専門家登録</span><span class="tarrow" style="font-size:16px">›</span>
+      <span class="chip money" style="background:#2f7a4f;color:#fff;border:none">② アライアンス（紹介経路を作る）</span><span class="tarrow" style="font-size:16px">›</span>
+      <span class="chip" style="background:#caa23a;color:#2a2410">③ オウンドメディア＋発信</span><span class="tarrow" style="font-size:16px">›</span>
+      <span class="chip" style="background:#e7e1d4;color:var(--muted)">④ 紹介（保険・追わない）</span>
+    </div>
+    <p class="cap" style="margin-top:10px">発信は「今困っている人に刺さる具体」だけ。KPI＝<b>相談DMの数だけ</b>。制作順：メソッド → LP →（1社目後）事例。</p>
+  </div>
+</section>
+
+<!-- 10 -->
+<section id="s10">
+  <div class="sec-h"><span class="sec-n">10</span><h2>どう儲けるか（収益の4層）</h2></div>
+  <div class="diagbox">
+    <div class="pyramid">
+      <div class="ly l4">第4層 1対多（1対N）<small>講座・ワークショップ・診断ツール</small></div>
+      <div class="ly l3">第3層 資産の再利用<small>手順・テンプレを資産化 → 同価格で稼働半減</small></div>
+      <div class="ly l2">第2層 ライト契約<small>自走後の継続課金が積み上がる（卒業させない）</small></div>
+      <div class="ly l1">第1層 プログラム型（診断＋伴走）<small>当面の現金の主柱</small></div>
+    </div>
+    <p class="cap">「自分の時間」でなく「プログラム・資産・関係」を売上の主語にする。</p>
+  </div>
+</section>
+
+<!-- 11 -->
+<section id="s11">
+  <div class="sec-h"><span class="sec-n">11</span><h2>お金の計画</h2><span class="sub">詳細 revenue-target.md / keiei_model.xlsx</span></div>
+  <div class="kpis">
+    <div class="kpi"><div class="v teal">月31.6万</div><div class="l">会社の損益分岐（既知科目のみ）</div></div>
+    <div class="kpi"><div class="v good">月40万</div><div class="l">既存受託 → 新事業ゼロでも会社は黒字</div></div>
+    <div class="kpi"><div class="v red">約300万</div><div class="l">個人の穴（6〜12月）＝本当の制約</div></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><div class="role">現金化マイルストーン</div>〜4月：診断（10万）月1件／5月：伴走1社（75万）で単月プラス／9月：伴走2社 → 以降は資産化・ライトで積む（3社上限）。</div>
+    <div class="card"><div class="role">税の引当（黒字でもよける）</div>年 約404万（消費税76.6＋法人税等327.7）。法人税が大きいのは役員報酬7万固定で利益が溜まるため → <b>Y2の報酬最適化で圧縮</b>。</div>
+  </div>
+  <div class="callout"><span class="lab">★ 制約は「会社」でなく「個人」</span>
+    役員報酬7万→月43万不足→貯蓄は約4.7ヶ月。社宅化で生活費35万・7.1ヶ月に改善。それでも6〜12月に約300万の穴。<b>本人決定：報酬7万維持・別途（海外資金等）で凌ぐ。Y2で最適額を設計。</b>
+  </div>
+</section>
+
+<!-- 12 -->
+<section id="s12">
+  <div class="sec-h"><span class="sec-n">12</span><h2>体制・リスク</h2></div>
+  <div class="grid2">
+    <div class="card"><div class="role">体制</div>基本は<b>一人会社</b>で成立（一人抜けたら崩れる商品にしない）。協力者は「薄い保険」「横展開カード」として温存。</div>
+    <div class="card" style="border-left:4px solid var(--red)"><div class="role" style="color:var(--red)">最大の罠：承認欲の逆回転</div>認められたくて筋の通らない案件を受ける。→ 判断基準に戻り、診断を「断る関門」に使う。二本柱でも初動は1業種に絞る。</div>
+  </div>
+  <table>
+    <tr><th>リスク</th><th>対策</th></tr>
+    <tr><td>代替できない（倒れたら止まる）</td><td>現金の厚み＋協力者との関係維持</td></tr>
+    <tr><td>風呂敷の拡大</td><td>実証済みはITの伴走だけ。新構想は"構想フォルダ"へ。まず1事例</td></tr>
+    <tr><td>焦点の分散（二本柱）</td><td>オウンドメディアを共通装置に。最初の1事例は1業種に絞る</td></tr>
+  </table>
+</section>
+
+<!-- 14 -->
+<section id="s14">
+  <div class="sec-h"><span class="sec-n">14</span><h2>ロードマップ</h2></div>
+  <div class="timeline">
+    <div class="tl"><div class="ph">最初の90日</div><div class="body">公的機関へ専門家登録（最優先・審査が遅い）／発信を始める／アライアンス先を当たる。<b>最初の1事例の業種を絞る。</b></div></div>
+    <div class="tl"><div class="ph">Year 1</div><div class="body">濃い伴走を1〜2社まで育て、診断で実績と事例を積む。<b>会社を黒字で着地。</b></div></div>
+    <div class="tl"><div class="ph">Year 2 以降</div><div class="body">役員報酬の最適額／自力集客を主軸化／資産化・1対多で利益率UP。横展開は1事例後。</div></div>
+  </div>
+</section>
+
+<!-- 15 -->
+<section id="s15">
+  <div class="sec-h"><span class="sec-n">15</span><h2>まだ決めていないこと</h2></div>
+  <div class="grid2">
+    <div class="card"><div class="role">事業の言葉・順序</div>理念を本人の口調へ／<b>最初の1事例の業種を決める</b>／セールス資料の小売版展開（今は介護版が先行）。</div>
+    <div class="card"><div class="role">数字の実額</div>コスト科目（旅費・広告・会議費・SaaS・外注ほか）→ これが揃うまで必要売上は確定しない／モデルケースを実額に差し替え／Y2報酬・Y2/Y3のBS。</div>
+    <div class="card"><div class="role">裏取り</div>介護で一番効く痛み（請求/LIFE加算/シフト/二重入力）を母経由で（サービス参考の範囲）。</div>
+    <div class="card"><div class="role">集客の具体</div>発信媒体・テーマ／登録する公的機関／アライアンス先の当て。</div>
+  </div>
+</section>
+
+<footer>
+  たたき台（統合マスター v2 ビジュアル版 / 2026-06-24）。数字も言葉も現実で確かめながら引き直す。決定の「なぜ」は <code>docs/HANDOFF.md</code> が正。テキスト版は <code>work/business-plan.md</code>。
+</footer>
+
+</div>
+</main>
+</div>
+
+<script>
+// ===== 螺旋（アルキメデス螺旋・三角関数で生成） =====
+(function(){
+  var svg=document.getElementById('spiral'); if(!svg) return;
+  var cx=150, cy=140, ns="http://www.w3.org/2000/svg";
+  var turns=3.2, steps=240, a=6, b=18; // r = a + b*theta
+  var thetaMax=turns*2*Math.PI, d="";
+  for(var i=0;i<=steps;i++){
+    var t=thetaMax*i/steps;
+    var r=a+b*t/(2*Math.PI);
+    var x=cx+r*Math.cos(t - Math.PI/2);
+    var y=cy+r*Math.sin(t - Math.PI/2);
+    d += (i===0?"M":"L")+x.toFixed(1)+" "+y.toFixed(1)+" ";
+  }
+  var path=document.createElementNS(ns,"path");
+  path.setAttribute("d",d);
+  path.setAttribute("fill","none");
+  path.setAttribute("stroke","#c9bfa8");
+  path.setAttribute("stroke-width","2");
+  svg.appendChild(path);
+
+  // 3つのステップ点を螺旋の外周付近に三角関数で配置
+  var pts=[
+    {ang:-90,  col:"#2a9090", label:"学ぶ"},
+    {ang:30,   col:"#caa23a", label:"試す"},
+    {ang:150,  col:"#b0413e", label:"振り返る"}
+  ];
+  var rOuter=a+b*(turns); // 最外周半径
+  pts.forEach(function(p){
+    var rad=p.ang*Math.PI/180;
+    var x=cx+(rOuter-6)*Math.cos(rad);
+    var y=cy+(rOuter-6)*Math.sin(rad);
+    var c=document.createElementNS(ns,"circle");
+    c.setAttribute("cx",x);c.setAttribute("cy",y);c.setAttribute("r","9");
+    c.setAttribute("fill",p.col);
+    svg.appendChild(c);
+    var tx=document.createElementNS(ns,"text");
+    var off=(Math.cos(rad))>=0?14:-14;
+    tx.setAttribute("x", x + (Math.abs(Math.cos(rad))<0.3? 0 : off));
+    tx.setAttribute("y", y + (Math.sin(rad)>=0? 22 : -14));
+    tx.setAttribute("text-anchor","middle");
+    tx.setAttribute("font-size","12.5");
+    tx.setAttribute("font-weight","700");
+    tx.setAttribute("fill","#1f2a44");
+    tx.textContent=p.label;
+    svg.appendChild(tx);
+  });
+  // 中心「自走」
+  var core=document.createElementNS(ns,"circle");
+  core.setAttribute("cx",cx);core.setAttribute("cy",cy);core.setAttribute("r","16");
+  core.setAttribute("fill","#1f2a44");
+  svg.appendChild(core);
+  var ct=document.createElementNS(ns,"text");
+  ct.setAttribute("x",cx);ct.setAttribute("y",cy+4);ct.setAttribute("text-anchor","middle");
+  ct.setAttribute("font-size","11");ct.setAttribute("font-weight","700");ct.setAttribute("fill","#ffe7a6");
+  ct.textContent="自走";
+  svg.appendChild(ct);
+  // 外向き「成長↗」矢印ラベル
+  var gl=document.createElementNS(ns,"text");
+  gl.setAttribute("x",cx+rOuter-2);gl.setAttribute("y",cy-rOuter+6);gl.setAttribute("text-anchor","start");
+  gl.setAttribute("font-size","12");gl.setAttribute("font-weight","800");gl.setAttribute("fill","#2f7a4f");
+  gl.textContent="↗ 成長";
+  svg.appendChild(gl);
+})();
+
+// ===== 商品の階段（昇る段・ステップ図） =====
+(function(){
+  var svg=document.getElementById('stairs'); if(!svg) return;
+  var ns="http://www.w3.org/2000/svg";
+  var W=760,H=300, baseY=270, n=5, stepW=120, gap=18, rise=42, startX=40;
+  var steps=[
+    {t:"無料相談",s:"相互選別・無料",col:"#9fb0c8"},
+    {t:"診断 Phase0",s:"10万/30万",col:"#2a9090"},
+    {t:"濃い伴走",s:"竹75万/月",col:"#1f6f6f"},
+    {t:"逓減期",s:"35万・自走移行",col:"#3a8f8f"},
+    {t:"ライト契約",s:"月7万・継続",col:"#caa23a"}
+  ];
+  for(var i=0;i<n;i++){
+    var x=startX+i*(stepW+gap);
+    var topY=baseY-(i+1)*rise;
+    var h=baseY-topY;
+    var rect=document.createElementNS(ns,"rect");
+    rect.setAttribute("x",x);rect.setAttribute("y",topY);
+    rect.setAttribute("width",stepW);rect.setAttribute("height",h);
+    rect.setAttribute("rx","8");
+    rect.setAttribute("fill",steps[i].col);
+    svg.appendChild(rect);
+    var t1=document.createElementNS(ns,"text");
+    t1.setAttribute("x",x+stepW/2);t1.setAttribute("y",topY+24);
+    t1.setAttribute("text-anchor","middle");t1.setAttribute("font-size","13.5");
+    t1.setAttribute("font-weight","700");t1.setAttribute("fill", i===0?"#1f2a44":(i===4?"#2a2410":"#fff"));
+    t1.textContent=steps[i].t;
+    svg.appendChild(t1);
+    var t2=document.createElementNS(ns,"text");
+    t2.setAttribute("x",x+stepW/2);t2.setAttribute("y",topY+42);
+    t2.setAttribute("text-anchor","middle");t2.setAttribute("font-size","11");
+    t2.setAttribute("fill", i===0?"#3a4664":(i===4?"#2a2410":"#eaf0f6"));
+    t2.textContent=steps[i].s;
+    svg.appendChild(t2);
+    // 矢印
+    if(i<n-1){
+      var ax=x+stepW+gap/2, ay=baseY-(i+1)*rise+6;
+      var arr=document.createElementNS(ns,"text");
+      arr.setAttribute("x",ax);arr.setAttribute("y",ay-6);
+      arr.setAttribute("text-anchor","middle");arr.setAttribute("font-size","16");
+      arr.setAttribute("fill","#caa23a");arr.setAttribute("font-weight","800");
+      arr.textContent="↗";
+      svg.appendChild(arr);
+    }
+  }
+  // 上昇ライン
+  var gl=document.createElementNS(ns,"text");
+  gl.setAttribute("x",W-20);gl.setAttribute("y",30);gl.setAttribute("text-anchor","end");
+  gl.setAttribute("font-size","12");gl.setAttribute("fill","#7c7466");
+  gl.textContent="小さく始めて、段を登る →";
+  svg.appendChild(gl);
+})();
+
+// ===== scroll-spy =====
+(function(){
+  var links=[].slice.call(document.querySelectorAll('nav.toc a')), map={};
+  links.forEach(function(a){var id=a.getAttribute('href').slice(1),el=document.getElementById(id);if(el)map[id]=a;});
+  var ids=Object.keys(map);
+  function onScroll(){var pos=window.scrollY+120,cur=ids[0];
+    ids.forEach(function(id){var el=document.getElementById(id);if(el&&el.offsetTop<=pos)cur=id;});
+    links.forEach(function(a){a.classList.remove('active');});if(map[cur])map[cur].classList.add('active');}
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+})();
+</script>
+</body>
+</html>
