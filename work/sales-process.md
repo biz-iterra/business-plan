@@ -4,6 +4,7 @@
 > 前提：`docs/HANDOFF.md`（2章しないこと・4章商品の階段・11章方針転換）／`work/service-definition.md`（商品の中身）／`work/lead-acquisition-design.md` §4（無料相談の相互選別）。
 > 役割分担：リード獲得（場まで連れてくる）＝`lead-acquisition-design.md`／**来た後どう診断契約まで運ぶか＝本ドキュメント**。
 > 注意：商品の中身（特に各パターンの問い）は本人の現実が核。借り物にしないため本人が足す箇所は `▶要記入`。
+> ⚠️ **2026-07-03 ターゲット転換（HANDOFF 13章・`target-conditions.md`）**：導線の構造（4つの問い→構造整理への合流→診断一本のクロージング）は業種非依存で生きる。ただし**§5クロージングで使う特養Cの数字は業種固有＝未確定に戻った**（model-case.md は archive/ へ）。「断る関門」は target-conditions.md §2 の Red Flags で判定する。参照先 lead-acquisition-design.md も archive/ へ移動済み。
 
 ---
 
