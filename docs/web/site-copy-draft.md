@@ -1,3 +1,10 @@
+---
+type: supplement
+status: draft
+updated: 2026-07-08
+parent: docs/web/web-structure.md
+truth: docs/HANDOFF.md 12章
+---
 # トップ＆メソッドページ コピーたたき台（DRAFT v1）
 
 > 作成: 2026-06-28 / 役割：`web-structure.md` の **①トップ** と **③メソッド** の "中身（実際の文章）" を肉付けする。構成（どのブロックを置くか）は web-structure が親。本書は**そこに入れる言葉のたたき台**。

@@ -1,0 +1,339 @@
+<!-- 伴走業務 大中小分解 たたき台 v1 / 2026-07-04 -->
+<!-- 目的：伴走期の全業務を大→中→小で抜け漏れなく分解し、外注可否と外注時の役割を明確化する -->
+<!-- 出典：docs/plan/service-definition.md §3 ／ docs/plan/service-operations.md ／ docs/HANDOFF 4章 -->
+<title>伴走業務 大中小分解（たたき台 v1）</title>
+<style>
+  :root{
+    --bg:#f4f2ec; --panel:#fbfaf6; --ink:#22201b; --sub:#6b665c;
+    --line:#d9d3c6; --line2:#e7e2d6;
+    --core:#b4531f;   --core-bg:#fbeadd;   /* 本人コア */
+    --out:#2f6d5a;    --out-bg:#e2efe9;    /* 外注可 */
+    --asset:#5a4fa0;  --asset-bg:#eae7f5;  /* 資産化 */
+    --accent:#9a7b3f;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1c1a17; --panel:#252220; --ink:#ece7dc; --sub:#a49d8e;
+      --line:#3a3630; --line2:#312e28;
+      --core:#e0895b; --core-bg:#3a281d;
+      --out:#77c0a6; --out-bg:#1f322b;
+      --asset:#a99ee0; --asset-bg:#2a2640;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,system-ui,sans-serif;
+    line-height:1.6;padding:32px 20px 80px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto}
+  header.doc{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:8px}
+  .kicker{font-size:12px;letter-spacing:.18em;color:var(--accent);font-weight:700;margin:0 0 6px}
+  h1{font-size:26px;margin:0 0 8px;letter-spacing:.01em}
+  .meta{font-size:12.5px;color:var(--sub);margin:0}
+  .note{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:8px;padding:14px 16px;margin:20px 0;font-size:13px;color:var(--sub)}
+  .note b{color:var(--ink)}
+
+  /* 凡例＋集計 */
+  .legend{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:22px 0 10px}
+  .tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;
+    padding:4px 10px;border-radius:999px;border:1px solid transparent;cursor:pointer;user-select:none}
+  .tag .n{font-weight:600;opacity:.7;font-size:11px}
+  .tag.core{color:var(--core);background:var(--core-bg);border-color:var(--core)}
+  .tag.out{color:var(--out);background:var(--out-bg);border-color:var(--out)}
+  .tag.asset{color:var(--asset);background:var(--asset-bg);border-color:var(--asset)}
+  .tag.off{opacity:.32;filter:grayscale(.6)}
+  .legend .hint{font-size:11.5px;color:var(--sub);margin-left:auto}
+
+  /* 大枠カード */
+  .major{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    margin:16px 0;overflow:hidden}
+  .major>h2{margin:0;padding:14px 18px;font-size:17px;display:flex;align-items:baseline;gap:12px;
+    background:linear-gradient(0deg,transparent,var(--line2));border-bottom:1px solid var(--line)}
+  .major>h2 .id{font-size:13px;font-weight:800;color:var(--accent);
+    border:1.5px solid var(--accent);border-radius:6px;padding:1px 8px;flex:none}
+  .major>h2 .cap{font-size:12px;color:var(--sub);font-weight:400;margin-left:auto;flex:none}
+
+  .mid{padding:6px 18px 14px}
+  .mid>h3{font-size:14.5px;margin:16px 0 8px;padding-left:10px;border-left:3px solid var(--accent);color:var(--ink)}
+
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  thead th{text-align:left;font-size:11px;letter-spacing:.06em;color:var(--sub);
+    font-weight:700;padding:4px 8px;border-bottom:1px solid var(--line)}
+  tbody td{padding:8px;border-bottom:1px solid var(--line2);vertical-align:top}
+  tbody tr:last-child td{border-bottom:none}
+  td.task{width:38%;font-weight:600}
+  td.who{width:96px;white-space:nowrap}
+  td.role{color:var(--sub);font-size:12.5px}
+  .b{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px;line-height:1.5}
+  .b.core{color:var(--core);background:var(--core-bg)}
+  .b.out{color:var(--out);background:var(--out-bg)}
+  .b.asset{color:var(--asset);background:var(--asset-bg)}
+  tr.dim{opacity:.22}
+  .todo{font-size:12px;color:var(--core);font-weight:700}
+
+  footer{margin-top:34px;font-size:12px;color:var(--sub);border-top:1px solid var(--line);padding-top:16px}
+  @media(max-width:640px){
+    td.task{width:auto} td.who{width:auto}
+    table,thead,tbody,th,td,tr{display:block}
+    thead{display:none} tbody td{border-bottom:none;padding:2px 8px}
+    tbody tr{border-bottom:1px solid var(--line2);padding:8px 0}
+  }
+</style>
+
+<div class="wrap">
+  <header class="doc">
+    <p class="kicker">ITERRA ／ サービス実務</p>
+    <h1>伴走業務 大中小分解 <span style="font-size:15px;color:var(--sub);font-weight:400">— たたき台 v1</span></h1>
+    <p class="meta">2026-07-04 作成 ／ 濃い伴走期に発生する業務を <b>大枠 → 中枠 → 小枠</b> で網羅分解。<br>
+      各業務に担当区分と外注時の役割を付し、<b>「外注するか否か・誰に何を渡すか」</b>の判断台紙にする。</p>
+  </header>
+
+  <div class="note">
+    <b>この版の方針。</b> まずは「ざっくり・抜け漏れなく」大→中→小を置くところまで。小枠の粒度は粗く、細分化は次の版で。
+    担当区分は現時点の当たり付けで、<b>外注時の役割欄はまだ骨だけ</b>（誰に渡すかの人選・指示書の型は後工程）。違和感のある分類・欠けている業務を起点に削る／足す前提。
+  </div>
+
+  <div class="legend" id="legend">
+    <span class="tag core" data-k="core">★ 本人コア <span class="n" id="n-core"></span></span>
+    <span class="tag out"  data-k="out">◆ 外注可 <span class="n" id="n-out"></span></span>
+    <span class="tag asset" data-k="asset">▲ 資産化で巻き取り <span class="n" id="n-asset"></span></span>
+    <span class="hint">クリックで絞り込み／解除</span>
+  </div>
+
+  <!-- ================= A ================= -->
+  <section class="major">
+    <h2><span class="id">A</span>進行・関係マネジメント<span class="cap">伴走を回す土台（月次サイクルの運営）</span></h2>
+    <div class="mid">
+      <h3>A-1 定例の運営</h3>
+      <table><thead><tr><th>小枠（業務）</th><th class="who">担当</th><th>外注時に渡せる役割</th></tr></thead>
+      <tbody>
+        <tr data-k="core"><td class="task">アジェンダ設計・論点の絞り込み</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（渡さない：課題の見立てそのもの）</td></tr>
+        <tr data-k="core"><td class="task">定例ファシリテーション</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（顧客との対話は本人）</td></tr>
+        <tr data-k="out"><td class="task">議事録・決定事項/タスクの整理</td><td class="who"><span class="b out">◆外注</span></td><td class="role">録音/メモ → 清書・体裁整え（清書レベル）</td></tr>
+        <tr data-k="out"><td class="task">日程調整・リマインド・場のセッティング</td><td class="who"><span class="b out">◆外注</span></td><td class="role">事務代行（渡す順番の最後：事務）</td></tr>
+      </tbody></table>
+
+      <h3>A-2 全体進行の管理</h3>
+      <table><thead><tr><th>小枠（業務）</th><th class="who">担当</th><th>外注時に渡せる役割</th></tr></thead>
+      <tbody>
+        <tr data-k="core"><td class="task">ロードマップ（改善マップ）の維持・優先順位の更新</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（判断）</td></tr>
+        <tr data-k="out asset"><td class="task">進捗・タスク管理表の更新</td><td class="who"><span class="b out">◆外注</span> <span class="b asset">▲資産</span></td><td class="role">更新作業（テンプレ化すれば自動/半自動）</td></tr>
+        <tr data-k="core"><td class="task">詰まり・停滞のリスク検知と巻き直し</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（伴走の勘所）</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- ================= B ================= -->
+  <section class="major">
+    <h2><span class="id">B</span>現状把握・継続診断<span class="cap">走りながら診る（Phase0後も続く観察）</span></h2>
+    <div class="mid">
+      <h3>B-1 現場の継続観察</h3>
+      <table><thead><tr><th>小枠（業務）</th><th class="who">担当</th><th>外注時に渡せる役割</th></tr></thead>
+      <tbody>
+        <tr data-k="core"><td class="task">現場同席・業務フローの実地確認</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（目で取る＝コア）</td></tr>
+        <tr data-k="core out"><td class="task">現状データ/画面/台帳の棚卸し</td><td class="who"><span class="b core">★本人</span> <span class="b out">◆外注</span></td><td class="role">一覧化・集計の清書（分析は本人）</td></tr>
+        <tr data-k="core"><td class="task">担当者ヒアリング（痛みの言語化）</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（信頼関係が要る対話）</td></tr>
+      </tbody></table>
+
+      <h3>B-2 課題の再分析</h3>
+      <table><thead><tr><th>小枠（業務）</th><th class="who">担当</th><th>外注時に渡せる役割</th></tr></thead>
+      <tbody>
+        <tr data-k="core"><td class="task">個別課題の構造分析・根因の特定</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（本人の強みの中核）</td></tr>
+        <tr data-k="out"><td class="task">情報収集・事例/相場の下調べ</td><td class="who"><span class="b out">◆外注</span></td><td class="role">リサーチ（材料集め。判断はしない）</td></tr>
+        <tr data-k="core out asset"><td class="task">現状構造図（As-Is）の更新</td><td class="who"><span class="b core">★本人</span> <span class="b out">◆外注</span></td><td class="role">作図の清書（構造の中身は本人）</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- ================= C ================= -->
+  <section class="major">
+    <h2><span class="id">C</span>解決策の設計<span class="cap">構造の直し方とツールの選び方</span></h2>
+    <div class="mid">
+      <h3>C-1 打ち手の設計</h3>
+      <table><thead><tr><th>小枠（業務）</th><th class="who">担当</th><th>外注時に渡せる役割</th></tr></thead>
+      <tbody>
+        <tr data-k="core"><td class="task">解き方（To-Beへの道筋）の設計</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（渡さない）</td></tr>
+        <tr data-k="core"><td class="task">業務プロセスの再設計（標準化・分散）</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（渡さない）</td></tr>
+        <tr data-k="core"><td class="task">情報の置き場・権限の再設計</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（設計は本人／構築はDへ）</td></tr>
+      </tbody></table>
+
+      <h3>C-2 ツール/手段の選定</h3>
+      <table><thead><tr><th>小枠（業務）</th><th class="who">担当</th><th>外注時に渡せる役割</th></tr></thead>
+      <tbody>
+        <tr data-k="core"><td class="task">ツール選定・要件定義・比較評価</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（顧客の側に立つ判断）</td></tr>
+        <tr data-k="out"><td class="task">製品情報・見積の収集/一次スクリーニング</td><td class="who"><span class="b out">◆外注</span></td><td class="role">情報収集（比較表の素材づくり）</td></tr>
+        <tr data-k="core"><td class="task">技術的な妥当性のジャッジ</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（外注の検証結果を受けて判断）</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- ================= D ================= -->
+  <section class="major">
+    <h2><span class="id">D</span>実行支援（構築・移行）<span class="cap">手を動かす層／最も外注に出しやすい</span></h2>
+    <div class="mid">
+      <h3>D-1 設定・実装</h3>
+      <table><thead><tr><th>小枠（業務）</th><th class="who">担当</th><th>外注時に渡せる役割</th></tr></thead>
+      <tbody>
+        <tr data-k="out"><td class="task">ツールの設定・構築作業</td><td class="who"><span class="b out">◆外注</span></td><td class="role">実装（コーダー／設定代行。仕様は本人が指示）</td></tr>
+        <tr data-k="out"><td class="task">自動化・連携（スクリプト/API等）の実装</td><td class="who"><span class="b out">◆外注</span></td><td class="role">実装（技術検証込み）</td></tr>
+        <tr data-k="core out"><td class="task">動作確認・受け入れテスト</td><td class="who"><span class="b core">★本人</span> <span class="b out">◆外注</span></td><td class="role">一次テスト（最終確認は本人）</td></tr>
+      </tbody></table>
+
+      <h3>D-2 データ・移行</h3>
+      <table><thead><tr><th>小枠（業務）</th><th class="who">担当</th><th>外注時に渡せる役割</th></tr></thead>
+      <tbody>
+        <tr data-k="out"><td class="task">データ整形・移行・クレンジング</td><td class="who"><span class="b out">◆外注</span></td><td class="role">実装（要配慮情報はマスキング前提で範囲限定）</td></tr>
+        <tr data-k="core"><td class="task">移行方針・項目定義の設計</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（設計）</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- ================= E ================= -->
+  <section class="major">
+    <h2><span class="id">E</span>定着・現場浸透<span class="cap">現場が自分で回せる形にする</span></h2>
+    <div class="mid">
+      <h3>E-1 現場への橋渡し</h3>
+      <table><thead><tr><th>小枠（業務）</th><th class="who">担当</th><th>外注時に渡せる役割</th></tr></thead>
+      <tbody>
+        <tr data-k="core"><td class="task">現場説明・研修・レクチャー</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（伴走の顔。信頼が乗る）</td></tr>
+        <tr data-k="core"><td class="task">担当者の壁打ち・判断の後ろ盾（随時）</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（"丸腰で矢面"を解く＝価値の本体）</td></tr>
+        <tr data-k="out asset"><td class="task">操作マニュアル・手順書の作成</td><td class="who"><span class="b out">◆外注</span> <span class="b asset">▲資産</span></td><td class="role">清書（原案は本人／体裁とテンプレ化）</td></tr>
+      </tbody></table>
+
+      <h3>E-2 運用ルールの定着</h3>
+      <table><thead><tr><th>小枠（業務）</th><th class="who">担当</th><th>外注時に渡せる役割</th></tr></thead>
+      <tbody>
+        <tr data-k="core"><td class="task">運用ルール・責任分担の設計と合意</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（合意形成）</td></tr>
+        <tr data-k="core"><td class="task">定着状況のモニタリング・軌道修正</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（自走基準の見極め）</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- ================= F ================= -->
+  <section class="major">
+    <h2><span class="id">F</span>資産化・可視化<span class="cap">属人化を解き、自社の稼働も半減させる層（L-3）</span></h2>
+    <div class="mid">
+      <h3>F-1 顧客側の資産化</h3>
+      <table><thead><tr><th>小枠（業務）</th><th class="who">担当</th><th>外注時に渡せる役割</th></tr></thead>
+      <tbody>
+        <tr data-k="core asset"><td class="task">その月の改善を手順書/テンプレに落とす</td><td class="who"><span class="b core">★本人</span> <span class="b asset">▲資産</span></td><td class="role">清書（何を残すかは本人／整形は外注可）</td></tr>
+        <tr data-k="out asset"><td class="task">KPI・進捗ダッシュボードの構築/更新</td><td class="who"><span class="b out">◆外注</span> <span class="b asset">▲資産</span></td><td class="role">構築・更新（設計は本人）</td></tr>
+      </tbody></table>
+
+      <h3>F-2 自社側の資産化（横展開の元手）</h3>
+      <table><thead><tr><th>小枠（業務）</th><th class="who">担当</th><th>外注時に渡せる役割</th></tr></thead>
+      <tbody>
+        <tr data-k="core asset"><td class="task">汎用フレーム・診断チェック表への還元</td><td class="who"><span class="b core">★本人</span> <span class="b asset">▲資産</span></td><td class="role">—（自社留保の資産＝渡さない中身。整形のみ外注可）</td></tr>
+        <tr data-k="core asset"><td class="task">再利用テンプレ/スキルの整備</td><td class="who"><span class="b core">★本人</span> <span class="b asset">▲資産</span></td><td class="role">—（稼働半減の生命線）</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- ================= G ================= -->
+  <section class="major">
+    <h2><span class="id">G</span>経営翻訳・報告<span class="cap">現場の成果を経営の数字で返す（意思決定の後ろ盾）</span></h2>
+    <div class="mid">
+      <h3>G-1 経営者への報告</h3>
+      <table><thead><tr><th>小枠（業務）</th><th class="who">担当</th><th>外注時に渡せる役割</th></tr></thead>
+      <tbody>
+        <tr data-k="core"><td class="task">月次レポート（進捗を経営数字で翻訳）</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（翻訳＝勝ち筋の核）</td></tr>
+        <tr data-k="core"><td class="task">経営メリット定量シートの実績更新</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（数字は本人／作図はF連携で清書可）</td></tr>
+        <tr data-k="out"><td class="task">レポートの図版・体裁のデザイン</td><td class="who"><span class="b out">◆外注</span></td><td class="role">図版・資料デザイン（デザイナー）</td></tr>
+      </tbody></table>
+
+      <h3>G-2 次フェーズへの接続</h3>
+      <table><thead><tr><th>小枠（業務）</th><th class="who">担当</th><th>外注時に渡せる役割</th></tr></thead>
+      <tbody>
+        <tr data-k="core"><td class="task">逓減・ライトへの移行提案（自走基準の提示）</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（依存させない設計の要）</td></tr>
+        <tr data-k="core"><td class="task">ポテンシャル診断の持ち込み（信頼形成後）</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（共通言語・配置の設計図）</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- ================= H ================= -->
+  <section class="major">
+    <h2><span class="id">H</span>対外折衝・外注管理<span class="cap">顧客の側に立つ翻訳窓口／協力者の差配</span></h2>
+    <div class="mid">
+      <h3>H-1 ベンダー対応の翻訳</h3>
+      <table><thead><tr><th>小枠（業務）</th><th class="who">担当</th><th>外注時に渡せる役割</th></tr></thead>
+      <tbody>
+        <tr data-k="core"><td class="task">ベンダー/既存業者との折衝・翻訳・後ろ盾</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（対等に話す＝価値。マージンは取らない）</td></tr>
+        <tr data-k="core"><td class="task">見積・契約内容の妥当性チェック</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（顧客の側に立つ判断）</td></tr>
+      </tbody></table>
+
+      <h3>H-2 外注（協力者）の差配</h3>
+      <table><thead><tr><th>小枠（業務）</th><th class="who">担当</th><th>外注時に渡せる役割</th></tr></thead>
+      <tbody>
+        <tr data-k="core"><td class="task">外注への指示書作成・成果物基準の提示</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（渡し方の型そのもの。※型は未設計＝要記入）</td></tr>
+        <tr data-k="core"><td class="task">外注成果物のレビュー・品質担保</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（顧客に出す前の関門は本人）</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- ================= I ================= -->
+  <section class="major">
+    <h2><span class="id">I</span>契約・バックオフィス<span class="cap">伴走を支える事務基盤</span></h2>
+    <div class="mid">
+      <h3>I-1 契約・情報管理</h3>
+      <table><thead><tr><th>小枠（業務）</th><th class="who">担当</th><th>外注時に渡せる役割</th></tr></thead>
+      <tbody>
+        <tr data-k="core"><td class="task">契約更新・フェーズ移行時の条件調整</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（値付け・条件は本人）</td></tr>
+        <tr data-k="core"><td class="task">NDA・要配慮個人情報の取り扱い管理</td><td class="who"><span class="b core">★本人</span></td><td class="role">—（形だけにしない／士業チェックは外部）</td></tr>
+      </tbody></table>
+
+      <h3>I-2 請求・事務</h3>
+      <table><thead><tr><th>小枠（業務）</th><th class="who">担当</th><th>外注時に渡せる役割</th></tr></thead>
+      <tbody>
+        <tr data-k="out asset"><td class="task">請求書発行・入金確認</td><td class="who"><span class="b out">◆外注</span> <span class="b asset">▲資産</span></td><td class="role">事務代行（会計連携で半自動化）</td></tr>
+        <tr data-k="out"><td class="task">経費・稼働記録の整理</td><td class="who"><span class="b out">◆外注</span></td><td class="role">事務代行（渡す順番の最後）</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <div class="note" style="border-left-color:var(--core)">
+    <b>次の版（v2）でやること。</b>
+    <span class="todo">▶</span> 小枠の細分化（今は粗い）／
+    <span class="todo">▶</span> 外注時の「渡し方の型」＝指示書フォーマット・成果物基準（H-2、現状は骨だけ）／
+    <span class="todo">▶</span> ★本人コアのうち将来 ▲資産化 で巻き取れるものの線引き（外注では月10h前後しか買い戻せない＝3社上限は資産化でしか動かない・HANDOFF）／
+    <span class="todo">▶</span> 各外注小枠への具体的な人選（コーダー／デザイナー等）の割当。
+  </div>
+
+  <footer>
+    出典：<code>docs/plan/service-definition.md §3</code>（伴走の接点設計）／<code>docs/plan/service-operations.md</code>（実務分解）／<code>docs/HANDOFF.md</code> 4章。<br>
+    分解の原則（HANDOFF 7章・method.md）：外注は固定費化しない・商品に組み込まない・マージンを取らない・渡す順番＝清書→図版→実装→事務・資産化が先。<br>
+    たたき台 v1（2026-07-04）。本人が違和感を起点に削る／直す前提。
+  </footer>
+</div>
+
+<script>
+  // 担当区分の件数集計と絞り込み
+  (function(){
+    var rows = Array.prototype.slice.call(document.querySelectorAll('tbody tr[data-k]'));
+    function count(k){ return rows.filter(function(r){ return r.dataset.k.split(' ').indexOf(k)>=0; }).length; }
+    ['core','out','asset'].forEach(function(k){
+      var el = document.getElementById('n-'+k); if(el) el.textContent = '('+count(k)+')';
+    });
+    var active = {};
+    document.querySelectorAll('#legend .tag').forEach(function(tag){
+      tag.addEventListener('click', function(){
+        var k = tag.dataset.k;
+        active[k] = !active[k];
+        tag.classList.toggle('off', !active[k] && anyActive());
+        applyFilter();
+      });
+    });
+    function anyActive(){ return Object.keys(active).some(function(k){return active[k];}); }
+    function applyFilter(){
+      var on = Object.keys(active).filter(function(k){return active[k];});
+      // 凡例の見た目：どれかONなら非選択をoff表示
+      document.querySelectorAll('#legend .tag').forEach(function(t){
+        t.classList.toggle('off', on.length>0 && on.indexOf(t.dataset.k)<0);
+      });
+      rows.forEach(function(r){
+        var ks = r.dataset.k.split(' ');
+        var show = on.length===0 || on.some(function(k){return ks.indexOf(k)>=0;});
+        r.classList.toggle('dim', !show);
+      });
+    }
+  })();
+</script>

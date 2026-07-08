@@ -1,3 +1,10 @@
+---
+type: detail
+status: draft
+updated: 2026-07-08
+parent: docs/plan/business-plan.md 1章
+truth: docs/HANDOFF.md 1〜2章
+---
 # 企業理念（MVV／コンセプト）— v2（本人選択・記入 反映）
 
 > 更新：2026-07-06。本人が各項目を選択・記入（パーパス＝案A／ビジョン＝案A を採用、ミッション・バリュー・コンセプトは本人記入）。

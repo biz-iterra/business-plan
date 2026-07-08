@@ -432,4 +432,14 @@
 
 ---
 
+## 14. 2026-07-08 ドキュメント再編（構造のみ・決定内容の変更なし）
+
+- **決定**：`work/` を廃止し、`docs/`（現行の正：plan／web／preview）＋`log/`（検討の軌跡）＋`data/`（作業データ）に再編。全mdにfrontmatter（type/status/updated/parent/truth）を付与し、`README.md`＝索引を新設。タスクは `docs/TODO.md` に一元化。
+- **なぜ**：ドキュメントの大量生産で粒度がバラつき、①サマリー/詳細の区別が外から見えない ②検討の軌跡の置き場がなく本HANDOFFが肥大化 ③タスクが3箇所に散在、していたため。
+- **運用（以後のルール）**：セッションの検討経緯・ボツ案は `log/` へ。本HANDOFFには**決定の抽出（決定・なぜ・覆さない条件）だけ**を追記する。人間用/AI用のドキュメントは分けない（1ファイル＝frontmatter＋本文）。
+- **パス対応**：`work/*.md` → `docs/plan/` または `docs/web/`（`lead-acquisition-v2.md`→`lead-acquisition.md` に改名）／`work/business-plan-tasks.md`→`docs/TODO.md`／`work/finance-actual-forecast`→`data/`／`work/lp-mockup.html`（介護特化のまま宙に浮いていた）と `docs/MIGRATION.md`（役目終了）→`archive/`。**本文1〜13章の旧 `work/` パスは履歴として書き換えない。**
+- **覆さない条件**：構造の再変更は、運用して具体的な不便（探せない・迷子になる等）が出たときのみ。思いつきでの再編はしない。
+
+---
+
 *この文書は仮置き(DRAFT v1)。数字も言葉も、現実で検証しながら引き直す前提。*

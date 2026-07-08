@@ -1,3 +1,10 @@
+---
+type: detail
+status: draft
+updated: 2026-07-08
+parent: docs/plan/business-plan.md 6章
+truth: docs/HANDOFF.md 13章
+---
 # 料金設計（たたき台 v1）
 
 > 作成: 2026-07-03 / ステータス: DRAFT v1（金額はすべてたたき台。本人が違和感を起点に上書きする前提）

@@ -1,3 +1,10 @@
+---
+type: detail
+status: draft
+updated: 2026-07-08
+parent: docs/plan/business-plan.md 6章
+truth: docs/HANDOFF.md 13章
+---
 # サービス実務の分解 — 本人がやる業務／外注する想定業務（たたき台）
 
 > 作成: 2026-07-03 / ステータス: DRAFT v1（本人が違和感を起点に削る前提）

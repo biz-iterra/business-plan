@@ -1,3 +1,10 @@
+---
+type: detail
+status: draft
+updated: 2026-07-08
+parent: docs/plan/business-plan.md 11章
+truth: docs/HANDOFF.md 6章
+---
 # 月次で必要な売上ライン（T8／たたき台 v1）
 
 > 作成: 2026-06-21 / ステータス: DRAFT v1

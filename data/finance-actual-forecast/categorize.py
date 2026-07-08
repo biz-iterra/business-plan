@@ -82,7 +82,7 @@ SOURCES = [
         "owner": "個人",
         "type": "bank",
         "loader": "bank_rakuten",
-        # 全期間版(2019-2026)を work/_src/ にコピーして参照（G:\...\楽天\RbTorihiki-*.csv）。
+        # 全期間版(2019-2026)を _src/ にコピーして参照（G:\...\楽天\RbTorihiki-*.csv）。
         "glob": os.path.join(BASE, "_src", "RbTorihiki-*.csv"),
     },
 ]

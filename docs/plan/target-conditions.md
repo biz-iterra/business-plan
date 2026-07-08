@@ -1,3 +1,10 @@
+---
+type: detail
+status: draft
+updated: 2026-07-08
+parent: docs/plan/business-plan.md 3章
+truth: docs/HANDOFF.md 13章
+---
 # ターゲット再定義 — 業界絞りから「顧客条件」へ（コンサル2セッションの整理）
 
 > 作成: 2026-07-03 / ステータス: DRAFT v1（たたき台。本人が違和感を起点に削る前提）

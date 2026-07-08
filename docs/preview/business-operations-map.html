@@ -1,0 +1,303 @@
+<!-- 事業運営 業務体系マップ（中粒度） v1 / 2026-07-04 -->
+<title>事業運営 業務体系マップ（中粒度・v1）</title>
+<style>
+  :root{
+    --bg:#f4f2ec; --panel:#fbfaf6; --ink:#22201b; --sub:#6b665c;
+    --line:#d9d3c6; --line2:#e7e2d6; --accent:#9a7b3f;
+    --core:#b4531f; --core-bg:#fbeadd;
+    --out:#2f6d5a; --out-bg:#e2efe9;
+    --f-day:#1f6f6a;  --f-day-bg:#ddeeec;
+    --f-week:#2d6da3; --f-week-bg:#e2edf6;
+    --f-mon:#6a53a8;  --f-mon-bg:#ebe6f6;
+    --f-close:#a8461f;--f-close-bg:#f7e2d6;
+    --f-spot:#7a7568; --f-spot-bg:#eae6dc;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{--bg:#1c1a17;--panel:#252220;--ink:#ece7dc;--sub:#a49d8e;--line:#3a3630;--line2:#312e28;
+      --core:#e0895b;--core-bg:#3a281d;--out:#77c0a6;--out-bg:#1f322b;
+      --f-day:#6fc3bd;--f-day-bg:#183330;--f-week:#7fb0dd;--f-week-bg:#1a2c3d;
+      --f-mon:#a99ee0;--f-mon-bg:#272240;--f-close:#e08a5b;--f-close-bg:#3a2418;--f-spot:#b3ac9c;--f-spot-bg:#2c2922;}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,system-ui,sans-serif;
+    line-height:1.55;padding:30px 18px 90px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto}
+  header.doc{border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:8px}
+  .kicker{font-size:12px;letter-spacing:.18em;color:var(--accent);font-weight:700;margin:0 0 6px}
+  h1{font-size:24px;margin:0 0 8px}
+  .meta{font-size:12.5px;color:var(--sub);margin:0}
+  .note{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:8px;padding:12px 15px;margin:16px 0;font-size:12.5px;color:var(--sub)}
+  .note b{color:var(--ink)}
+  .controls{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0 8px;margin-bottom:6px;
+    border-bottom:1px solid var(--line)}
+  .row{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:4px 0}
+  .row .lbl{font-size:11px;font-weight:700;color:var(--sub);width:52px;flex:none}
+  .chip{font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px;cursor:pointer;
+    border:1px solid var(--line);background:var(--panel);color:var(--sub);user-select:none}
+  .chip .n{opacity:.6;font-weight:600;margin-left:3px;font-size:10.5px}
+  .chip.on{color:#fff;border-color:transparent}
+  .chip.f-day.on{background:var(--f-day)} .chip.f-week.on{background:var(--f-week)}
+  .chip.f-mon.on{background:var(--f-mon)} .chip.f-close.on{background:var(--f-close)}
+  .chip.f-spot.on{background:var(--f-spot)}
+  .chip.w-core.on{background:var(--core)} .chip.w-out.on{background:var(--out)}
+  .chip.reset{border-style:dashed}
+  .major{margin:22px 0 6px}
+  .major>h2{font-size:19px;margin:0 0 2px;display:flex;align-items:baseline;gap:10px;
+    border-bottom:2px solid var(--accent);padding-bottom:6px}
+  .major>h2 .id{font-size:13px;font-weight:800;color:#fff;background:var(--accent);border-radius:6px;padding:2px 9px}
+  .major>h2 .cap{font-size:12px;color:var(--sub);font-weight:400;margin-left:auto}
+  .mid{background:var(--panel);border:1px solid var(--line);border-radius:11px;margin:12px 0;overflow:hidden}
+  .mid>h3{margin:0;padding:11px 16px;font-size:15px;border-bottom:1px solid var(--line);
+    background:linear-gradient(0deg,transparent,var(--line2));display:flex;align-items:baseline;gap:9px}
+  .mid>h3 .mid-id{font-size:12px;font-weight:800;color:var(--accent)}
+  .mid>h3 .mid-cap{font-size:11.5px;color:var(--sub);font-weight:400;margin-left:auto}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  thead th{text-align:left;font-size:10.5px;letter-spacing:.05em;color:var(--sub);font-weight:700;
+    padding:5px 10px;border-bottom:1px solid var(--line)}
+  tbody td{padding:7px 10px;border-bottom:1px solid var(--line2);vertical-align:top}
+  tbody tr:last-child td{border-bottom:none}
+  td.task{width:34%;font-weight:600}
+  td.freq{width:88px;white-space:nowrap}
+  td.who{width:64px;white-space:nowrap}
+  td.memo{color:var(--sub);font-size:12px}
+  tr.hide{display:none}
+  .f{display:inline-block;font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:5px;white-space:nowrap}
+  .f.day{color:var(--f-day);background:var(--f-day-bg)} .f.week{color:var(--f-week);background:var(--f-week-bg)}
+  .f.mon{color:var(--f-mon);background:var(--f-mon-bg)} .f.close{color:var(--f-close);background:var(--f-close-bg)}
+  .f.spot{color:var(--f-spot);background:var(--f-spot-bg)}
+  .w{display:inline-block;font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:5px}
+  .w.core{color:var(--core);background:var(--core-bg)} .w.out{color:var(--out);background:var(--out-bg)}
+  .empty{padding:14px 16px;color:var(--sub);font-size:12px;display:none}
+  footer{margin-top:32px;font-size:12px;color:var(--sub);border-top:1px solid var(--line);padding-top:14px}
+  @media(max-width:640px){
+    td.task{width:auto}
+    table,thead,tbody,th,td,tr{display:block} thead{display:none}
+    tbody td{border-bottom:none;padding:1px 10px} tbody tr{border-bottom:1px solid var(--line2);padding:8px 0}
+  }
+</style>
+
+<div class="wrap">
+  <header class="doc">
+    <p class="kicker">ITERRA ／ 事業運営</p>
+    <h1>業務体系マップ <span style="font-size:14px;color:var(--sub);font-weight:400">— 中粒度・v1</span></h1>
+    <p class="meta">2026-07-04 ／ <b>大枠2（直接／間接）× 中枠（工程／機能）× 小枠（実業務・中粒度）</b>。各業務に<b>頻度</b>と<b>担当想定</b>を付与。手順ステップは別途マニュアルで作る前提。</p>
+  </header>
+
+  <div class="note">
+    <b>読み方。</b> 頻度チップで「<b>締め処理だけ</b>」「<b>月次業務だけ</b>」を抽出できる。担当チップで「将来外注しうる業務（◆）だけ」も見える。
+    ★＝当面すべて自分／◆＝将来こういう役割なら外注しうる。<b>今はまず“中枠の切り方と業務の抜け漏れ”を見てほしい。</b>
+  </div>
+
+  <div class="controls">
+    <div class="row"><span class="lbl">頻度</span>
+      <span class="chip f-day"   data-t="day">日次/都度<span class="n" id="n-day"></span></span>
+      <span class="chip f-week"  data-t="week">週次<span class="n" id="n-week"></span></span>
+      <span class="chip f-mon"   data-t="mon">月次<span class="n" id="n-mon"></span></span>
+      <span class="chip f-close" data-t="close">締め<span class="n" id="n-close"></span></span>
+      <span class="chip f-spot"  data-t="spot">スポット<span class="n" id="n-spot"></span></span>
+    </div>
+    <div class="row"><span class="lbl">担当</span>
+      <span class="chip w-core" data-w="core">★本人<span class="n" id="n-core"></span></span>
+      <span class="chip w-out"  data-w="out">◆将来外注<span class="n" id="n-out"></span></span>
+      <span class="chip reset" id="reset">すべて表示</span>
+    </div>
+  </div>
+
+  <section class="major">
+    <h2><span class="id">1</span>直接業務<span class="cap">顧客にサービスを提供する工程</span></h2>
+
+    <div class="mid">
+      <h3><span class="mid-id">1-A</span>無料相談・入口<span class="mid-cap">相互選別／案件発生ごと</span></h3>
+      <table><thead><tr><th>業務（中粒度）</th><th>頻度</th><th>担当</th><th>メモ／将来の外注役割</th></tr></thead><tbody>
+        <tr data-f="spot" data-w="core"><td class="task">事前フォーム確認・相手の下調べ</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">下調べの一次収集は将来◆</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">無料相談の実施（在り処を見せ相互選別）</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">見立てメモ・診断提案の要否判断</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">断る関門の一次</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">診断の提案・見積提示</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+      </tbody></table>
+    </div>
+
+    <div class="mid">
+      <h3><span class="mid-id">1-B</span>Phase0 構造診断<span class="mid-cap">2〜4週／案件ごと</span></h3>
+      <table><thead><tr><th>業務（中粒度）</th><th>頻度</th><th>担当</th><th>メモ／将来の外注役割</th></tr></thead><tbody>
+        <tr data-f="spot" data-w="core"><td class="task">契約・NDA締結、事前資料の依頼</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">契約事務は将来◆</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">事前ヒアリング（経営者／担当者の二層）</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">現場観察（訪問・必須1回以上）</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">IT・業務・人の棚卸し</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">一覧化の清書は◆</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">構造分析・現状構造図（As-Is）作成</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">作図清書は◆</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">改善マップ（To-Be）・優先順位づけ</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">経営メリット定量シート作成</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">勝ち筋の核</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">伴走計画書の作成（期間・体制・自走基準）</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="spot" data-w="out"><td class="task">納品物の清書・資料デザイン</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w out">◆</span></td><td class="memo">デザイナー</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">報告会の実施・診断の可否判断（断る関門）</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+      </tbody></table>
+    </div>
+
+    <div class="mid">
+      <h3><span class="mid-id">1-C</span>濃い伴走期<span class="mid-cap">本丸／継続</span></h3>
+      <table><thead><tr><th>業務（中粒度）</th><th>頻度</th><th>担当</th><th>メモ／将来の外注役割</th></tr></thead><tbody>
+        <tr data-f="day" data-w="core"><td class="task">担当者からの随時相談対応（チャット）</td><td class="freq"><span class="f day">日次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">丸腰を解く＝価値の本体</td></tr>
+        <tr data-f="week" data-w="core"><td class="task">個別課題の分析・解き方の設計</td><td class="freq"><span class="f week">週次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="week" data-w="out"><td class="task">進捗・タスク管理表の更新</td><td class="freq"><span class="f week">週次</span></td><td class="who"><span class="w out">◆</span></td><td class="memo">事務代行／半自動化</td></tr>
+        <tr data-f="mon" data-w="core"><td class="task">月次定例MTG（準備・実施・後処理）</td><td class="freq"><span class="f mon">月次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">議事録・設営は◆</td></tr>
+        <tr data-f="mon" data-w="core"><td class="task">現場同席・観察</td><td class="freq"><span class="f mon">月次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="mon" data-w="core"><td class="task">改善の手順書化・テンプレ化（資産化）</td><td class="freq"><span class="f mon">月次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">清書は◆／▲将来巻き取り</td></tr>
+        <tr data-f="mon" data-w="core"><td class="task">月次レポート・定量シートの実績更新</td><td class="freq"><span class="f mon">月次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">経営翻訳＝コア</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">ツール選定・要件定義・比較評価</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">情報収集は◆</td></tr>
+        <tr data-f="spot" data-w="out"><td class="task">設定・実装・自動化の構築</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w out">◆</span></td><td class="memo">コーダー／仕様は本人</td></tr>
+        <tr data-f="spot" data-w="out"><td class="task">データ整形・移行（設計は本人）</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w out">◆</span></td><td class="memo">要配慮情報はマスキング</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">現場研修・説明・運用ルール定着</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">ベンダー折衝・翻訳・後ろ盾</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">マージン取らない</td></tr>
+      </tbody></table>
+    </div>
+
+    <div class="mid">
+      <h3><span class="mid-id">1-D</span>逓減期<span class="mid-cap">自走への移行</span></h3>
+      <table><thead><tr><th>業務（中粒度）</th><th>頻度</th><th>担当</th><th>メモ／将来の外注役割</th></tr></thead><tbody>
+        <tr data-f="mon" data-w="core"><td class="task">関与を月1へ落とした定例</td><td class="freq"><span class="f mon">月次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="mon" data-w="core"><td class="task">自走状況のモニタリング・軌道修正</td><td class="freq"><span class="f mon">月次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">自走基準の見極め</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">ライト契約への移行提案</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">ポテンシャル診断の持ち込み（信頼形成後）</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">配置の共通言語</td></tr>
+      </tbody></table>
+    </div>
+
+    <div class="mid">
+      <h3><span class="mid-id">1-E</span>ライト契約<span class="mid-cap">卒業させない継続関係</span></h3>
+      <table><thead><tr><th>業務（中粒度）</th><th>頻度</th><th>担当</th><th>メモ／将来の外注役割</th></tr></thead><tbody>
+        <tr data-f="mon" data-w="core"><td class="task">月次相談枠の対応</td><td class="freq"><span class="f mon">月次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="day" data-w="core"><td class="task">随時の軽い質問対応</td><td class="freq"><span class="f day">都度</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">年数回の構造点検</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <section class="major">
+    <h2><span class="id">2</span>間接業務<span class="cap">顧客対応以外に、事業運営で必要な工程</span></h2>
+
+    <div class="mid">
+      <h3><span class="mid-id">2-A</span>営業・マーケティング<span class="mid-cap">リード獲得・告知（手法詳細は後課題）</span></h3>
+      <table><thead><tr><th>業務（中粒度）</th><th>頻度</th><th>担当</th><th>メモ／将来の外注役割</th></tr></thead><tbody>
+        <tr data-f="week" data-w="core"><td class="task">オウンドメディア／発信のコンテンツ作成</td><td class="freq"><span class="f week">週次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">清書・編集は◆</td></tr>
+        <tr data-f="mon" data-w="core"><td class="task">公的機関登録・士業/パートナーの開拓維持</td><td class="freq"><span class="f mon">月次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">登壇・セミナーの準備・資料作成</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">資料デザインは◆</td></tr>
+        <tr data-f="day" data-w="core"><td class="task">問い合わせの一次対応</td><td class="freq"><span class="f day">都度</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">事例・実績ページの整備</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">制作は◆</td></tr>
+      </tbody></table>
+    </div>
+
+    <div class="mid">
+      <h3><span class="mid-id">2-B</span>既存受託・顧客維持<span class="mid-cap">当面の土台（月40万）</span></h3>
+      <table><thead><tr><th>業務（中粒度）</th><th>頻度</th><th>担当</th><th>メモ／将来の外注役割</th></tr></thead><tbody>
+        <tr data-f="week" data-w="core"><td class="task">既存受託業務の遂行</td><td class="freq"><span class="f week">週次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">一部作業は◆</td></tr>
+        <tr data-f="mon" data-w="core"><td class="task">既存クライアントとの関係維持</td><td class="freq"><span class="f mon">月次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+      </tbody></table>
+    </div>
+
+    <div class="mid">
+      <h3><span class="mid-id">2-C</span>経理・財務<span class="mid-cap">請求・記帳・資金繰り・納税</span></h3>
+      <table><thead><tr><th>業務（中粒度）</th><th>頻度</th><th>担当</th><th>メモ／将来の外注役割</th></tr></thead><tbody>
+        <tr data-f="close" data-w="core"><td class="task">月次の請求・入金消込（締め）</td><td class="freq"><span class="f close">締め</span></td><td class="who"><span class="w core">★</span></td><td class="memo">発行・消込は◆（会計連携）</td></tr>
+        <tr data-f="week" data-w="out"><td class="task">経費精算・記帳・証憑整理</td><td class="freq"><span class="f week">週次</span></td><td class="who"><span class="w out">◆</span></td><td class="memo">記帳代行／freee</td></tr>
+        <tr data-f="mon" data-w="core"><td class="task">資金繰り管理・着地見込みの更新</td><td class="freq"><span class="f mon">月次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="mon" data-w="core"><td class="task">納税引当の管理（別口座への待避）</td><td class="freq"><span class="f mon">月次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">黒字倒産の予防</td></tr>
+        <tr data-f="close" data-w="out"><td class="task">決算・消費税・確定申告（税理士連携）</td><td class="freq"><span class="f close">締め</span></td><td class="who"><span class="w out">◆</span></td><td class="memo">税理士／年次・四半期</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">役員報酬・社保の管理（期首に固定）</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">定期同額。Y2最適化は別タスク</td></tr>
+      </tbody></table>
+    </div>
+
+    <div class="mid">
+      <h3><span class="mid-id">2-D</span>法務・契約<span class="mid-cap">契約・NDA・権利</span></h3>
+      <table><thead><tr><th>業務（中粒度）</th><th>頻度</th><th>担当</th><th>メモ／将来の外注役割</th></tr></thead><tbody>
+        <tr data-f="spot" data-w="core"><td class="task">契約書・NDAの作成／レビュー</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">最終チェックは士業◆</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">成果物の権利分離の管理（自社留保）</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">L-3資産化の生命線</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">要配慮個人情報の取り扱い管理</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">形だけにしない</td></tr>
+      </tbody></table>
+    </div>
+
+    <div class="mid">
+      <h3><span class="mid-id">2-E</span>総務・自社IT環境<span class="mid-cap">自分たちの足元</span></h3>
+      <table><thead><tr><th>業務（中粒度）</th><th>頻度</th><th>担当</th><th>メモ／将来の外注役割</th></tr></thead><tbody>
+        <tr data-f="mon" data-w="core"><td class="task">自社SaaS／ツールの管理・棚卸し</td><td class="freq"><span class="f mon">月次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">ソフトウェア利用料の管理と連動</td></tr>
+        <tr data-f="mon" data-w="core"><td class="task">情報セキュリティ・自社データ管理</td><td class="freq"><span class="f mon">月次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="spot" data-w="out"><td class="task">バックオフィス環境の整備・庶務</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w out">◆</span></td><td class="memo">事務代行</td></tr>
+      </tbody></table>
+    </div>
+
+    <div class="mid">
+      <h3><span class="mid-id">2-F</span>経営・企画<span class="mid-cap">舵取り・数値管理</span></h3>
+      <table><thead><tr><th>業務（中粒度）</th><th>頻度</th><th>担当</th><th>メモ／将来の外注役割</th></tr></thead><tbody>
+        <tr data-f="week" data-w="core"><td class="task">意思決定・案件選定・優先順位づけ</td><td class="freq"><span class="f week">週次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">P-5判断基準・3社上限</td></tr>
+        <tr data-f="mon" data-w="core"><td class="task">事業計画の更新・数値管理（KPIレビュー）</td><td class="freq"><span class="f mon">月次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="mon" data-w="core"><td class="task">振り返り（月次の棚卸し）</td><td class="freq"><span class="f mon">月次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">価格・サービス設計の見直し</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+      </tbody></table>
+    </div>
+
+    <div class="mid">
+      <h3><span class="mid-id">2-G</span>自己研鑽・資産化<span class="mid-cap">横展開の元手（L-3）</span></h3>
+      <table><thead><tr><th>業務（中粒度）</th><th>頻度</th><th>担当</th><th>メモ／将来の外注役割</th></tr></thead><tbody>
+        <tr data-f="week" data-w="core"><td class="task">スキル・知識のインプット（IT/業務/経営）</td><td class="freq"><span class="f week">週次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="mon" data-w="core"><td class="task">汎用フレーム・テンプレの整備（自社資産）</td><td class="freq"><span class="f mon">月次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">稼働半減の本筋</td></tr>
+        <tr data-f="week" data-w="core"><td class="task">ナレッジの蓄積・整理</td><td class="freq"><span class="f week">週次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">整形は◆</td></tr>
+      </tbody></table>
+    </div>
+
+    <div class="mid">
+      <h3><span class="mid-id">2-H</span>協力者・パートナー管理<span class="mid-cap">将来の外注体制（今は保険）</span></h3>
+      <table><thead><tr><th>業務（中粒度）</th><th>頻度</th><th>担当</th><th>メモ／将来の外注役割</th></tr></thead><tbody>
+        <tr data-f="mon" data-w="core"><td class="task">協力者ネットワークの維持</td><td class="freq"><span class="f mon">月次</span></td><td class="who"><span class="w core">★</span></td><td class="memo">固定費化しない</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">外注先の開拓・選定</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">—</td></tr>
+        <tr data-f="spot" data-w="core"><td class="task">外注への指示書作成・成果物レビュー</td><td class="freq"><span class="f spot">スポット</span></td><td class="who"><span class="w core">★</span></td><td class="memo">渡し方の型は未設計＝要記入</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <div class="empty" id="empty">この条件に合う業務はありません。</div>
+
+  <footer>
+    出典：<code>docs/plan/service-definition.md</code>／<code>docs/plan/service-operations.md</code>／<code>docs/HANDOFF.md</code> 4・6章。<br>
+    頻度＝日次／週次／月次／締め（請求・税務等のまとめ対応）／スポット（案件・フェーズ発生ごと）。担当＝★当面自分／◆将来外注しうる役割。<br>
+    中粒度・v1（2026-07-04）。手順ステップは別途マニュアルで作成。本人が違和感を起点に削る／直す前提。
+  </footer>
+</div>
+
+<script>
+(function(){
+  var rows = Array.prototype.slice.call(document.querySelectorAll('tbody tr[data-f]'));
+  function cf(t){return rows.filter(function(r){return r.dataset.f===t;}).length;}
+  function cw(w){return rows.filter(function(r){return r.dataset.w===w;}).length;}
+  ['day','week','mon','close','spot'].forEach(function(t){var e=document.getElementById('n-'+t);if(e)e.textContent=cf(t);});
+  ['core','out'].forEach(function(w){var e=document.getElementById('n-'+w);if(e)e.textContent=cw(w);});
+  var fOn={}, wOn={};
+  function apply(){
+    var fs=Object.keys(fOn).filter(function(k){return fOn[k];});
+    var ws=Object.keys(wOn).filter(function(k){return wOn[k];});
+    var shown=0;
+    rows.forEach(function(r){
+      var ok=(fs.length===0||fs.indexOf(r.dataset.f)>=0)&&(ws.length===0||ws.indexOf(r.dataset.w)>=0);
+      r.classList.toggle('hide',!ok); if(ok)shown++;
+    });
+    document.querySelectorAll('.mid').forEach(function(m){
+      var any=m.querySelectorAll('tbody tr:not(.hide)').length>0;
+      m.style.display=any?'':'none';
+    });
+    document.querySelectorAll('.major').forEach(function(mj){
+      var any=Array.prototype.some.call(mj.querySelectorAll('.mid'),function(m){return m.style.display!=='none';});
+      mj.style.display=any?'':'none';
+    });
+    document.getElementById('empty').style.display=shown===0?'block':'none';
+  }
+  document.querySelectorAll('.chip[data-t]').forEach(function(c){
+    c.addEventListener('click',function(){fOn[c.dataset.t]=!fOn[c.dataset.t];c.classList.toggle('on',fOn[c.dataset.t]);apply();});
+  });
+  document.querySelectorAll('.chip[data-w]').forEach(function(c){
+    c.addEventListener('click',function(){wOn[c.dataset.w]=!wOn[c.dataset.w];c.classList.toggle('on',wOn[c.dataset.w]);apply();});
+  });
+  document.getElementById('reset').addEventListener('click',function(){
+    fOn={};wOn={};
+    document.querySelectorAll('.chip.on').forEach(function(c){c.classList.remove('on');});
+    apply();
+  });
+})();
+</script>

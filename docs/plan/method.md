@@ -1,3 +1,10 @@
+---
+type: detail
+status: draft
+updated: 2026-07-08
+parent: docs/plan/business-plan.md 2章
+truth: docs/HANDOFF.md 12章
+---
 # メソッド整理（DRAFT v1）
 
 > 作成: 2026-06-25 / 本人入力（高級パシリ＝ITERRAメソッド）を HANDOFF 1〜3章の前提で整理。
