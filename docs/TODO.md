@@ -9,7 +9,7 @@ updated: 2026-07-08
 
 ## 次にやること（旧CLAUDE.md「次にやること」より移設）
 
-1. たたき台への本人の違和感出し：`docs/plan/lead-acquisition.md`（営業・告知）／`docs/plan/pricing.md`（料金）／`docs/plan/service-operations.md`（本人/外注の業務分解）／`docs/web/web-structure.md`（サイト構成v2。▶要判断4つ＝診断金額明示・「力になれない会社」公開・立ち上げ枠非掲載・現行介護特化サイトの旧コンテンツの扱い）
+1. たたき台への本人の違和感出し：`docs/plan/lead-acquisition.md`（営業・告知）／`docs/plan/pricing.md`（料金）／`docs/plan/service-operations.md`（本人/外注の業務分解）／`docs/plan/block-menu.md`（従量ブロック明細＝粒度・完了条件・単価の当たり）／`docs/web/web-structure.md`（サイト構成v2。▶要判断4つ＝診断金額明示・「力になれない会社」公開・立ち上げ枠非掲載・現行介護特化サイトの旧コンテンツの扱い）
 2. 業種非依存の汎用モデルケース数字（特養C／HCチェーンHの代替。料金の対比材料・クロージング・想定モデルページの源泉）
 3. 役員報酬を上げるタイミングと最適額のシミュレーション（法人税＋所得税＋社保の最小化）
 4. ~~事業計画書（文章版）の条件ベース作り直し~~ → v3済（`docs/plan/business-plan.md`）。残＝本人の違和感出し

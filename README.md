@@ -15,7 +15,8 @@
 | `docs/plan/method.md` | 詳細 | ITERRAメソッド（3軸×3フェーズ） |
 | `docs/plan/target-conditions.md` | 詳細 | ターゲット条件 M1〜M4／Red Flags（ターゲット定義の正） |
 | `docs/plan/service-definition.md` | 詳細 | Phase0診断・伴走の商品定義・契約 |
-| `docs/plan/service-operations.md` | 詳細 | 業務分解（★本人コア／◆外注可／▲資産化） |
+| `docs/plan/service-operations.md` | 詳細 | 業務分解（★本人コア／◆外注可／▲資産化）＋従量ブロックの設計思想（§7） |
+| `docs/plan/block-menu.md` | 詳細 | 従量ブロック メニュー（マスタ）。3系統×明細・完了条件・スキル・単価 |
 | `docs/plan/pricing.md` | 詳細 | 料金表・含む/含まない・内部検算 |
 | `docs/plan/sales-process.md` | 詳細 | 無料相談→診断の売り方 |
 | `docs/plan/lead-acquisition.md` | 詳細 | リード獲得（条件ベース・観測可能シグナル5つ・チャネル7つ） |
