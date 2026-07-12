@@ -21,9 +21,9 @@
 | `docs/plan/sales-process.md` | 詳細 | 無料相談→診断の売り方 |
 | `docs/plan/lead-acquisition.md` | 詳細 | リード獲得（条件ベース・観測可能シグナル5つ・チャネル7つ） |
 | `docs/plan/revenue-target.md` | 詳細 | 必要売上・個人サバイバル |
-| `docs/web/web-structure.md` | 詳細 | サービスサイト構成 v2（9ページ） |
+| `docs/web/web-structure.md` | 詳細 | 会社サイト構成（実装対応版）。3事業①主軸・実URLツリー・トンマナ・実装修正リスト |
 | `docs/web/lp-structure.md` | 詳細 | 無料相談LPの構成 |
-| `docs/web/site-copy-draft.md` | 補足 | FV・トップ・メソッドのコピー案（本人の口調書き換え待ち） |
+| `docs/web/site-copy-draft.md` | 補足 | 全ページのコピーひな型（ページ別・本人の口調書き換え待ち） |
 | `docs/preview/accompaniment-tasks.html` | プレビュー | 伴走業務 大中小分解の図解（正＝service-operations.md） |
 | `docs/preview/business-operations-map.html` | プレビュー | 事業運営 業務体系マップ（正＝service-operations.md） |
 
