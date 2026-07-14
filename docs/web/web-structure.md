@@ -1,7 +1,7 @@
 ---
 type: detail
 status: draft
-updated: 2026-07-12
+updated: 2026-07-14
 parent: docs/plan/business-plan.md 9章
 truth: docs/HANDOFF.md 16章（3事業・①主軸）・13章（サイト構成v2）
 ---
@@ -17,7 +17,7 @@ truth: docs/HANDOFF.md 16章（3事業・①主軸）・13章（サイト構成v
 
 ```
 ① ビジネス支援事業（ITERRA hands-on-support）  ← 主軸・厚く作る
-   ├─ コーポレートIT総合支援（伴走〜自走〜ライト）
+   ├─ コーポレートIT総合支援（実務伴走〜自走〜リテーナー）
    └─ アセスメント（構造診断）＝単体で完結する入口
         └→ 現場で生まれた ノウハウ→② ラーニング（Academy） ／ 成果物→③ コンテンツ販売
 ```

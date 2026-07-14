@@ -1,0 +1,630 @@
+<!--
+  ============================================================
+  料金設計（プレビュー / 図解）v2 ステージ制
+  ------------------------------------------------------------
+  出典（正）: docs/plan/pricing.md
+  このHTMLは pricing.md の視覚化です。
+  内容を更新するときは必ず出典mdを先に直し、その後この図を更新すること。
+  金額はすべて「たたき台（DRAFT v2）」。本人が違和感を起点に上書きする前提。
+  作成: 2026-07-14（v1=グループ制 → v2=クライアント目線のステージ制＋山と谷の図）
+  ============================================================
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>料金設計（ステージ制 v2）</title>
+<style>
+  :root{
+    --bg:#0f1115;
+    --card:#1a1d24;
+    --card2:#151821;
+    --ink:#e8eaed;
+    --muted:#9aa0aa;
+    --faint:#6b7280;
+    --line:#2a2e37;
+    --accent:#4a9eff;
+    --accent2:#5ecb8a;
+    --warn:#e0a94a;
+    --danger:#e06a6a;
+    --purple:#b98be0;
+    --pill:#232733;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.65;
+    padding:32px 18px 80px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1120px;margin:0 auto;}
+
+  /* ---- header ---- */
+  header.page{
+    padding-bottom:22px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:34px;
+  }
+  .eyebrow{
+    font-size:12px;letter-spacing:0.08em;color:var(--faint);
+    text-transform:uppercase;margin-bottom:8px;
+  }
+  h1{font-size:26px;font-weight:700;letter-spacing:0.01em;margin-bottom:10px;}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+  .badge{
+    font-size:11.5px;padding:4px 11px;border-radius:999px;
+    border:1px solid var(--line);color:var(--muted);background:var(--pill);
+  }
+  .badge.draft{color:var(--warn);border-color:#5a4a26;}
+  .source{font-size:12.5px;color:var(--faint);}
+  .source code{color:var(--muted);background:var(--pill);padding:1px 6px;border-radius:5px;font-size:12px;}
+
+  /* ---- section ---- */
+  section{margin-bottom:46px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:18px;}
+  .sec-num{
+    font-size:12px;color:var(--accent);font-weight:700;
+    border:1px solid #2b4a6e;border-radius:8px;padding:2px 8px;flex:none;
+  }
+  h2{font-size:19px;font-weight:700;letter-spacing:0.01em;}
+  .sec-sub{font-size:13.5px;color:var(--muted);margin:-8px 0 20px;}
+
+  /* ---- journey diagram ---- */
+  .journey{
+    background:var(--card2);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 14px 8px;overflow-x:auto;
+  }
+  .journey svg{min-width:920px;width:100%;height:auto;display:block;}
+
+  /* ---- 4原則 grid ---- */
+  .principles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .principle{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 16px 18px;position:relative;
+  }
+  .principle .pn{
+    font-size:12px;color:var(--accent2);font-weight:700;margin-bottom:8px;
+    display:inline-block;border:1px solid #2f5340;border-radius:7px;padding:2px 8px;
+  }
+  .principle h3{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.4;}
+  .principle p{font-size:12.5px;color:var(--muted);}
+
+  /* ---- stage groups ---- */
+  .stage{margin-bottom:30px;}
+  .stage-label{
+    display:flex;align-items:center;gap:10px;margin-bottom:12px;
+    font-size:13px;color:var(--muted);flex-wrap:wrap;
+  }
+  .stage-label .tag{
+    font-size:12.5px;font-weight:700;padding:3px 14px;border-radius:999px;
+    background:var(--pill);border:1px solid var(--line);
+  }
+  .stage.s1 .tag{color:var(--accent);border-color:#2b4a6e;}
+  .stage.s2 .tag{color:var(--accent2);border-color:#2f5340;}
+  .stage.s3 .tag{color:var(--warn);border-color:#5a4a26;}
+  .stage.wb .tag{color:var(--purple);border-color:#4a3560;}
+  .stage.sp .tag{color:#4dd0b8;border-color:#265a4f;}
+  .stage-label .desc{font-size:12px;color:var(--faint);}
+
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .cards.c4{grid-template-columns:repeat(4,1fr);}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px;display:flex;flex-direction:column;position:relative;overflow:hidden;
+  }
+  .card.hero{border-color:#3a6a45;box-shadow:0 0 0 1px #2f5340 inset;}
+  .card.reception{border-style:dashed;background:transparent;}
+  .card .ribbon{
+    position:absolute;top:12px;right:-30px;transform:rotate(38deg);
+    background:var(--accent2);color:#0b1410;font-size:10.5px;font-weight:800;
+    padding:3px 34px;letter-spacing:0.05em;
+  }
+  .card .cname{font-size:15px;font-weight:700;margin-bottom:2px;padding-right:40px;}
+  .card .csub{font-size:11px;color:var(--faint);}
+  .card .price{font-size:24px;font-weight:800;letter-spacing:0.01em;margin:6px 0 2px;}
+  .card .price .unit{font-size:13px;font-weight:600;color:var(--muted);margin-left:2px;}
+  .card .price.free{color:var(--faint);}
+  .card .divider{height:1px;background:var(--line);margin:12px 0;}
+  .card .inc,.card .exc{font-size:12.5px;margin-bottom:8px;}
+  .card .k{
+    font-size:10.5px;letter-spacing:0.05em;text-transform:uppercase;
+    color:var(--faint);display:block;margin-bottom:3px;
+  }
+  .card .inc .v{color:var(--ink);}
+  .card .exc .v{color:var(--muted);}
+  .card .foot{margin-top:auto;padding-top:10px;font-size:11.5px;color:var(--faint);}
+
+  /* ---- 期間内訳バー ---- */
+  .period{
+    margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;
+  }
+  .period .pt{font-size:13px;font-weight:700;margin-bottom:12px;}
+  .period .pt .scope{font-size:11.5px;color:var(--faint);font-weight:400;margin-left:8px;}
+  .period-bar{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;}
+  .pbox{
+    flex:1;min-width:220px;border-radius:10px;padding:12px 14px;font-size:12.5px;
+  }
+  .pbox .ph{font-size:13px;font-weight:700;margin-bottom:4px;}
+  .pbox .pp{font-size:16px;font-weight:800;margin-bottom:4px;}
+  .pbox .pd{color:var(--muted);font-size:12px;}
+  .pbox.work{background:rgba(94,203,138,0.07);border:1px solid #2f5340;}
+  .pbox.work .ph{color:var(--accent2);}
+  .parrow{
+    flex:none;display:flex;flex-direction:column;justify-content:center;align-items:center;
+    padding:0 14px;color:var(--faint);font-size:11px;text-align:center;gap:4px;min-width:150px;
+  }
+  .parrow .a{color:var(--accent2);font-size:18px;font-weight:700;}
+  .pbox.watch{background:rgba(224,169,74,0.07);border:1px solid #5a4a26;}
+  .pbox.watch .ph{color:var(--warn);}
+
+  /* ---- ワークブロック 3系統 ---- */
+  .blocks{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .block{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;
+  }
+  .block .bn{font-size:13px;font-weight:700;margin-bottom:4px;}
+  .block .bn .sys{color:var(--accent);}
+  .block .price-mech{font-size:12.5px;color:var(--ink);margin:8px 0;line-height:1.5;}
+  .block .profit{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px;margin-top:10px;}
+  .block .profit b{color:var(--accent2);font-weight:700;}
+  .block.best{border-color:#3a6a45;}
+
+  /* ---- callout ---- */
+  .callout{
+    background:var(--card2);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:10px;padding:16px 18px;font-size:13.5px;color:var(--muted);
+  }
+  .callout.warn{border-left-color:var(--warn);}
+  .callout.danger{border-left-color:var(--danger);}
+  .callout b{color:var(--ink);font-weight:700;}
+  .callout .ct{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;display:block;}
+
+  /* ---- internal-only banner ---- */
+  .internal-banner{
+    display:flex;align-items:center;gap:10px;
+    background:rgba(224,106,106,0.08);border:1px solid #5a2f2f;border-radius:10px;
+    padding:12px 16px;margin-bottom:16px;font-size:13px;color:#e8b0b0;
+  }
+  .internal-banner .lock{font-size:16px;}
+  .internal-banner b{color:#f0c0c0;}
+
+  /* ---- table ---- */
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:640px;}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top;}
+  th{color:var(--muted);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:0.04em;background:var(--card2);}
+  tr:last-child td{border-bottom:none;}
+  td.price-col{font-weight:700;white-space:nowrap;}
+  td.wage{font-weight:700;white-space:nowrap;}
+  td.old{color:var(--faint);}
+  td.new{font-weight:700;}
+  .eval{font-size:12.5px;}
+  .eval.ok{color:var(--accent2);}
+  .eval.thin{color:var(--warn);}
+  .eval.invest{color:var(--accent);}
+
+  /* ---- terms list ---- */
+  .terms{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .term{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;
+  }
+  .term .tk{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:5px;}
+  .term p{font-size:12.5px;color:var(--muted);}
+
+  /* ---- checklist ---- */
+  .checklist{list-style:none;display:flex;flex-direction:column;gap:10px;}
+  .checklist li{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:13px 15px 13px 44px;position:relative;font-size:13px;color:var(--ink);
+  }
+  .checklist li::before{
+    content:"";position:absolute;left:15px;top:14px;width:16px;height:16px;
+    border:1.5px solid var(--warn);border-radius:5px;
+  }
+  .checklist li.done::before{
+    content:"✓";border-color:var(--accent2);color:var(--accent2);
+    font-size:12px;line-height:16px;text-align:center;font-weight:800;
+  }
+  .checklist li .why{display:block;font-size:11.5px;color:var(--faint);margin-top:3px;}
+
+  footer{margin-top:50px;padding-top:20px;border-top:1px solid var(--line);font-size:12px;color:var(--faint);}
+
+  @media (max-width:860px){
+    .principles{grid-template-columns:repeat(2,1fr);}
+    .cards,.cards.c4,.blocks{grid-template-columns:1fr 1fr;}
+    .terms{grid-template-columns:1fr;}
+  }
+  @media (max-width:560px){
+    .principles,.cards,.cards.c4,.blocks{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page">
+    <div class="eyebrow">iterra business design ／ 料金設計</div>
+    <h1>料金設計（ステージ制・たたき台 v2）</h1>
+    <div class="badges">
+      <span class="badge draft">DRAFT v2・金額は全てたたき台</span>
+      <span class="badge">税抜表記</span>
+      <span class="badge">内部標準（サイトは診断金額のみ公開）</span>
+      <span class="badge">updated 2026-07-14</span>
+    </div>
+    <div class="source">出典（正）: <code>docs/plan/pricing.md</code>　／　前提: HANDOFF 4章・15章・17章／<code>service-operations.md</code>／<code>target-conditions.md</code>。数字は本人が違和感を起点に上書きする前提。</div>
+  </header>
+
+  <!-- ============ 山と谷 ============ -->
+  <section>
+    <div class="sec-head"><span class="sec-num">図</span><h2>クライアントの動き — 山と谷</h2></div>
+    <p class="sec-sub">一つ一つの取り組みが独立した「山」。<b style="color:var(--ink)">ステージは順路ではない</b>——保守の谷に降りた客が、別部署・次の課題でまた山を登り直す。</p>
+    <div class="journey">
+      <svg viewBox="0 0 1060 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="クライアントの関わりの濃さの山と谷">
+        <defs>
+          <linearGradient id="fillGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4a9eff" stop-opacity="0.28"/>
+            <stop offset="100%" stop-color="#4a9eff" stop-opacity="0.02"/>
+          </linearGradient>
+        </defs>
+
+        <!-- stage bands -->
+        <rect x="95"  y="36" width="150" height="242" fill="rgba(74,158,255,0.05)"/>
+        <rect x="245" y="36" width="340" height="242" fill="rgba(94,203,138,0.05)"/>
+        <rect x="585" y="36" width="290" height="242" fill="rgba(224,169,74,0.045)"/>
+        <text x="170" y="306" text-anchor="middle" font-size="12" font-weight="700" fill="#4a9eff">ステージ1　見える化</text>
+        <text x="415" y="306" text-anchor="middle" font-size="12" font-weight="700" fill="#5ecb8a">ステージ2　実務伴走</text>
+        <text x="730" y="306" text-anchor="middle" font-size="12" font-weight="700" fill="#e0a94a">ステージ3　保守</text>
+        <text x="952" y="306" text-anchor="middle" font-size="11.5" fill="#6b7280">また次の山へ</text>
+
+        <!-- axes -->
+        <line x1="40" y1="270" x2="1030" y2="270" stroke="#2a2e37" stroke-width="1.5"/>
+        <line x1="40" y1="42"  x2="40"   y2="270" stroke="#2a2e37" stroke-width="1.5"/>
+        <text x="24" y="160" font-size="11" fill="#6b7280" text-anchor="middle" transform="rotate(-90 24 160)">関わりの濃さ</text>
+        <text x="1030" y="292" font-size="11" fill="#6b7280" text-anchor="end">時間 →</text>
+
+        <!-- filled area under journey -->
+        <path d="M40,270 L108,270 L116,260 L124,270 L150,270 L188,178 L226,268 L262,266 L332,92 L420,92 L444,128 L484,128 L508,163 L556,163 L592,247 L875,245 L875,270 Z"
+              fill="url(#fillGrad)" stroke="none"/>
+        <!-- journey line（下り階段＝120→75→35で段階的に手を放す） -->
+        <path d="M40,270 L108,270 L116,260 L124,270 L150,270 L188,178 L226,268 L262,266 L332,92 L420,92 L444,128 L484,128 L508,163 L556,163 L592,247 L875,245"
+              fill="none" stroke="#4a9eff" stroke-width="2.5" stroke-linejoin="round"/>
+
+        <!-- workblock spot peaks (purple, on top of the valley) -->
+        <path d="M642,246 L667,190 L692,246 Z" fill="rgba(185,139,224,0.30)" stroke="#b98be0" stroke-width="1.5"/>
+        <path d="M762,246 L787,200 L812,246 Z" fill="rgba(185,139,224,0.30)" stroke="#b98be0" stroke-width="1.5"/>
+
+        <!-- future (dashed) -->
+        <path d="M875,245 L922,245 L998,125 L1030,185" fill="none" stroke="#6b7280" stroke-width="2"
+              stroke-dasharray="6 5" opacity="0.7"/>
+
+        <!-- markers & labels -->
+        <circle cx="116" cy="259" r="4" fill="#0f1115" stroke="#4a9eff" stroke-width="2"/>
+        <text x="116" y="243" text-anchor="middle" font-size="10.5" fill="#9aa0aa">無料相談（受付）</text>
+
+        <text x="188" y="148" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e8eaed">構造診断</text>
+        <text x="188" y="164" text-anchor="middle" font-size="10.5" fill="#9aa0aa">ヒアリング30万／同行50万〜</text>
+
+        <text x="376" y="62" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e8eaed">実務期間</text>
+        <text x="376" y="78" text-anchor="middle" font-size="10.5" fill="#9aa0aa">アドバイザリー40／パートナー75／フル120</text>
+
+        <text x="464" y="118" text-anchor="middle" font-size="9.5" fill="#6b7280">フル→パートナー</text>
+
+        <text x="548" y="136" text-anchor="middle" font-size="11.5" font-weight="700" fill="#e8eaed">見守り期間 35万</text>
+        <text x="548" y="151" text-anchor="middle" font-size="10" fill="#9aa0aa">毎週定例＋要所介入</text>
+
+        <text x="727" y="170" text-anchor="middle" font-size="11.5" font-weight="700" fill="#b98be0">ワークブロック</text>
+        <text x="727" y="184" text-anchor="middle" font-size="10" fill="#9aa0aa">スポットの山（既存客のみ）</text>
+
+        <text x="727" y="236" text-anchor="middle" font-size="10.5" fill="#e0a94a">リテーナー 7万（谷＝土台）</text>
+
+        <text x="952" y="100" text-anchor="middle" font-size="11" fill="#9aa0aa">必要になれば、また山へ</text>
+        <text x="952" y="115" text-anchor="middle" font-size="10" fill="#6b7280">（一方通行ではない）</text>
+      </svg>
+    </div>
+    <div style="height:14px;"></div>
+    <div class="callout">
+      <span class="ct">順路ではない。ただし本体の入口は一つ</span>
+      山は何度でも登り直せる（別部署の診断・再伴走・スポットのワークブロック）。ただし<b>中小企業の新規の入口は必ず「無料相談→構造診断」</b>——ワークブロック単独・保守単独の入口は作らない（HANDOFF 15章・不変）。唯一の例外＝一人社長・個人事業主向けの<b style="color:#4dd0b8">スタートアッププラン（3万/月・別レーン）</b>のみ無料相談→直接入会（診断なし・§1.6）。
+    </div>
+  </section>
+
+  <!-- ============ 0. 4原則 ============ -->
+  <section>
+    <div class="sec-head"><span class="sec-num">0</span><h2>値決めの4原則（覆さない）</h2></div>
+    <div class="principles">
+      <div class="principle">
+        <span class="pn">原則 1</span>
+        <h3>時間を売らない</h3>
+        <p>対外の約束は「接点と状態」。「週n日」「月nh」を契約に書かない。工数は内部の原価検算のみ（§3）。</p>
+      </div>
+      <div class="principle">
+        <span class="pn">原則 2</span>
+        <h3>本体は値引きしない</h3>
+        <p>値引きは立ち上げ枠（診断のみ）だけ。伴走月額を1円でも割ると相場が固定される（既決）。</p>
+      </div>
+      <div class="principle">
+        <span class="pn">原則 3</span>
+        <h3>経営メリットと対比で出す</h3>
+        <p>料金単体でなく「年間損失◯万 vs 投資◯万」のセットで提示。※対比の数字＝汎用モデルケースが未確定（HANDOFF 13章 宿題②）。</p>
+      </div>
+      <div class="principle">
+        <span class="pn">原則 4</span>
+        <h3>内部原価で下限を検算</h3>
+        <p>実効時給が既存受託の水準を下回るプランは設計ミス（§3）。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 1. 料金表 ============ -->
+  <section>
+    <div class="sec-head"><span class="sec-num">1</span><h2>料金表（たたき台・税抜）</h2></div>
+
+    <!-- ステージ1 -->
+    <div class="stage s1">
+      <div class="stage-label"><span class="tag">ステージ1　見える化</span><span class="desc">新規の入口はここだけ。診断は収益源でなく「入口・関門」。</span></div>
+      <div class="cards">
+        <div class="card reception">
+          <div class="cname">無料相談（30分）</div>
+          <div class="csub">※営業の受付＝サービスではない</div>
+          <div class="price free">0円</div>
+          <div class="divider"></div>
+          <div class="inc"><span class="k">含む</span><span class="v">困りごとの整理・在り処の指摘まで</span></div>
+          <div class="exc"><span class="k">含まない</span><span class="v">解き方（診断の中身）・資料化</span></div>
+        </div>
+        <div class="card">
+          <div class="cname">構造診断・ヒアリングプラン</div>
+          <div class="price">30<span class="unit">万</span></div>
+          <div class="divider"></div>
+          <div class="inc"><span class="k">含む</span><span class="v">ヒアリングを起点に、課題を解決できる <b>As-Is → To-Be のドキュメント化</b>＋<b>伴走計画の作成</b></span></div>
+          <div class="exc"><span class="k">含まない</span><span class="v">現場観察（→同行プラン）・実行支援・ツール導入</span></div>
+        </div>
+        <div class="card">
+          <div class="cname">構造診断・同行プラン</div>
+          <div class="price">50<span class="unit">万〜</span></div>
+          <div class="range" style="font-size:11.5px;color:var(--faint);margin-bottom:6px;">拠点追加 ＋15〜20万/拠点（遠方交通費は別途実費）</div>
+          <div class="divider"></div>
+          <div class="inc"><span class="k">含む</span><span class="v"><b>現場を観察</b>したうえで、課題を解決できる As-Is → To-Be のドキュメント化＋伴走計画</span></div>
+          <div class="exc"><span class="k">含まない</span><span class="v">実行支援・ツール導入</span></div>
+        </div>
+        <div class="card">
+          <div class="cname">立ち上げ枠（先着5社 or 2026年末の早い方）</div>
+          <div class="price">10<span class="unit">万（診断）</span></div>
+          <div class="divider"></div>
+          <div class="inc"><span class="k">対価</span><span class="v"><b>ヒアリングプラン相当のみ</b>（同行が要る会社は正価50万〜）。対価＝事例公開許可＋率直なFB＋良ければ紹介1社</span></div>
+          <div class="foot">値引きが許されるのはここだけ。サイトに出さない（16章決定）。5社で終える。</div>
+        </div>
+      </div>
+      <p class="sec-sub" style="margin:12px 0 0;">納品物の軸は両プラン共通＝As-Is → To-Be ドキュメント＋伴走計画（IT棚卸し・納品プレゼンは旧標準から継承）。<b style="color:var(--ink)">定量シートは固定納品物にしない</b>——クライアントによって作る／作らないを分け、<b style="color:var(--ink)">伴走計画として提示する際の結果の一部</b>とする（2026-07-14 本人決定）。</p>
+    </div>
+
+    <!-- ステージ2 -->
+    <div class="stage s2">
+      <div class="stage-label"><span class="tag">ステージ2　実務伴走</span><span class="desc">収益の本体（月額固定・準委任）。3社上限（§3で数字裏付け）。</span></div>
+      <div class="cards">
+        <div class="card">
+          <div class="cname">アドバイザリープラン</div>
+          <div class="price">40<span class="unit">万/月</span></div>
+          <div class="divider"></div>
+          <div class="inc"><span class="k">含む</span><span class="v">隔週定例＋チャット相談＋定例運用シートの提供</span></div>
+          <div class="exc"><span class="k">含まない</span><span class="v">ベンダー折衝・実務支援（→パートナー）</span></div>
+        </div>
+        <div class="card hero">
+          <div class="ribbon">主力</div>
+          <div class="cname">パートナープラン</div>
+          <div class="price">75<span class="unit">万/月</span></div>
+          <div class="divider"></div>
+          <div class="inc"><span class="k">含む</span><span class="v">アドバイザリーの全て＋<b style="color:var(--accent2)">各種ベンダーとの折衝＋決裁者報告</b>＋必要な実務支援</span></div>
+          <div class="exc"><span class="k">含まない</span><span class="v">実装等の実作業の一部（→ワークブロックで追加）</span></div>
+        </div>
+        <div class="card">
+          <div class="cname">フルプラン</div>
+          <div class="price">120<span class="unit">万/月</span></div>
+          <div class="divider"></div>
+          <div class="inc"><span class="k">含む</span><span class="v">パートナーの全て＋<b>ほぼBPO的に部署単位で包括</b>して受ける</span></div>
+          <div class="exc"><span class="k">含まない</span><span class="v">外注実費</span></div>
+          <div class="foot">商品表に金額明記で載せる（本人決定）。受注は3社上限で制御＝パートナー75万のアンカーにもなる</div>
+        </div>
+      </div>
+
+      <!-- 下り階段 -->
+      <div class="period">
+        <div class="pt">下り階段（契約に明記）<span class="scope">一気に落とさず段階的に手を放す。見守り期間は<b>パートナーの契約内訳</b>（旧・逓減期を内蔵）。フルは見守りへ直接落とさない（2026-07-14 本人決定）。</span></div>
+        <div class="period-bar">
+          <div class="pbox work">
+            <div class="ph">フルプラン（実務）</div>
+            <div class="pp">120万/月</div>
+            <div class="pd">部署単位の包括（BPO的）</div>
+          </div>
+          <div class="parrow">
+            <span class="a">➜</span>
+            <span>担当者が入る／<br>内製化基準の達成</span>
+          </div>
+          <div class="pbox work">
+            <div class="ph">パートナープラン（実務）</div>
+            <div class="pp">75万/月</div>
+            <div class="pd">折衝・決裁者報告・実務支援</div>
+          </div>
+          <div class="parrow">
+            <span class="a">➜</span>
+            <span><b style="color:var(--ink)">自走の基準</b>の達成<br>（カレンダーで区切らない）</span>
+          </div>
+          <div class="pbox watch">
+            <div class="ph">見守り期間</div>
+            <div class="pp">35万/月</div>
+            <div class="pd">毎週定例＋要所で担当者への介入。自走基準を満たしたら保守（リテーナー）へ</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ステージ3 -->
+    <div class="stage s3">
+      <div class="stage-label"><span class="tag">ステージ3　保守</span><span class="desc">谷＝土台。数を積む層。10社で月70万（§3）。</span></div>
+      <div class="cards">
+        <div class="card">
+          <div class="cname">リテーナープラン</div>
+          <div class="price">7<span class="unit">万/月</span></div>
+          <div class="divider"></div>
+          <div class="inc"><span class="k">含む</span><span class="v">チャット・ウェブでの相談＋<b>四半期レビュー（半日）</b></span></div>
+          <div class="exc"><span class="k">含まない</span><span class="v">月次定例・保守/実作業（→ワークブロック）</span></div>
+          <div class="foot">旧ライトから外したのは月1定例のみ（四半期レビューは維持＝2026-07-14 本人決定）</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ワークブロック -->
+    <div class="stage wb">
+      <div class="stage-label"><span class="tag">ワークブロック（プランとは別建て）</span><span class="desc">旧称：従量ブロック（2026-07-14改称・中身不変）。既存客がリテーナー等の土台の上に積むスポットの山。明細の正＝block-menu.md。</span></div>
+      <div class="blocks">
+        <div class="block">
+          <div class="bn"><span class="sys">①</span> 実装（作る・変える）</div>
+          <div class="price-mech">外注実費（開示）＋ディレクション実工数（DIR）</div>
+          <div class="profit">利益の出方：<b style="color:var(--muted)">マージンを取らない</b>（method.md）。本人の取り分はDIRのみ。</div>
+        </div>
+        <div class="block best">
+          <div class="bn"><span class="sys" style="color:var(--accent2)">②</span> 管理・資産（運用・維持）<span style="color:var(--accent2);font-size:11px;margin-left:6px;">★本命</span></div>
+          <div class="price-mech">ブロック定額（基準 15〜25万・個別確定は実績後）</div>
+          <div class="profit">利益の出方：<b>▲資産化で内部工数が縮むほど利益率↑</b>（本命・非依存的）。</div>
+        </div>
+        <div class="block">
+          <div class="bn"><span class="sys">③</span> 調査（現状把握・分析）</div>
+          <div class="price-mech">ブロック定額（基準 15〜25万・個別確定は実績後）</div>
+          <div class="profit">利益の出方：★見立て工数ベース。Phase0診断＝背骨とは別物。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 別レーン：スタートアップ -->
+    <div class="stage sp">
+      <div class="stage-label"><span class="tag">別レーン　ビジネス支援 for スタートアップ</span><span class="desc">2026-07-14 新設（HANDOFF 18章）。一人社長・個人事業主（創業期）限定の薄利多売レーン。本体3ステージの外＝診断を通らない唯一の例外。</span></div>
+      <div class="cards">
+        <div class="card">
+          <div class="cname">スタートアッププラン</div>
+          <div class="price">3<span class="unit">万/月</span></div>
+          <div class="divider"></div>
+          <div class="inc"><span class="k">含む</span><span class="v">チャット・ウェブでの相談＋<b>軽作業チケット 月1件</b>（メニュー選択・完了条件つき。内部目安1h＝契約に時間は書かない）</span></div>
+          <div class="exc"><span class="k">含まない</span><span class="v">訪問・定例・構造診断・高度な実装（→育ったら本体の階段へ）</span></div>
+          <div class="foot">入口＝無料相談30分（Red Flags軽量チェックのみ・診断なし）</div>
+        </div>
+        <div class="card">
+          <div class="cname">建て付け（覆さない線引き）</div>
+          <div class="divider"></div>
+          <div class="inc"><span class="k">段階設計</span><span class="v">Phase A＝本人対応・<b>上限5社目安</b>で型化 → Phase B＝大学生等へ移管（本人は品質管理のみ）。<b>移管できなければ拡大しない</b></span></div>
+          <div class="inc"><span class="k">線引き</span><span class="v">従業員を抱える中小企業には売らない（リテーナー7万との共食い防止）。★背骨（見立て・判断）はメニューに入れない</span></div>
+          <div class="foot">育ったら（M1〜M4が揃ったら）本体の診断→伴走へ案内＝将来顧客のパイプ</div>
+        </div>
+        <div class="card">
+          <div class="cname">チケットメニュー（ひな型あり・取捨待ち）</div>
+          <div class="divider"></div>
+          <div class="inc"><span class="k">5系統×15件</span><span class="v">A アカウント・環境／B 書類・データ／C ウェブ・発信／D 調べ物・比較（材料まで＝判断は本人）／E 簡易自動化。各チケットに<b>完了条件（客観判定）＋学生移管可否（◎○●）</b>つき</span></div>
+          <div class="foot">正＝ticket-menu.md。1件＝内部目安1h以内の定型作業に限定（★背骨は入れない）</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. 旧→新 対応表 ============ -->
+  <section>
+    <div class="sec-head"><span class="sec-num">2</span><h2>旧体系（v1）との対応</h2></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>旧（v1・〜07-13）</th><th>新（v2・07-14〜）</th><th>備考</th></tr></thead>
+        <tbody>
+          <tr><td class="old">無料相談</td><td class="new">無料相談</td><td>変更なし。<b>"診断"とは呼ばない</b>（診断の語は有料商品に温存）</td></tr>
+          <tr><td class="old">構造診断・標準 30万（観察1日込み）</td><td class="new">ヒアリングプラン 30万（観察なし）</td><td>観察は同行プランへ分離</td></tr>
+          <tr><td class="old">構造診断・大型 50万〜</td><td class="new">同行プラン 50万〜（拠点加算）</td><td>「大型再導入」提案はここに吸収・解消</td></tr>
+          <tr><td class="old">立ち上げ枠 10万</td><td class="new">継続（ヒアリングプラン相当）</td><td>変更なし</td></tr>
+          <tr><td class="old">伴走・梅 40万</td><td class="new">アドバイザリープラン 40万</td><td>名称変更</td></tr>
+          <tr><td class="old">伴走・竹 75万（主力）</td><td class="new">パートナープラン 75万（主力）</td><td>名称変更</td></tr>
+          <tr><td class="old">伴走・松 110万</td><td class="new">フルプラン 120万</td><td>BPO的・部署単位包括へ再定義＋増額</td></tr>
+          <tr><td class="old">逓減期 35万（別プラン）</td><td class="new">見守り期間 35万（パートナーの契約内訳へ内蔵）</td><td>別プラン廃止・思想は継承。定例は隔週→毎週。<b>フルは見守りへ直接落とさずパートナーへ（120→75→35）</b></td></tr>
+          <tr><td class="old">ライト 7万（月1定例＋四半期レビュー込み）</td><td class="new">リテーナープラン 7万（チャット・ウェブ相談＋四半期レビュー）</td><td>外したのは<b>月1定例のみ</b>（四半期レビューは維持）</td></tr>
+          <tr><td class="old">従量ブロック</td><td class="new">ワークブロック</td><td>改称のみ・中身不変（HANDOFF 15章）</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ 3. 内部検算 ============ -->
+  <section>
+    <div class="sec-head"><span class="sec-num">3</span><h2>内部検算（原価管理）</h2></div>
+    <div class="internal-banner">
+      <span class="lock">🔒</span>
+      <span><b>対外に出さない。</b>これは原価の下限を検算するための内部資料。顧客提示は §1 の料金表と「経営メリットとの対比」だけ。工数は再編後のたたき台（本人の実感で上書き）。</span>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>商品</th><th>価格</th><th>本人工数目安</th><th>実効時給</th><th>評価</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>診断・ヒアリング</td><td class="price-col">30万</td><td>25〜30h</td><td class="wage">約1.0〜1.2万/h</td><td class="eval thin">入口・関門（既決）。観察が外れた分、旧標準（0.86万/h）より改善</td></tr>
+          <tr><td>診断・同行</td><td class="price-col">50万〜</td><td>35〜40h（観察1日・1拠点）</td><td class="wage">約1.3〜1.4万/h</td><td class="eval ok">成立。拠点追加は実工数に見合う加算を（§5）</td></tr>
+          <tr><td>診断・立ち上げ枠</td><td class="price-col">10万</td><td>25〜30h</td><td class="wage">約0.3〜0.4万/h</td><td class="eval invest">実績と信頼連鎖への投資（既決）。5社で終える</td></tr>
+          <tr><td>アドバイザリー</td><td class="price-col">40万</td><td>20〜25h</td><td class="wage">約1.6〜2.0万/h</td><td class="eval ok">成立</td></tr>
+          <tr><td>パートナー（主力）</td><td class="price-col">75万</td><td>40〜50h</td><td class="wage">約1.5〜1.9万/h</td><td class="eval ok">主力として成立。▲資産化が進むほど改善</td></tr>
+          <tr><td>フル</td><td class="price-col">120万</td><td>65〜75h＋外注DIR</td><td class="wage">約1.6〜1.8万/h</td><td class="eval ok">成立。ただしフル1社で月の半分近く＝実質パートナー1.5社分</td></tr>
+          <tr><td>見守り期間（パートナー内訳）</td><td class="price-col">35万</td><td>20〜25h</td><td class="wage">約1.4〜1.75万/h</td><td class="eval ok">成立。旧逓減（隔週）より定例が毎週に倍増→工数上振れ注意</td></tr>
+          <tr><td>リテーナー</td><td class="price-col">7万</td><td>4〜6h（四半期レビュー月平均込み）</td><td class="wage">約1.2〜1.75万/h</td><td class="eval ok">積み上げ層。10社で月70万＝40〜60h</td></tr>
+          <tr><td>スタートアップ（Phase A・本人）</td><td class="price-col">3万</td><td>2〜4h</td><td class="wage">約0.75〜1.5万/h</td><td class="eval thin">下限0.5万/hは上回るが薄い。型化の投資期間・上限5社目安</td></tr>
+          <tr><td>スタートアップ（Phase B・学生移管後）</td><td class="price-col">3万</td><td>本人0.5h＋学生2〜3h</td><td class="wage">本人実効 ≈4.5〜5.4万/h</td><td class="eval ok">粗利約2.25〜2.7万/社（学生時給仮1,500〜2,500円）。10社で月30万・本人5h</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="height:16px;"></div>
+    <div class="callout">
+      <span class="ct">物差し：既存受託 月40万 ／ 下限ライン：実効時給 0.5万/h（2026-07-14 本人決定）</span>
+      伴走はどのプランも実効時給で受託を上回る＝設計として矛盾なし。<b>0.5万/h（時給5,000円）を下回る変則依頼・値引き交渉・スポット話は断る</b>（立ち上げ枠のみ5社限定の例外）。
+    </div>
+    <div style="height:12px;"></div>
+    <div class="callout danger">
+      <span class="ct">キャパの上限＝3社上限は「構造」（感覚ではない）</span>
+      月160hとして、<b>パートナー2社（90h）＋営業/発信（20h）＋会社運営（10h）で残り40h</b>。可変1枠はアドバイザリー・見守り・リテーナー・診断1件のどれかしか入らない。<b>「パートナー3社」は数字上も回らない</b>。フルは1社で65h超＝実質パートナー1.5社分の圧迫。スタートアップレーンは<b>本人対応のまま10社に増やすとキャパの毒</b>（20〜40h＝パートナー1社分の工数で売上30万 vs 75万）——学生移管が拡大の前提。
+    </div>
+  </section>
+
+  <!-- ============ 4. 契約・支払条件 ============ -->
+  <section>
+    <div class="sec-head"><span class="sec-num">4</span><h2>契約・支払条件（たたき台）</h2></div>
+    <div class="terms">
+      <div class="term"><div class="tk">診断（両プラン共通）</div><p>契約時50%・納品時50%。期間は標準4週（現場都合で±2週）。</p></div>
+      <div class="term"><div class="tk">伴走</div><p>月額・前月末請求→当月払い（先払い）。期間はPhase0の伴走計画書で確定し、3ヶ月ごとに更新。解約は1ヶ月前予告（縛らない＝依存させない／突然死だけ防ぐ）。</p></div>
+      <div class="term"><div class="tk">下り階段の移行</div><p>カレンダーでなく基準で判定（既決を継承）。フル→パートナー＝担当者が入る／内製化基準の達成。パートナー→見守り＝自走の基準の達成。基準は伴走計画書に明記。</p></div>
+      <div class="term"><div class="tk">値上げ・改定</div><p>更新タイミングでのみ。期中変更しない。</p></div>
+      <div class="term"><div class="tk">表記</div><p>税抜＋消費税別（会社は税込経理・インボイス登録済み）。</p></div>
+    </div>
+  </section>
+
+  <!-- ============ 5. 要記入 ============ -->
+  <section>
+    <div class="sec-head"><span class="sec-num">5</span><h2>決定済み（2026-07-14 本人記入）</h2></div>
+    <p class="sec-sub">▶要記入は全て解消。残る宿題＝<b style="color:var(--ink)">汎用モデルケースの数字確定</b>（HANDOFF 13章 宿題②＝原則3の実弾）／工数目安の実測上書き（§3）／個別ブロック単価の実績確定（TODOタスク16）。</p>
+    <ul class="checklist">
+      <li class="done">実効時給の下限＝<b>0.5万/h（時給5,000円）</b><span class="why">下回る変則依頼・値引き交渉・スポット話は断る。立ち上げ枠のみ5社限定の例外</span></li>
+      <li class="done">立ち上げ枠＝<b>先着5社 or 2026年末の早い方</b>・<b>ヒアリングプラン相当のみ</b><span class="why">同行が要る会社は正価50万〜（値引きの線引きを最小範囲に）</span></li>
+      <li class="done">フル120万＝<b>商品表に金額を明記して載せる</b><span class="why">受注は3社上限で制御。パートナー75万のアンカー効果</span></li>
+      <li class="done">同行プランの拠点加算＝<b>＋15〜20万/拠点</b><span class="why">遠方交通費は別途実費（既決）</span></li>
+      <li class="done">ワークブロック②③＝<b>基準15〜25万/ブロック</b><span class="why">block-menu.md の「仮」をこのレンジで設定。個別確定は実績後（TODO16）</span></li>
+    </ul>
+    <p class="sec-sub" style="margin:22px 0 12px;"><b style="color:var(--ink)">▶要記入（スタートアッププラン＝§1.6・2026-07-14 新設分・未決）</b></p>
+    <ul class="checklist">
+      <li>チケットメニューの確定<span class="why">やる／やらないの線引き・各チケットの完了条件</span></li>
+      <li>学生の関与形態<span class="why">アルバイト／業務委託／Academy連動・時給・品質管理の仕組み</span></li>
+      <li>Phase A の上限社数（仮5社）と移管の判断基準<span class="why">移管失敗なら縮小・撤退（HANDOFF 18章）</span></li>
+      <li>サイト掲載の有無・申込導線<span class="why">無料相談との接続</span></li>
+      <li>名称の確定<span class="why">「ビジネス支援 for スタートアップ」「スタートアッププラン」は仮</span></li>
+    </ul>
+  </section>
+
+  <footer>
+    出典（正）: docs/plan/pricing.md ／ このHTMLは視覚化。内容更新は必ず md を先に直す。金額は全てDRAFT（本人上書き前提）。
+  </footer>
+
+</div>
+</body>
+</html>

@@ -15,15 +15,17 @@
 | `docs/plan/method.md` | 詳細 | ITERRAメソッド（3軸×3フェーズ） |
 | `docs/plan/target-conditions.md` | 詳細 | ターゲット条件 M1〜M4／Red Flags（ターゲット定義の正） |
 | `docs/plan/service-definition.md` | 詳細 | Phase0診断・伴走の商品定義・契約 |
-| `docs/plan/service-operations.md` | 詳細 | 業務分解（★本人コア／◆外注可／▲資産化）＋従量ブロックの設計思想（§7） |
-| `docs/plan/block-menu.md` | 詳細 | 従量ブロック メニュー（マスタ）。3系統×明細・完了条件・スキル・単価 |
-| `docs/plan/pricing.md` | 詳細 | 料金表・含む/含まない・内部検算 |
+| `docs/plan/service-operations.md` | 詳細 | 業務分解（★本人コア／◆外注可／▲資産化）＋ワークブロックの設計思想（§7） |
+| `docs/plan/block-menu.md` | 詳細 | ワークブロック メニュー（マスタ・旧称：従量ブロック）。3系統×明細・完了条件・スキル・単価 |
+| `docs/plan/ticket-menu.md` | 詳細 | スタートアップチケット メニュー（スタートアッププラン内包・月1件の軽作業マスタ。5系統×15件・完了条件・学生移管可否） |
+| `docs/plan/pricing.md` | 詳細 | 料金表（ステージ制v2）・含む/含まない・内部検算 |
 | `docs/plan/sales-process.md` | 詳細 | 無料相談→診断の売り方 |
 | `docs/plan/lead-acquisition.md` | 詳細 | リード獲得（条件ベース・観測可能シグナル5つ・チャネル7つ） |
 | `docs/plan/revenue-target.md` | 詳細 | 必要売上・個人サバイバル |
 | `docs/web/web-structure.md` | 詳細 | 会社サイト構成（実装対応版）。3事業①主軸・実URLツリー・トンマナ・実装修正リスト |
 | `docs/web/lp-structure.md` | 詳細 | 無料相談LPの構成 |
 | `docs/web/site-copy-draft.md` | 補足 | 全ページのコピーひな型（ページ別・本人の口調書き換え待ち） |
+| `docs/preview/pricing.html` | プレビュー | 料金設計の図解（山と谷＋3ステージ＋ワークブロック＋内部検算。正＝pricing.md） |
 | `docs/preview/accompaniment-tasks.html` | プレビュー | 伴走業務 大中小分解の図解（正＝service-operations.md） |
 | `docs/preview/business-operations-map.html` | プレビュー | 事業運営 業務体系マップ（正＝service-operations.md） |
 
