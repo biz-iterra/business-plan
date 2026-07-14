@@ -316,6 +316,8 @@ RULES_BANK_IN_INDIV = [
     ("ＭＡサポート", "03plus遅延費用の補填回収(MAサポート負担・収支外)", "除外"),
     ("MAサポート", "03plus遅延費用の補填回収(MAサポート負担・収支外)", "除外"),
     ("ミツイスミトモ", "カード返金(SMCC・収支外)", "除外"),
+    # 2026-07-14 本人確認：7/1入金3,548,674=本人の海外資金X（非仕向送金・摘要「外国関係」）。P&L外の自己資金＝収支外。
+    ("外国関係", "海外資金の受入(本人の海外資金X・自己資金・収支外)", "除外"),
     ("利息", "雑収入・受取利息", "個人候補"),
     ("ATM", "現金入金(ATM)・要確認", "要確認"),
 ]
@@ -335,6 +337,8 @@ RULES_BANK_OUT_INDIV = [
     ("オリエントコーポレ", "個人カード返済(オリコ=オリエントコーポレーション・銀行引落ベース)", "個人候補"),
     ("ペイデイ", "後払い決済(Paidy・明細未取込)・要確認", "個人候補"),
     ("ペイディ", "後払い決済(Paidy・明細未取込)・要確認", "個人候補"),
+    # 2026-07-14：新宿西口の少額Revolutチャージ(V…REVOLUT)＝本人の多通貨ウォレットへの自己資金移動＝収支外。
+    ("REVOLUT", "自己資金移動(本人のRevolutへチャージ・収支外)", "除外"),
     ("ヤチンシユウノウ", "個人費用・家賃(個人住居・個人負担179,550)", "個人候補"),
     ("ジエイリース", "個人費用・家賃保証(個人口座払い・個人負担)", "個人候補"),
     ("家賃", "地代家賃・家賃(個人払い)・要確認", "要確認"),
@@ -640,6 +644,21 @@ def _d2i(s):
     y, m, dd = s.split("/"); return int(y) * 372 + int(m) * 31 + int(dd)
 def _is_atm(nm):
     return any(k in nm for k in ["ATM", "支払機", "預金機", "カード出金", "カ-ド出金", "カ−ド出金"])
+def _is_ascii_merchant(nm):
+    # 海外/外資系加盟店＝英字主体（渡航期の現地決済とみなす）。
+    letters = re.sub(r"[^A-Za-z]", "", nm); body = re.sub(r"\s", "", nm)
+    return len(letters) >= 4 and len(letters) >= len(body) * 0.5
+
+# 決定14（2026-07-14 本人選択「推奨ルールで一括」）用の再分類キーワード。上から SaaS→個人物販→飲食→海外 の順で評価。
+RECLASS_SAAS = ["DROPBOX","ADOBE","OPENAI","CHATGPT","ANTHROPIC","CLAUDE","NOTION","SLACK","ZOOM",
+    "GITHUB","AWS","CANVA","FIGMA","CURSOR","VERCEL","MICROSOFT","APPLE.COM/BILL","FREEE","MONEYFORWARD","GITLAB","LINEAR"]
+RECLASS_PERSONAL = ["無印","ユニクロ","ＧＵ","百貨店","東武","西武","高島屋","伊勢丹","丸井","ニトリ","ダイソー",
+    "セイメイホケン","生命保険","ホケン","保険","エクシブ","リゾート","ＰＶＨ","PVH","PROVENCE","ドラッグ","薬局",
+    "マツモトキヨシ","ウエルシア","スギ薬局","セブン","ローソン","ファミリーマート","ミニストップ","イオン",
+    "ライフ","マルエツ","業務スーパー","コストコ","ヨドバシ","ビックカメラ","ヤマダ","メルカリ","ユザワヤ","ロフト","ハンズ"]
+RECLASS_GOURMET = ["居酒屋","食堂","焼肉","寿司","鮨","鳥","亭","バル","ダイニング","酒場","珈琲","カフェ",
+    "レストラン","ラーメン","そば","うどん","餃子","ホルモン","串","鍋","一家","市場","ビストロ","割烹","肉",
+    "RESTAURANT","RISTORANTE","TRATTORIA","OSTERIA","BRASSERIE","CAFE","MAISON","LATTE","DINING","FONDA"]
 
 def apply_decisions(rows):
     # 決定1：法人→個人 30万程度(25〜36万)＝役員報酬（法人=費用／個人=収入）
@@ -715,7 +734,107 @@ def apply_decisions(rows):
             r["segment"] = "役員貸付"; r["account"] = "役員貸付（法人→個人・用途不明）"
         elif r["owner"] == "個人" and r["flow"] == "入金" and "イテラ" in nm:
             r["segment"] = "役員貸付受取"; r["account"] = "役員貸付 受取（法人→個人・用途不明）"
+    # 決定14（2026-07-14 本人選択「推奨ルールで一括」）：個人×未分類(card)の業務混入を機械再分類。
+    #   first-match：SaaS→法人ソフト／請求書カード払い→法人渡航費／物販・百貨店・保険・リゾート→個人のまま／
+    #   飲食KW→法人会議費(会食)／英字主体(海外)→法人旅費。粗いルールゆえ会食/私用が混ざる店は誤差残（本人了承）。
+    _P = [x.upper() for x in RECLASS_PERSONAL]; _S = [x.upper() for x in RECLASS_SAAS]; _G = [x.upper() for x in RECLASS_GOURMET]
+    for r in rows:
+        if r["type"] != "card" or r["segment"] != "個人候補" or "未分類" not in r.get("account", ""):
+            continue
+        raw = unicodedata.normalize("NFKC", r["name"]); nm = raw.upper()
+        if any(k in nm for k in _S):
+            r["segment"] = "法人"; r["account"] = "ソフトウェア利用料・SaaS(未分類から再分類)"
+        elif "請求書カード払い" in raw:
+            r["segment"] = "法人"; r["account"] = "旅費交通費・海外渡航費(本人確認・一度きり/請求書カード払い)"
+        elif any(k in nm for k in _P):
+            r["account"] = "個人費用・生活費(物販/百貨店/保険/リゾート)"  # 個人のまま（明示）
+        elif any(k in nm for k in _G):
+            r["segment"] = "法人"; r["account"] = "会議費・関係者会食(未分類から再分類)"
+        elif _is_ascii_merchant(raw):
+            r["segment"] = "法人"; r["account"] = "旅費交通費・海外渡航期の決済(未分類から再分類)"
+        # else: 国内・非飲食・非物販 → 個人のまま（生活費・未分類）
     return rows
+
+# ============================================================
+# 按分レイヤー（本人決定 2026-07-14）。1行→2行に分割する。RULES/決定1〜9は不変。
+# ------------------------------------------------------------
+# 決定10：Amazon＝Order History(_src)の品目判定で業務/私的を「月次実額」分割（Pixel=業務）。
+#   カード明細のAmazon(要確認)を、その月の業務比率で 法人(立替)分 と 個人(私的)分 に割る。
+# 決定11：家事按分＝自宅家賃・光熱費を 法人40%／個人60%（定率）。通信・家電は対象外（現状維持）。
+#   ※賃貸は個人名義（決定3）。40%は「業務利用分を法人が使用料として負担」＝決定3の精緻化（覆さない）。
+#   ※現金精算（役員貸付/未払）は損益外の別管理。本表は経済的負担の帰属だけを分割する。
+HOME_BIZ_RATIO = 0.40  # 家事按分の既定（法人比率）。ここを変えれば全ルールに効く
+# 家事按分ルール（本人決定で追加＝この表に1行）。account部分一致で対象を選び、法人比率で分割。
+# (名前, acct_kw, exclude_kw, seg限定(None=不問), 法人比率, 法人accテンプレ, 個人accテンプレ)  {P}=法人%,{K}=個人%
+APPORTION_RULES = [
+    ("自宅家賃",       "家賃",     ("保証", "役員貸付"), "個人候補", HOME_BIZ_RATIO, "地代家賃・自宅按分(使用料)（家事按分{P}%）", "個人費用・家賃(自宅{K}%)"),
+    # 光熱費・携帯は 100%法人 に戻す（2026-07-14 本人指示・決定12改）＝按分しない。追加時はこの表に1行。
+]
+AMZ_BIZ_KW = ["USB","HDMI","TYPE-C","ケーブル","充電器","急速充電","モバイルバッテリー","ANKER","ハブ",
+    "ドッキング","変換アダプタ","SSD","HDD","MICROSD","USBメモリ","マウス","キーボード","モニター",
+    "ディスプレイ","モバイルモニター","COCOPAR","WEBカメラ","マイク","三脚","リングライト","電源タップ",
+    "LANケーブル","ルーター","NAS","DISPLAYPORT","タブレット","IPAD","名刺","ラベルライター","テプラ",
+    "文房具","ボールペン","付箋","ホワイトボード","クリアファイル","書籍","技術書","プリンタ","インク",
+    "トナー","スキャナー","ブルーライトカット","PCメガネ","ダンボールカッター","PIXEL","延長コード"]
+
+def _amazon_monthly_biz_ratio():
+    """Order History(_src/Amazon_OrderHistory.csv) から 月(YYYY-MM)→業務比率 を作る。
+    品目が業務KWに一致→業務、他は私的（不明は私的に寄せる＝本人レビュー済み・生活が大半）。"""
+    from collections import defaultdict
+    fp = os.path.join(BASE, "_src", "Amazon_OrderHistory.csv")
+    if not os.path.exists(fp):
+        return {}
+    biz = defaultdict(int); tot = defaultdict(int)
+    with open(fp, encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            if (row.get("Order Status") or "").strip().lower() == "cancelled":
+                continue
+            ym = (row.get("Order Date") or "")[:7]
+            a = (row.get("Total Amount") or "").strip().strip("'").replace(",", "")
+            try:
+                a = int(round(float(a)))
+            except ValueError:
+                continue
+            nm = unicodedata.normalize("NFKC", row.get("Product Name") or "").upper()
+            tot[ym] += a
+            if any(k.upper() in nm for k in AMZ_BIZ_KW):
+                biz[ym] += a
+    return {ym: (biz[ym] / tot[ym] if tot[ym] else 0.0) for ym in tot}
+
+def _split_row(r, biz_amt, prv_amt, biz_acc, prv_acc):
+    """1行を 法人(業務)分・個人(私的)分 の2行に分割。0の側は作らない。"""
+    out = []
+    if biz_amt > 0:
+        rb = dict(r); rb["amount"] = biz_amt; rb["segment"] = "法人"; rb["flow"] = "出金"; rb["account"] = biz_acc
+        out.append(rb)
+    if prv_amt > 0:
+        rp = dict(r); rp["amount"] = prv_amt; rp["segment"] = "個人候補"; rp["flow"] = "出金"; rp["account"] = prv_acc
+        out.append(rp)
+    return out or [r]
+
+def apply_apportionment(rows):
+    ratio = _amazon_monthly_biz_ratio()
+    out = []
+    for r in rows:
+        acc = r.get("account", ""); seg = r.get("segment", "")
+        # 決定10：Amazon(要確認)を月次業務比率で分割
+        if r.get("type") == "card" and "Amazon" in acc and seg == "要確認" and r["amount"] > 0:
+            br = ratio.get(r["use_date"][:7].replace("/", "-"), 0.0)  # 利用日は YYYY/MM、Order Historyは YYYY-MM
+            biz = int(round(r["amount"] * br)); prv = r["amount"] - biz
+            out += _split_row(r, biz, prv, "消耗品費・Amazon業務(立替)", "（個人候補）Amazon私的")
+            continue
+        # 決定11/12：家事按分ルール（APPORTION_RULESを上から評価）。※確定済みのみ（家賃はseg=個人候補限定）
+        matched = False
+        if r["amount"] > 0:
+            for _nm, kw, exkw, segf, rb, bacc, pacc in APPORTION_RULES:
+                if kw in acc and not any(x in acc for x in exkw) and (segf is None or seg == segf):
+                    P = int(round(rb * 100)); K = 100 - P
+                    biz = int(round(r["amount"] * rb))
+                    out += _split_row(r, biz, r["amount"] - biz, bacc.format(P=P, K=K), pacc.format(P=P, K=K))
+                    matched = True; break
+        if not matched:
+            out.append(r)
+    return out
 
 def main():
     rows = []
@@ -731,6 +850,7 @@ def main():
                 r["flow"] = "入金" if r["amount"] < 0 else "出金"
         rows += new
     apply_decisions(rows)
+    rows = apply_apportionment(rows)  # 決定10（Amazon実額分割）・決定11（家事按分40/60）
     rows.sort(key=lambda r: (r["use_date"], r["source"]))
 
     # 明細台帳

@@ -56,6 +56,9 @@ def kamoku_kojin(a):
     a = a.replace("（個人候補）", "")
     if "スマホ分割" in a or "SPLITIT" in a.upper(): return "スマホ分割（Google）"
     if "外貨積立" in a: return "外貨積立（USD貯蓄）"
+    if "Amazon" in a: return "Amazon（私的）"
+    if "光熱" in a: return "光熱費（自宅按分）"
+    if "通信" in a: return "通信費（自宅按分）"
     if "家賃" in a or "地代" in a: return "家賃"
     if "食料品" in a or "スーパー" in a: return "食料品・スーパー"
     if "百貨店" in a: return "百貨店・買物"
@@ -101,7 +104,7 @@ def item_name(acc):
 CORP_FIX = ["役員報酬","給料手当","法定福利費","通信費","ソフトウェア利用料","支払報酬料","地代家賃","水道光熱費"]
 CORP_VAR = ["外注費","旅費交通費","会議費","接待交際費","広告宣伝費","消耗品費","新聞図書費","租税公課","支払手数料","雑費（現金支出）","その他経費"]
 KOJIN_FIX = ["外貨積立（USD貯蓄）","家賃","奨学金返済","個人カード返済","スマホ分割（Google）","サブスク"]
-KOJIN_VAR = ["食料品・スーパー","コンビニ","百貨店・買物","衣服","家電","ドラッグ・薬","クリーニング","雑貨・その他物販","現金引出・現金支出","未分類（生活費）","その他個人支出"]
+KOJIN_VAR = ["食料品・スーパー","コンビニ","百貨店・買物","衣服","家電","ドラッグ・薬","クリーニング","雑貨・その他物販","光熱費（自宅按分）","通信費（自宅按分）","Amazon（私的）","現金引出・現金支出","未分類（生活費）","その他個人支出"]
 
 # ---- 集計（親→子→月） ----
 ci = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))            # 法人収入 [y][取引先][m]
@@ -141,7 +144,7 @@ for y in ("2025", "2026"):
 # 2026/7〜 外貨積立は200USD=月25,000のたたき台（実績の無い月のみ）
 for m in range(7, 13):
     if ke["2026"]["外貨積立（USD貯蓄）"]["外貨積立（USD・650+200→7月〜200）"].get(m, 0) == 0:
-        ke["2026"]["外貨積立（USD貯蓄）"]["外貨積立（USD・650+200→7月〜200）"][m] = 25000
+        ke["2026"]["外貨積立（USD貯蓄）"]["外貨積立（USD・650+200→7月〜200）"][m] = 32000  # 2026-07-14 本人：1つ解約→7月〜約32,000/月
 # BizConfort（本人申告：法人の会議費）2026/7〜 月22,000、7月のみ+5,000=27,000（想定）
 for m in range(7, 13):
     ce["2026"]["会議費"]["BizConfort（2026/7〜・月22,000）"][m] += 27000 if m == 7 else 22000
@@ -162,7 +165,7 @@ PFILL = PatternFill("solid", fgColor="DDEBF7")  # 親科目（内訳の合計）
 
 def header(ws, title):
     ws.cell(1, 1, title).font = Font(bold=True, size=13, color="305496")
-    ws.cell(2, 1, "金額：円／利用日ベース／親科目＝太字・子内訳＝インデント／Amazon・少額要確認は未反映").font = Font(size=9, color="808080")
+    ws.cell(2, 1, "金額：円／利用日ベース／親科目＝太字・子内訳＝インデント／Amazon=品目判定で業務/私的分割・自宅家賃/光熱費=家事按分40%反映").font = Font(size=9, color="808080")
     hdr = ["勘定科目／内訳"] + [f"{m}月" for m in MONTHS] + ["年計"]
     for j, h in enumerate(hdr, 1):
         c = ws.cell(3, j, h); c.fill = H; c.font = HF; c.alignment = Alignment(horizontal="center")
@@ -372,7 +375,7 @@ srend("【統合】純収支（法人営業利益＋個人収支）", msum(op25,
 srend("【収支外・役員勘定（損益外）】", None, None, "sec")
 def sy(seg, y): return sum(A(r) for r in rows if r["segment"] == seg and yr(r) == y)
 for lab, seg in (("役員貸付（法人→個人）", "役員貸付"), ("役員借入（個人→法人）", "役員借入"),
-                 ("除外計（カード決済振替・借入返済・手許現金・自社間振替・各種戻し）", "除外"), ("要確認 残（Amazon保留含む）", "要確認")):
+                 ("除外計（カード決済振替・借入返済・手許現金・自社間振替・各種戻し）", "除外"), ("要確認 残（未分類・ATM・振込サービス等）", "要確認")):
     r = rS[0]
     wsS.cell(r, 1, lab)
     wsS.cell(r, colmap[("2025", "tot")], sy(seg, "2025")).number_format = "#,##0"
